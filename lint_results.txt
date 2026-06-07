@@ -1,0 +1,430 @@
+
+> temp-app@0.1.0 lint
+> eslint
+
+
+/Users/shreyavankeshwaram/Downloads/sequence/next.config.ts
+  13:5  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/app/layout.tsx
+  7:8  warning  'GalaxyBackground' is defined but never used   @typescript-eslint/no-unused-vars
+  9:8  warning  'ViewfinderOverlay' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/AnnielPortfolio.tsx
+    3:25  warning  'useState' is defined but never used      @typescript-eslint/no-unused-vars
+  124:51  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/AntigravityGallery.tsx
+  49:12  error  Error: Cannot modify local variables after render completes
+
+This argument is a function which may reassign or mutate `camera` after render, which can cause inconsistent behavior on subsequent renders. Consider using state instead.
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/AntigravityGallery.tsx:49:12
+  47 |   const { camera } = useThree();
+  48 |
+> 49 |   useFrame(() => {
+     |            ^^^^^^^
+> 50 |     // Move camera forward on Z axis based on scroll progress
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 51 |     const targetZ = 12 - progressRef.current.value * 15; // starts at 12, moves to -3
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 52 |     // eslint-disable-next-line react-hooks/immutability
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 53 |     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.1);
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 54 |   });
+     | ^^^^ This function may (indirectly) reassign or modify `camera` after render
+  55 |
+  56 |   return null;
+  57 | }
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/AntigravityGallery.tsx:53:5
+  51 |     const targetZ = 12 - progressRef.current.value * 15; // starts at 12, moves to -3
+  52 |     // eslint-disable-next-line react-hooks/immutability
+> 53 |     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.1);
+     |     ^^^^^^^^^^^^^^^ This modifies `camera`
+  54 |   });
+  55 |
+  56 |   return null;  react-hooks/immutability
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/ArtistryHero.tsx
+  118:13   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  118:225  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/BentoPortfolio.tsx
+  69:17  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  69:33  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  69:75  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CapturedServices.tsx
+   71:9   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  180:53  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  194:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CinematicAperture.tsx
+    7:10  warning  'Flip' is defined but never used                                 @typescript-eslint/no-unused-vars
+  202:11  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  202:48  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CinematicDifference.tsx
+   69:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+   81:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  106:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  121:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  121:17  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                jsx-a11y/alt-text
+  124:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  124:17  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                jsx-a11y/alt-text
+  127:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  127:17  warning  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                                                                                                jsx-a11y/alt-text
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CinematicGrid.tsx
+  4:10  warning  'Camera' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CinematicQuote.tsx
+  84:13   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  84:19   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  84:138  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CinematicRuler.tsx
+  4:13  warning  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/CinematicStorytelling.tsx
+  123:15   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  123:101  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx
+  11:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx:11:5
+   9 |
+  10 |   React.useEffect(() => {
+> 11 |     setIsMounted(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  12 |   }, []);
+  13 |
+  14 |   const particles = useMemo(() => {  react-hooks/set-state-in-effect
+  18:10  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx:18:10
+  16 |     return Array.from({ length: particlesCount }).map((_, i) => ({
+  17 |       id: i,
+> 18 |       x: Math.random() * 100,
+     |          ^^^^^^^^^^^^^ Cannot call impure function
+  19 |       y: Math.random() * 100,
+  20 |       size: Math.random() * 10 + 5,
+  21 |       rotation: Math.random() * 360,                                                                                                                                                                                                                                                                              react-hooks/purity
+  19:10  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx:19:10
+  17 |       id: i,
+  18 |       x: Math.random() * 100,
+> 19 |       y: Math.random() * 100,
+     |          ^^^^^^^^^^^^^ Cannot call impure function
+  20 |       size: Math.random() * 10 + 5,
+  21 |       rotation: Math.random() * 360,
+  22 |       opacity: Math.random() * 0.5 + 0.2,                                                                                                                                                                                                                                                                                                       react-hooks/purity
+  20:13  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx:20:13
+  18 |       x: Math.random() * 100,
+  19 |       y: Math.random() * 100,
+> 20 |       size: Math.random() * 10 + 5,
+     |             ^^^^^^^^^^^^^ Cannot call impure function
+  21 |       rotation: Math.random() * 360,
+  22 |       opacity: Math.random() * 0.5 + 0.2,
+  23 |     }));                                                                                                                                                                                                                                                                                                        react-hooks/purity
+  21:17  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx:21:17
+  19 |       y: Math.random() * 100,
+  20 |       size: Math.random() * 10 + 5,
+> 21 |       rotation: Math.random() * 360,
+     |                 ^^^^^^^^^^^^^ Cannot call impure function
+  22 |       opacity: Math.random() * 0.5 + 0.2,
+  23 |     }));
+  24 |   }, [isMounted, particlesCount]);                                                                                                                                                                                                                                                                                               react-hooks/purity
+  22:16  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FloralParticles.tsx:22:16
+  20 |       size: Math.random() * 10 + 5,
+  21 |       rotation: Math.random() * 360,
+> 22 |       opacity: Math.random() * 0.5 + 0.2,
+     |                ^^^^^^^^^^^^^ Cannot call impure function
+  23 |     }));
+  24 |   }, [isMounted, particlesCount]);
+  25 |                                                                                                                                                                                                                                                                                                                              react-hooks/purity
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/FocusCarousel.tsx
+   4:18  warning  'AnimatePresence' is defined but never used          @typescript-eslint/no-unused-vars
+  43:17  warning  'isOtherHovered' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GalaxyBackground.tsx
+  62:19  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GalaxyBackground.tsx:62:19
+  60 |     const p = new Float32Array(2000 * 3);
+  61 |     for (let i = 0; i < 2000; i++) {
+> 62 |       p[i * 3] = (Math.random() - 0.5) * 100;
+     |                   ^^^^^^^^^^^^^ Cannot call impure function
+  63 |       p[i * 3 + 1] = (Math.random() - 0.5) * 100;
+  64 |       p[i * 3 + 2] = (Math.random() - 0.5) * 100 - 50;
+  65 |     }  react-hooks/purity
+  63:23  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GalaxyBackground.tsx:63:23
+  61 |     for (let i = 0; i < 2000; i++) {
+  62 |       p[i * 3] = (Math.random() - 0.5) * 100;
+> 63 |       p[i * 3 + 1] = (Math.random() - 0.5) * 100;
+     |                       ^^^^^^^^^^^^^ Cannot call impure function
+  64 |       p[i * 3 + 2] = (Math.random() - 0.5) * 100 - 50;
+  65 |     }
+  66 |     return p;                          react-hooks/purity
+  64:23  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GalaxyBackground.tsx:64:23
+  62 |       p[i * 3] = (Math.random() - 0.5) * 100;
+  63 |       p[i * 3 + 1] = (Math.random() - 0.5) * 100;
+> 64 |       p[i * 3 + 2] = (Math.random() - 0.5) * 100 - 50;
+     |                       ^^^^^^^^^^^^^ Cannot call impure function
+  65 |     }
+  66 |     return p;
+  67 |   }, []);                                                     react-hooks/purity
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx
+    4:28  warning  'useLoader' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+    5:17  warning  'Environment' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   61:9   warning  'earthMaterial' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  140:17  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx:140:17
+  138 |   const positions = new Float32Array(300 * 3);
+  139 |   for (let i = 0; i < 300; i++) {
+> 140 |     const phi = Math.random() * Math.PI;
+      |                 ^^^^^^^^^^^^^ Cannot call impure function
+  141 |     const theta = Math.random() * Math.PI * 2;
+  142 |     const r = 3.03;
+  143 |     positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);                                                                                                                                                                                                                                                                                                                         react-hooks/purity
+  141:19  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx:141:19
+  139 |   for (let i = 0; i < 300; i++) {
+  140 |     const phi = Math.random() * Math.PI;
+> 141 |     const theta = Math.random() * Math.PI * 2;
+      |                   ^^^^^^^^^^^^^ Cannot call impure function
+  142 |     const r = 3.03;
+  143 |     positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+  144 |     positions[i * 3 + 1] = r * Math.cos(phi);                                                                                                                                                                                                                                                                                                                        react-hooks/purity
+  166:25  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx:166:25
+  164 |   const positions = new Float32Array(2000 * 3);
+  165 |   for (let i = 0; i < 2000; i++) {
+> 166 |     positions[i * 3] = (Math.random() - 0.5) * 200;
+      |                         ^^^^^^^^^^^^^ Cannot call impure function
+  167 |     positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
+  168 |     positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+  169 |   }                                                                                                                                                                                                                                                                                                               react-hooks/purity
+  167:29  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx:167:29
+  165 |   for (let i = 0; i < 2000; i++) {
+  166 |     positions[i * 3] = (Math.random() - 0.5) * 200;
+> 167 |     positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
+      |                             ^^^^^^^^^^^^^ Cannot call impure function
+  168 |     positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+  169 |   }
+  170 |   return (                                                                                                                                                                                                                                                                                                                                                react-hooks/purity
+  168:29  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx:168:29
+  166 |     positions[i * 3] = (Math.random() - 0.5) * 200;
+  167 |     positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
+> 168 |     positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+      |                             ^^^^^^^^^^^^^ Cannot call impure function
+  169 |   }
+  170 |   return (
+  171 |     <points>                                                                                                                                                                                                                                                                                                                                                                      react-hooks/purity
+  210:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/GlobeEnding.tsx:210:19
+  208 |   const [isMounted, setIsMounted] = useState(false);
+  209 |
+> 210 |   useEffect(() => setIsMounted(true), []);
+      |                   ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  211 |
+  212 |   useEffect(() => {
+  213 |     if (!isMounted || !sectionRef.current) return;  react-hooks/set-state-in-effect
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/IconicGrid.tsx
+  3:17  warning  'useRef' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/InfiniteColumnGallery.tsx
+  68:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/InfiniteColumnGallery.tsx:68:5
+  66 |
+  67 |   useEffect(() => {
+> 68 |     setIsMounted(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  69 |   }, []);
+  70 |
+  71 |   useEffect(() => {  react-hooks/set-state-in-effect
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/LumusGallery.tsx
+  28:17  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  28:24  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  28:66  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/LuxuryStickyColumns.tsx
+  95:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/MotionScrollGrid.tsx
+   14:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/MotionScrollGrid.tsx:14:5
+  12 |
+  13 |   useEffect(() => {
+> 14 |     setIsClient(true);
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |     const handleResize = () => {
+  16 |       setWindowDims({
+  17 |         width: window.innerWidth,  react-hooks/set-state-in-effect
+  239:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  240:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  241:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  242:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  243:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  244:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  252:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  253:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  254:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  255:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  256:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  257:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  265:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  266:22  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+  283:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @next/next/no-img-element
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/MountainTerrainDivider.tsx
+   29:5    error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/MountainTerrainDivider.tsx:29:5
+  27 |
+  28 |   useEffect(() => {
+> 29 |     setIsMounted(true);
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  30 |     gsap.registerPlugin(ScrollTrigger);
+  31 |     
+  32 |     // Slight delay to ensure DOM and pins from previous sections are settled  react-hooks/set-state-in-effect
+  198:24   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  198:32   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  207:13   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  207:54   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  207:158  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/PremiumVerticalGallery.tsx
+    5:10  warning  'ScrollTrigger' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  147:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/PremiumVerticalGallery.tsx:147:19
+  145 |   const [isMounted, setIsMounted] = useState(false);
+  146 |
+> 147 |   useEffect(() => setIsMounted(true), []);
+      |                   ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  148 |
+  149 |   useEffect(() => {
+  150 |     if (!isMounted || !sectionRef.current) return;  react-hooks/set-state-in-effect
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/ResilientStatus.tsx
+  39:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/RoyalHeroReveal.tsx
+  34:11  error    'heightRatio' is never reassigned. Use 'const' instead  prefer-const
+  34:11  warning  'heightRatio' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/ServicesSection.tsx
+   39:53   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  126:110  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/VerticalCinematicRuler.tsx
+  5:10  warning  'motion' is defined but never used                   @typescript-eslint/no-unused-vars
+  9:10  warning  'scrollProgress' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/components/ViewfinderOverlay.tsx
+  4:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/shreyavankeshwaram/Downloads/sequence/src/utils/apiResilience.ts
+   9:53  error    Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  10:22  error    Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  11:21  error    Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  22:22  error    Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  44:12  error    Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+  80:11  error    'nextOptions' is never reassigned. Use 'const' instead  prefer-const
+  89:18  warning  'e' is defined but never used                           @typescript-eslint/no-unused-vars
+  99:19  error    Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+
+✖ 99 problems (55 errors, 44 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
+

@@ -1,0 +1,16 @@
+File: src/components/CapturedServices.tsx
+Line 16: const fallbackServices = [ ... ]
+Line 48: // Merge CMS services with fallbacks to ensure the grid always has 6 items
+Line 49: const services = fallbackServices.map((fallback, index) => {
+
+File: src/components/BentoPortfolio.tsx
+Line 35: const getImgSrc = (index: number, fallback: string) => {
+Line 37: if (img?.asset) return urlForImage(img)?.url() || fallback;
+Line 42: const getMosaicImgSrc = (index: number, fallback: string) => {
+
+File: src/components/SelectedWorks.tsx
+Line 18: const fallbackWorks = [ ... ]
+Line 60: const displayWorks = works?.length > 0 ? works : fallbackWorks;
+
+File: src/app/(website)/page.tsx
+Line 59: console.warn("Sanity fetch failed (likely not configured yet), falling back to hardcoded data:", error);

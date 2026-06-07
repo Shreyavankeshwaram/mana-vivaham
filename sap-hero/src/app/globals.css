@@ -1,0 +1,37 @@
+/* globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Custom font families – using Next.js font loading for Geist, but fallback to Inter/Roboto */
+:root {
+  --font-geist-sans: 'Inter', sans-serif;
+  --font-geist-mono: 'Roboto', monospace;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-glow;
+}
+
+/* Gradient text for "Elevate" */
+.gradient-elevate {
+  @apply bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+}
+
+/* Scrollbar hidden for smooth experience */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure Lenis smooth scroll works */
+html { scroll-behavior: auto; }
