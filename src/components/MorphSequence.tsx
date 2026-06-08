@@ -35,11 +35,13 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       frame: 0,
     };
 
-    // Preload images
+    // Preload images — only render when the frame that is CURRENTLY active
+    // has finished loading to prevent a blank/flicker on early frames.
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
       img.onload = () => {
-        if (i === sequence.frame) {
+        // Only re-render if this is the frame currently being displayed
+        if (i === sequence.frame && img.complete && img.naturalWidth > 0) {
           render();
         }
       };
@@ -47,9 +49,15 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       images.push(img);
     }
 
-    // If the active image is already cached and loaded, render it immediately
-    if (images[0] && images[0].complete) {
-      render();
+    // If frame 0 is already in the browser cache, paint it right away
+    // using decode() for a glitch-free first draw.
+    const firstImg = images[0];
+    if (firstImg && firstImg.complete && firstImg.naturalWidth > 0) {
+      if (firstImg.decode) {
+        firstImg.decode().then(render).catch(render);
+      } else {
+        render();
+      }
     }
 
     function render() {

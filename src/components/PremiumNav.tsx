@@ -203,9 +203,9 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
         <div className="hidden md:block h-3 w-px bg-black/10" />
 
         <div className="hidden md:flex items-center gap-6 text-[10px] uppercase tracking-[0.25em]">
-          {activeNavLinks.map((link: any) => (
+          {activeNavLinks.map((link: any, i: number) => (
             <a
-              key={link.label}
+              key={link.label || link.url || i}
               href={link.url}
               onClick={(event) => scrollToSection(event, link.url)}
               aria-current={activeUrl === link.url ? "page" : undefined}
@@ -249,9 +249,9 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
         {menuOpen && (
           <div className="absolute left-0 right-0 top-[calc(100%+8px)] md:hidden rounded-[18px] border border-black/5 bg-white/95 p-3 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
             <div className="flex flex-col">
-              {activeNavLinks.map((link: any) => (
+              {activeNavLinks.map((link: any, i: number) => (
                 <a
-                  key={link.label}
+                  key={link.label || link.url || i}
                   href={link.url}
                   onClick={(event) => scrollToSection(event, link.url)}
                   aria-current={activeUrl === link.url ? "page" : undefined}

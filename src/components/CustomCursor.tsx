@@ -10,26 +10,33 @@ export default function CustomCursor() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Only enable custom cursor on devices with a real mouse/trackpad.
+    // Only enable on true pointer devices
     const canHover = window.matchMedia?.("(hover: hover)").matches;
     const finePointer = window.matchMedia?.("(pointer: fine)").matches;
     if (!canHover || !finePointer) return;
 
-    // Hide default cursor on body
     document.body.style.cursor = "none";
 
+    // Use a single rAF-batched move to avoid GSAP overhead on every pixel
+    let rafId = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
     const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursorRef.current, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.15,
-        ease: "power2.out",
-      });
-      gsap.to(dotRef.current, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.05,
-        ease: "power2.out",
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // Cancel any pending frame and schedule a fresh one
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        gsap.set(dotRef.current, { x: mouseX, y: mouseY });
+        gsap.to(cursorRef.current, {
+          x: mouseX,
+          y: mouseY,
+          duration: 0.18,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
       });
     };
 
@@ -38,6 +45,7 @@ export default function CustomCursor() {
         scale: 2.5,
         backgroundColor: "rgba(255, 255, 255, 0.1)",
         duration: 0.3,
+        overwrite: "auto",
       });
     };
 
@@ -46,26 +54,29 @@ export default function CustomCursor() {
         scale: 1,
         backgroundColor: "transparent",
         duration: 0.3,
+        overwrite: "auto",
       });
     };
 
-    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mousemove", moveCursor, { passive: true });
 
-    // Target elements that should trigger hover state
-    const interactiveElements = document.querySelectorAll(
+    // Scope interactive elements to avoid expensive global querySelectorAll on re-mounts
+    const interactiveElements = document.querySelectorAll<HTMLElement>(
       "a, button, input, [role='button'], .group, img, canvas"
     );
 
     interactiveElements.forEach((el) => {
-      (el as HTMLElement).style.cursor = "none";
-      el.addEventListener("mouseenter", handleHover);
-      el.addEventListener("mouseleave", handleHoverOut);
+      el.style.cursor = "none";
+      el.addEventListener("mouseenter", handleHover, { passive: true });
+      el.addEventListener("mouseleave", handleHoverOut, { passive: true });
     });
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", moveCursor);
       document.body.style.cursor = "";
       interactiveElements.forEach((el) => {
+        el.style.cursor = "";
         el.removeEventListener("mouseenter", handleHover);
         el.removeEventListener("mouseleave", handleHoverOut);
       });
@@ -74,15 +85,17 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Outer Circle */}
+      {/* Outer ring — GPU-composited via transform */}
       <div
         ref={cursorRef}
         className="fixed top-0 left-0 w-8 h-8 border border-white rounded-full pointer-events-none z-[9999] mix-blend-difference transform -translate-x-1/2 -translate-y-1/2 hidden md:block"
+        style={{ willChange: "transform" }}
       />
-      {/* Inner Dot */}
+      {/* Inner dot — snaps immediately, no lerp */}
       <div
         ref={dotRef}
         className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference transform -translate-x-1/2 -translate-y-1/2 hidden md:block"
+        style={{ willChange: "transform" }}
       />
     </>
   );

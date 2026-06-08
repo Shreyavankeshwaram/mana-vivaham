@@ -9,6 +9,7 @@ import FloatingWhatsApp from "../../components/FloatingWhatsApp";
 import GlobalScrollAnimations from "@/components/GlobalScrollAnimations";
 
 import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
 
 const playfair = Bodoni_Moda({ subsets: ["latin"], variable: "--font-playfair", weight: ["400", "500", "600", "700", "800", "900"], style: ["normal", "italic"] });
 
@@ -19,9 +20,19 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (e) {
     console.warn("Metadata fetch failed:", e);
   }
+
+  const faviconUrl = globalSettings?.favicon?.asset
+    ? urlForImage(globalSettings.favicon).width(64).url()
+    : "/favicon.png";
+
   return {
     title: globalSettings?.seoTitle || "MANA VIVAHAM | Premium Wedding Photography",
     description: globalSettings?.seoDescription || "A cinematic wedding photography experience.",
+    icons: {
+      icon: faviconUrl,
+      shortcut: faviconUrl,
+      apple: faviconUrl,
+    },
   };
 }
 

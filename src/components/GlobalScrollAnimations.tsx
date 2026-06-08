@@ -18,6 +18,12 @@
  *  - #divider-wrapper           (MountainTerrainDivider — own GSAP)
  *  - #infinite-column-gallery-wrapper (InfiniteColumnGallery — own GSAP)
  *  - ModernTradition, IndianWeddingBorder (framer-motion whileInView)
+ *
+ * PERFORMANCE NOTES:
+ *  - ScrollTrigger is NOT re-registered here — LenisProvider already does it.
+ *  - Skipped on mobile & prefers-reduced-motion.
+ *  - Only ONE ScrollTrigger.refresh() is called, after a 400 ms settle.
+ *  - No scrub parallax (removed: caused the worst lag).
  */
 
 import { useEffect } from "react";
@@ -31,7 +37,7 @@ export default function GlobalScrollAnimations() {
     // Skip global animation layer on mobile/reduced motion for smoothness.
     if (prefersReducedMotion || isMobile) return;
 
-    gsap.registerPlugin(ScrollTrigger);
+    // ScrollTrigger is already registered by LenisProvider — no need to re-register.
 
     // Wait for all components and Lenis to boot up
     const t = setTimeout(() => {
@@ -63,6 +69,8 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: container,
                 start: "top 82%",
+                // once: true prevents re-triggering on scroll-back
+                toggleActions: "play none none none",
               },
               ...overrides,
             }
@@ -79,7 +87,11 @@ export default function GlobalScrollAnimations() {
               duration: 1.6,
               ease: "power4.out",
               delay,
-              scrollTrigger: { trigger: el, start: "top 88%" },
+              scrollTrigger: {
+                trigger: el,
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
             }
           );
         }
@@ -92,28 +104,41 @@ export default function GlobalScrollAnimations() {
           // eyebrow label
           batchReveal(swSection, "span.text-\\[10px\\]", { stagger: 0 });
           // main heading
-          gsap.fromTo(
-            swSection.querySelector("h2"),
-            { y: 80, opacity: 0, skewY: 2 },
-            {
-              y: 0, opacity: 1, skewY: 0,
-              duration: 1.6, ease: "power4.out",
-              scrollTrigger: { trigger: swSection, start: "top 78%" },
-            }
-          );
+          const swH2 = swSection.querySelector("h2");
+          if (swH2) {
+            gsap.fromTo(
+              swH2,
+              { y: 80, opacity: 0, skewY: 2 },
+              {
+                y: 0, opacity: 1, skewY: 0,
+                duration: 1.6, ease: "power4.out",
+                scrollTrigger: {
+                  trigger: swSection,
+                  start: "top 78%",
+                  toggleActions: "play none none none",
+                },
+              }
+            );
+          }
           // horizontal rule
           lineExpand(swSection.querySelector(".border-b"), 0.2);
           // cards stagger in
           const cards = swSection.querySelectorAll(".group");
-          gsap.fromTo(
-            cards,
-            { y: 100, opacity: 0 },
-            {
-              y: 0, opacity: 1,
-              duration: 1.4, ease: "power3.out", stagger: 0.18,
-              scrollTrigger: { trigger: swSection, start: "top 65%" },
-            }
-          );
+          if (cards.length) {
+            gsap.fromTo(
+              cards,
+              { y: 100, opacity: 0 },
+              {
+                y: 0, opacity: 1,
+                duration: 1.4, ease: "power3.out", stagger: 0.18,
+                scrollTrigger: {
+                  trigger: swSection,
+                  start: "top 65%",
+                  toggleActions: "play none none none",
+                },
+              }
+            );
+          }
           // paragraph text
           batchReveal(swSection, "p", { y: 30, duration: 1, stagger: 0 });
         }
@@ -129,7 +154,11 @@ export default function GlobalScrollAnimations() {
             {
               y: 0, opacity: 1,
               duration: 1.3, ease: "power3.out", stagger: 0.1,
-              scrollTrigger: { trigger: servicesSection, start: "top 75%" },
+              scrollTrigger: {
+                trigger: servicesSection,
+                start: "top 75%",
+                toggleActions: "play none none none",
+              },
             }
           );
         }
@@ -144,7 +173,11 @@ export default function GlobalScrollAnimations() {
             { opacity: 0 },
             {
               opacity: 1, duration: 1.5, ease: "power2.out",
-              scrollTrigger: { trigger: cdSection, start: "top 88%" },
+              scrollTrigger: {
+                trigger: cdSection,
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
             }
           );
         }
@@ -168,7 +201,11 @@ export default function GlobalScrollAnimations() {
             {
               y: 0, opacity: 1,
               duration: 1.8, ease: "power3.out",
-              scrollTrigger: { trigger: slideshow, start: "top 90%" },
+              scrollTrigger: {
+                trigger: slideshow,
+                start: "top 90%",
+                toggleActions: "play none none none",
+              },
             }
           );
         }
@@ -178,41 +215,62 @@ export default function GlobalScrollAnimations() {
         ───────────────────────────────────────────────────────────── */
         const footer = document.querySelector("footer");
         if (footer) {
-          gsap.fromTo(
-            footer.querySelector("h2"),
-            { y: 100, opacity: 0, skewY: 4 },
-            {
-              y: 0, opacity: 1, skewY: 0,
-              duration: 1.8, ease: "power4.out",
-              scrollTrigger: { trigger: footer, start: "top 85%" },
-            }
-          );
+          const footerH2 = footer.querySelector("h2");
+          if (footerH2) {
+            gsap.fromTo(
+              footerH2,
+              { y: 100, opacity: 0, skewY: 4 },
+              {
+                y: 0, opacity: 1, skewY: 0,
+                duration: 1.8, ease: "power4.out",
+                scrollTrigger: {
+                  trigger: footer,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              }
+            );
+          }
 
-          gsap.fromTo(
-            footer.querySelectorAll("a, span"),
-            { y: 30, opacity: 0 },
-            {
-              y: 0, opacity: 1,
-              duration: 0.9, ease: "power2.out", stagger: 0.07,
-              scrollTrigger: { trigger: footer, start: "top 80%" },
-            }
-          );
+          const footerLinks = footer.querySelectorAll("a, span");
+          if (footerLinks.length) {
+            gsap.fromTo(
+              footerLinks,
+              { y: 30, opacity: 0 },
+              {
+                y: 0, opacity: 1,
+                duration: 0.9, ease: "power2.out", stagger: 0.07,
+                scrollTrigger: {
+                  trigger: footer,
+                  start: "top 80%",
+                  toggleActions: "play none none none",
+                },
+              }
+            );
+          }
 
-          // Bottom dot icon
-          gsap.fromTo(
-            footer.querySelector(".rounded-full"),
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1, opacity: 1,
-              duration: 1, ease: "elastic.out(1, 0.5)",
-              scrollTrigger: { trigger: footer, start: "top 60%" },
-            }
-          );
+          // Bottom dot icon — only animate if it actually exists
+          const footerDot = footer.querySelector(".rounded-full");
+          if (footerDot) {
+            gsap.fromTo(
+              footerDot,
+              { scale: 0, opacity: 0 },
+              {
+                scale: 1, opacity: 1,
+                duration: 1, ease: "elastic.out(1, 0.5)",
+                scrollTrigger: {
+                  trigger: footer,
+                  start: "top 60%",
+                  toggleActions: "play none none none",
+                },
+              }
+            );
+          }
         }
 
         /* ─────────────────────────────────────────────────────────────
            7. AMBIENT SECTION PARALLAX — REMOVED
-              (Attaching scrub ScrollTriggers to every image causes massive lag and hanging on scroll)
+              (Attaching scrub ScrollTriggers to every image causes massive lag)
         ───────────────────────────────────────────────────────────── */
 
         /* ─────────────────────────────────────────────────────────────
@@ -224,28 +282,28 @@ export default function GlobalScrollAnimations() {
             { opacity: 0, y: 20 },
             {
               opacity: 1, y: 0, duration: 1.2, ease: "power2.out",
-              scrollTrigger: { trigger: el, start: "top 90%" },
+              scrollTrigger: {
+                trigger: el,
+                start: "top 90%",
+                toggleActions: "play none none none",
+              },
             }
           );
         });
 
-        // Recalculate once after the initial DOM/animation setup settles. Refreshing
-        // on every lazy image load while pins are active can continually push later
-        // sections downward, making the footer feel unreachable.
+        // Single deferred refresh — enough for pins to settle after initial render.
+        // Do NOT listen to window "load" here; LenisProvider already handles the
+        // initial ScrollTrigger.refresh() on boot.
         setTimeout(() => {
           ScrollTrigger.refresh();
-        }, 200);
+        }, 400);
 
       }); // end gsap.context
 
-      const globalRefresh = () => ScrollTrigger.refresh();
-      window.addEventListener("load", globalRefresh);
-
       return () => {
         ctx.revert();
-        window.removeEventListener("load", globalRefresh);
       };
-    }, 600); // wait for page to settle
+    }, 600); // wait for page and Lenis to settle
 
     return () => clearTimeout(t);
   }, []);

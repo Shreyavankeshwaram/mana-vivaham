@@ -24,6 +24,11 @@ export const globalSettings = defineType({
       title: '🎨 Website Appearance & Branding', 
       options: { collapsible: true, collapsed: false } 
     },
+    {
+      name: 'logos',
+      title: '🖼️ Logo & Brand Images',
+      options: { collapsible: true, collapsed: false }
+    },
     { 
       name: 'seo', 
       title: '🚀 SEO & Growth Engine', 
@@ -70,6 +75,32 @@ export const globalSettings = defineType({
       ]
     }),
 
+    // 🖼️ LOGO & BRAND IMAGES
+    defineField({
+      name: 'mainLogo',
+      type: 'image',
+      title: '✨ Main Logo (Desktop)',
+      description: 'Upload the primary brand logo shown in the navbar on desktop. Supports PNG or SVG. Recommended: transparent background PNG.',
+      options: { hotspot: false },
+      fieldset: 'logos'
+    }),
+    defineField({
+      name: 'mobileLogo',
+      type: 'image',
+      title: '📱 Mobile Logo (Optional)',
+      description: 'Alternate logo for mobile screens. If not set, the main logo will be used. Recommended: square or compact crop.',
+      options: { hotspot: false },
+      fieldset: 'logos'
+    }),
+    defineField({
+      name: 'favicon',
+      type: 'image',
+      title: '🔖 Browser Favicon / Tab Icon',
+      description: 'The small icon that appears in the browser tab. PNG recommended (32×32 or 64×64px with transparent background).',
+      options: { hotspot: false },
+      fieldset: 'logos'
+    }),
+
     // 🚀 SEO & GROWTH GROUP
     defineField({ 
       name: 'seoTitle', 
@@ -85,14 +116,7 @@ export const globalSettings = defineType({
       description: '🖋️ A brief, luxurious narrative summary of your studio to entice visitors from Google (Recommended: 150-160 characters)',
       fieldset: 'seo'
     }),
-    defineField({ 
-      name: 'favicon', 
-      type: 'image', 
-      title: 'Browser Favicon / Icon',
-      description: '✨ The tiny circular icon that appears in browser tabs. Drag-and-drop your custom logo graphic here.',
-      options: { hotspot: true },
-      fieldset: 'seo'
-    })
+    // (favicon moved to logos fieldset above)
   ],
   
   preview: {

@@ -15,13 +15,16 @@ export default function LenisProvider({
 
     const lenis = new Lenis({
       autoRaf: false,
-      lerp: 0.08,
+      // 0.1 is the Lenis-recommended default; 0.08 felt sluggish and caused
+      // visible lag on lower-end devices.
+      lerp: 0.1,
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
     });
+
     const lenisWindow = window as typeof window & { __manaLenis?: Lenis };
     lenisWindow.__manaLenis = lenis;
 
@@ -44,15 +47,19 @@ export default function LenisProvider({
     lenis.on("scroll", handleScroll);
     window.addEventListener("mana:navigate", handleNavigation);
 
+    // GSAP ticker provides time in seconds — Lenis.raf() wants milliseconds
     const raf = (time: number) => {
       lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    // Single deferred refresh — enough for first paint
+    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300);
 
     return () => {
+      clearTimeout(refreshTimer);
       gsap.ticker.remove(raf);
       lenis.off("scroll", handleScroll);
       window.removeEventListener("mana:navigate", handleNavigation);
@@ -63,41 +70,7 @@ export default function LenisProvider({
     };
   }, []);
 
-  return (
-    <>
-      <style>{`
-        html {
-          min-height: 100%;
-          overflow-y: auto;
-        }
-
-        body {
-          min-height: 100%;
-          overflow-x: clip !important;
-        }
-
-        html.lenis,
-        html.lenis body {
-          height: auto;
-        }
-
-        .lenis.lenis-smooth {
-          scroll-behavior: auto !important;
-        }
-
-        .lenis.lenis-smooth [data-lenis-prevent] {
-          overscroll-behavior: contain;
-        }
-
-        .lenis.lenis-stopped {
-          overflow: clip;
-        }
-
-        .lenis.lenis-smooth iframe {
-          pointer-events: none;
-        }
-      `}</style>
-      {children}
-    </>
-  );
+  // NOTE: All Lenis-related CSS lives in globals.css to avoid duplicate rule
+  // injection on every render. The inline <style> block has been removed.
+  return <>{children}</>;
 }
