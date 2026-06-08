@@ -249,7 +249,7 @@ export default function CinematicDifference({ data }: { data?: any }) {
 
             <motion.div
               style={{ translateY: mobileY3 }}
-              className="h-[170px] md:h-[320px] relative overflow-hidden group will-change-transform"
+              className="col-span-2 md:col-span-auto h-[56vw] md:h-[320px] relative overflow-hidden group will-change-transform"
             >
               {img4 && (
                 <Image

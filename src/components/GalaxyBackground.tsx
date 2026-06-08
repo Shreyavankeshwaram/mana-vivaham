@@ -164,7 +164,7 @@ export default function GalaxyBackground() {
 
       {/* Overlay for cinematic color grading */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020205]/40 to-[#020205] pointer-events-none" />
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('/noise.svg')] mix-blend-overlay" />
     </div>
   );
 }

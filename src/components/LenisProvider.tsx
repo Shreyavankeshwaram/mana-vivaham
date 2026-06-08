@@ -55,8 +55,8 @@ export default function LenisProvider({
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
-    // Single deferred refresh — enough for first paint
-    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300);
+    // Consolidated central refresh — allows all page animations and pins to settle on mount.
+    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 800);
 
     return () => {
       clearTimeout(refreshTimer);

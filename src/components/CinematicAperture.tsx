@@ -147,9 +147,15 @@ export default function CinematicAperture({ data }: { data?: any }) {
         <div className="ca-vignette" />
         <div className="ca-film-grain" />
 
-        {/* Decorative ambient lighting glows */}
-        <div className="absolute top-10 left-1/4 hidden md:block w-[400px] h-[400px] bg-[#E7DFC8]/15 rounded-full blur-[100px] pointer-events-none opacity-30" />
-        <div className="absolute bottom-10 right-1/4 hidden md:block w-[500px] h-[500px] bg-[#8B1E2D]/5 rounded-full blur-[120px] pointer-events-none opacity-25" />
+        {/* Decorative ambient lighting glows — optimized with native gradients */}
+        <div 
+          className="absolute top-10 left-1/4 hidden md:block w-[400px] h-[400px] rounded-full pointer-events-none opacity-30" 
+          style={{ background: "radial-gradient(circle, rgba(231,223,200,0.15) 0%, transparent 70%)" }}
+        />
+        <div 
+          className="absolute bottom-10 right-1/4 hidden md:block w-[500px] h-[500px] rounded-full pointer-events-none opacity-25" 
+          style={{ background: "radial-gradient(circle, rgba(139,30,45,0.05) 0%, transparent 70%)" }}
+        />
 
         <div className="ca-grid">
 

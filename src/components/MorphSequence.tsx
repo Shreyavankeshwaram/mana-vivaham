@@ -30,35 +30,55 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       return `/sequence-1/ezgif-frame-${frameNum}.jpg`;
     };
 
-    const images: HTMLImageElement[] = [];
+    const images: HTMLImageElement[] = new Array(frameCount);
     const sequence = {
       frame: 0,
     };
 
-    // Preload images — only render when the frame that is CURRENTLY active
-    // has finished loading to prevent a blank/flicker on early frames.
-    for (let i = 0; i < frameCount; i++) {
+    let rafId: number;
+    let timerId: NodeJS.Timeout;
+    let firstLoaded = false;
+
+    const loadRemainingImages = () => {
+      for (let i = 1; i < frameCount; i++) {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => {
+          if (i === sequence.frame && img.complete && img.naturalWidth > 0) {
+            render();
+          }
+        };
+        img.src = currentFrame(i);
+        images[i] = img;
+      }
+    };
+
+    const loadFirstFrame = () => {
       const img = new Image();
-      img.onload = () => {
-        // Only re-render if this is the frame currently being displayed
-        if (i === sequence.frame && img.complete && img.naturalWidth > 0) {
+      img.decoding = "async";
+      const onFirstLoad = () => {
+        if (firstLoaded) return;
+        firstLoaded = true;
+        if (img.decode) {
+          img.decode().then(render).catch(render);
+        } else {
           render();
         }
+        rafId = requestAnimationFrame(() => {
+          timerId = setTimeout(loadRemainingImages, 150);
+        });
       };
-      img.src = currentFrame(i);
-      images.push(img);
-    }
 
-    // If frame 0 is already in the browser cache, paint it right away
-    // using decode() for a glitch-free first draw.
-    const firstImg = images[0];
-    if (firstImg && firstImg.complete && firstImg.naturalWidth > 0) {
-      if (firstImg.decode) {
-        firstImg.decode().then(render).catch(render);
-      } else {
-        render();
+      img.onload = onFirstLoad;
+      img.src = currentFrame(0);
+      images[0] = img;
+
+      if (img.complete && img.naturalWidth > 0) {
+        onFirstLoad();
       }
-    }
+    };
+
+    loadFirstFrame();
 
     function render() {
       if (!canvas || !context) return;
@@ -134,13 +154,15 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     return () => {
       window.removeEventListener("resize", setCanvasSize);
       ctx.revert();
+      if (rafId) cancelAnimationFrame(rafId);
+      if (timerId) clearTimeout(timerId);
     };
   }, [frames]);
   return (
     <section ref={containerRef} className="relative w-full h-screen bg-lumus-beige overflow-hidden">
       <canvas
         ref={canvasRef}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover will-change-transform transform-gpu"
       />
     </section>
   );

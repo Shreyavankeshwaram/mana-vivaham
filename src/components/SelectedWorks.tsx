@@ -224,6 +224,7 @@ export default function SelectedWorks({
           scrollTrigger: {
             trigger: ".reveal-header-trigger",
             start: "top 85%",
+            once: true,
           }
         }
       );
@@ -247,7 +248,7 @@ export default function SelectedWorks({
               scrollTrigger: {
                 trigger: card,
                 start: "top 88%",
-                toggleActions: "play none none none"
+                once: true,
               }
             }
           );
@@ -283,7 +284,7 @@ export default function SelectedWorks({
               scrollTrigger: {
                 trigger: card,
                 start: "top 82%",
-                toggleActions: "play none none none"
+                once: true,
               }
             }
           );
@@ -301,15 +302,21 @@ export default function SelectedWorks({
       className={`mv-selected-works relative w-full bg-[#080809] pt-28 pb-20 md:pt-36 md:pb-28 px-6 md:px-14 overflow-hidden ${bodoniModa.variable}`}
       style={{ fontFamily: "var(--font-playfair), serif" }}
     >
-      {/* 🌌 Ambient luxurious glowing radial backlights */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#C5A880]/[0.025] blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[700px] h-[700px] rounded-full bg-[#8B1E2D]/[0.015] blur-[150px] pointer-events-none" />
+      {/* Ambient luxurious glowing radial backlights — native gradient, zero GPU cost */}
+      <div 
+        className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(197,168,128,0.025) 0%, transparent 70%)" }}
+      />
+      <div 
+        className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(139,30,45,0.015) 0%, transparent 70%)" }}
+      />
 
       {/* Subtle luxury digital noise overlay for physical texture */}
       <div
         className="absolute inset-0 z-0 pointer-events-none opacity-[0.035]"
         style={{
-          backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')",
+          backgroundImage: "url('/noise.svg')",
           backgroundSize: "200px 200px"
         }}
       />
@@ -417,7 +424,7 @@ export default function SelectedWorks({
               >
                 {/* 3D Perspective Card Tilt Wrap (Ultra-premium Glassmorphic container wrapper) */}
                 <div
-                  className="tilt-container relative w-full rounded-[4px] p-3 md:p-3.5 bg-white/[0.015] backdrop-blur-[16px] border border-white/7 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] transition-colors duration-500"
+                  className="tilt-container relative w-full rounded-[4px] p-3 md:p-3.5 bg-white/[0.015] border border-white/7 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] transition-colors duration-500"
                   style={{
                     transformStyle: "preserve-3d",
                     perspective: "1200px"
@@ -462,7 +469,7 @@ export default function SelectedWorks({
 
                     {/* 3D Glassmorphic Floating Follower Cursor Inside Card Boundaries */}
                     <div
-                      className="card-cursor absolute w-24 h-24 rounded-full border border-white/20 bg-white/5 backdrop-blur-[8px] flex flex-col items-center justify-center opacity-0 scale-50 z-30 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl select-none"
+                      className="card-cursor absolute w-24 h-24 rounded-full border border-white/20 bg-white/5 flex flex-col items-center justify-center opacity-0 scale-50 z-30 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl select-none"
                       style={{ transform: "translate3d(0, 0, 50px)" }}
                     >
                       <Eye className="w-4 h-4 text-white" />

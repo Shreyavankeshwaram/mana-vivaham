@@ -180,6 +180,7 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
           aspect-ratio: 4 / 5;
           object-fit: cover;
           border-radius: 1rem;
+          will-change: transform;
         }
         .msg-grid .msg-scaler {
           position: relative;
@@ -268,8 +269,8 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
 
               {/* Layer 1: Outer edges (6 images) */}
               <motion.div
-                className="msg-layer"
-                style={{ opacity: layer1Opacity, scale: layer1Scale, willChange: 'transform, opacity' }}
+                className="msg-layer transform-gpu"
+                style={{ opacity: layer1Opacity, scale: layer1Scale, z: 0, willChange: 'transform, opacity' }}
               >
                 <div>{layer1Urls[0] && <img src={layer1Urls[0]} alt="" />}</div>
                 <div>{layer1Urls[1] && <img src={layer1Urls[1]} alt="" />}</div>
@@ -281,8 +282,8 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
 
               {/* Layer 2: Inner columns (6 images) */}
               <motion.div
-                className="msg-layer"
-                style={{ opacity: layer2Opacity, scale: layer2Scale, willChange: 'transform, opacity' }}
+                className="msg-layer transform-gpu"
+                style={{ opacity: layer2Opacity, scale: layer2Scale, z: 0, willChange: 'transform, opacity' }}
               >
                 <div>{layer2Urls[0] && <img src={layer2Urls[0]} alt="" />}</div>
                 <div>{layer2Urls[1] && <img src={layer2Urls[1]} alt="" />}</div>
@@ -294,8 +295,8 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
 
               {/* Layer 3: Center column top and bottom (2 images) */}
               <motion.div
-                className="msg-layer"
-                style={{ opacity: layer3Opacity, scale: layer3Scale, willChange: 'transform, opacity' }}
+                className="msg-layer transform-gpu"
+                style={{ opacity: layer3Opacity, scale: layer3Scale, z: 0, willChange: 'transform, opacity' }}
               >
                 <div>{layer3Urls[0] && <img src={layer3Urls[0]} alt="" />}</div>
                 <div>{layer3Urls[1] && <img src={layer3Urls[1]} alt="" />}</div>

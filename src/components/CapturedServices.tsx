@@ -144,7 +144,7 @@ export default function CapturedServices({ data }: { data?: any }) {
       <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-0" />
 
       {/* Super Premium Noise/Grain */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-10 bg-[url('/noise.svg')]" />
 
       <div className="relative z-20 max-w-[1500px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-20">
 

@@ -181,7 +181,7 @@ export default function ModernTradition({ data }: { data?: any }) {
       </div>
 
       {/* Atmospheric detail */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('/noise.svg')]" />
     </section>
   );
 }

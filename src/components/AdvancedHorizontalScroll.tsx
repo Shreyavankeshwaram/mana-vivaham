@@ -104,7 +104,7 @@ export default function AdvancedHorizontalScroll() {
       </div>
 
       {/* Grain & Noise Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('/noise.svg')]" />
     </section>
   );
 }

@@ -66,7 +66,7 @@ export default function InfiniteMarquee() {
       </div>
 
       {/* Global Grain Texture */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-50 bg-[url('/noise.svg')]" />
 
       <style jsx>{`
         @keyframes infinite-scroll {

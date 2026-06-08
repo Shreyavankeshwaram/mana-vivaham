@@ -72,7 +72,7 @@ export default function PremiumEditorialGallery() {
     <section className="relative w-full bg-transparent py-24 md:py-48 px-4 md:px-16 overflow-hidden">
 
       {/* Subtle Grain Texture Overlay */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none z-50 bg-[url('/noise.svg')]" />
 
       {/* Header Section - Transparent Minimalist */}
       <div className="max-w-[1500px] mx-auto mb-20 md:mb-32 flex flex-col md:flex-row md:items-end justify-between gap-12 pt-10">

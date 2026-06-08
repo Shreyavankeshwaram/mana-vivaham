@@ -11,11 +11,19 @@ export default function FilmGrain() {
         }}
       />
       <style>{`
-        @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+        @media (prefers-reduced-motion: no-preference) {
           .film-grain-overlay {
-            /* Slowed to 1.2 s steps(3) — cuts compositing by ~3× vs 0.4 s steps(4) */
-            animation: grain-flicker 1.2s steps(3) infinite;
+            /* Desktop/Tablets: Slowed to 1.5s steps(3) to minimize GPU compositing overhead */
+            animation: grain-flicker 1.5s steps(3) infinite;
             will-change: transform;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .film-grain-overlay {
+            /* Mobile: Disable infinite animation to preserve battery and prevent lag */
+            animation: none !important;
+            opacity: 0.1;
           }
         }
 

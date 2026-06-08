@@ -119,7 +119,7 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
           preserveAspectRatio="none"
         >
           <path
-            d="M0,180 C150,140 300,220 450,200 C600,180 750,120 900,140 C1050,160 1200,240 1350,220 C1400,210 1440,220"
+            d="M0,180 C150,140 300,220 450,200 C600,180 750,120 900,140 C1050,160 1200,240 1350,220 S1400,210 1440,220"
             fill="none"
             stroke="rgba(139, 30, 45, 0.3)"
             strokeWidth="1.2"
@@ -188,7 +188,7 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
       )}
 
       {/* Grain Texture Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('/noise.svg')]" />
     </div>
   );
 };

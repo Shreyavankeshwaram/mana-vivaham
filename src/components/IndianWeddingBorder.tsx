@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 interface IndianWeddingBorderProps {
@@ -13,7 +13,7 @@ interface IndianWeddingBorderProps {
   opacity?: number;
 }
 
-export default function IndianWeddingBorder({
+const IndianWeddingBorder = memo(function IndianWeddingBorder({
   type = "zari",
   color = "both",
   height,
@@ -286,4 +286,6 @@ export default function IndianWeddingBorder({
       </motion.div>
     </div>
   );
-}
+});
+
+export default IndianWeddingBorder;

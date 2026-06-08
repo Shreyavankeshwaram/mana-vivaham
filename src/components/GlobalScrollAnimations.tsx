@@ -69,8 +69,7 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: container,
                 start: "top 82%",
-                // once: true prevents re-triggering on scroll-back
-                toggleActions: "play none none none",
+                once: true,
               },
               ...overrides,
             }
@@ -90,7 +89,7 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: el,
                 start: "top 88%",
-                toggleActions: "play none none none",
+                once: true,
               },
             }
           );
@@ -115,7 +114,7 @@ export default function GlobalScrollAnimations() {
                 scrollTrigger: {
                   trigger: swSection,
                   start: "top 78%",
-                  toggleActions: "play none none none",
+                  once: true,
                 },
               }
             );
@@ -134,7 +133,7 @@ export default function GlobalScrollAnimations() {
                 scrollTrigger: {
                   trigger: swSection,
                   start: "top 65%",
-                  toggleActions: "play none none none",
+                  once: true,
                 },
               }
             );
@@ -157,7 +156,7 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: servicesSection,
                 start: "top 75%",
-                toggleActions: "play none none none",
+                once: true,
               },
             }
           );
@@ -176,7 +175,7 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: cdSection,
                 start: "top 88%",
-                toggleActions: "play none none none",
+                once: true,
               },
             }
           );
@@ -204,7 +203,7 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: slideshow,
                 start: "top 90%",
-                toggleActions: "play none none none",
+                once: true,
               },
             }
           );
@@ -226,7 +225,7 @@ export default function GlobalScrollAnimations() {
                 scrollTrigger: {
                   trigger: footer,
                   start: "top 85%",
-                  toggleActions: "play none none none",
+                  once: true,
                 },
               }
             );
@@ -243,7 +242,7 @@ export default function GlobalScrollAnimations() {
                 scrollTrigger: {
                   trigger: footer,
                   start: "top 80%",
-                  toggleActions: "play none none none",
+                  once: true,
                 },
               }
             );
@@ -261,7 +260,7 @@ export default function GlobalScrollAnimations() {
                 scrollTrigger: {
                   trigger: footer,
                   start: "top 60%",
-                  toggleActions: "play none none none",
+                  once: true,
                 },
               }
             );
@@ -285,18 +284,13 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: el,
                 start: "top 90%",
-                toggleActions: "play none none none",
+                once: true,
               },
             }
           );
         });
 
-        // Single deferred refresh — enough for pins to settle after initial render.
-        // Do NOT listen to window "load" here; LenisProvider already handles the
-        // initial ScrollTrigger.refresh() on boot.
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 400);
+        // ScrollTrigger.refresh() has been consolidated to LenisProvider to avoid duplicate layout calculations.
 
       }); // end gsap.context
 

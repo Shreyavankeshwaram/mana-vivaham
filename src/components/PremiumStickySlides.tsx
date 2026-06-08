@@ -130,13 +130,13 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
                     <span className="font-inter text-[10px] md:text-[12px] tracking-[0.5em] text-white/50 uppercase mb-6 block font-bold">
                       {slide.subtitle}
                     </span>
-                    <h2 className="font-cormorant text-[4rem] md:text-[10rem] leading-[0.85] text-white font-medium uppercase mb-10">
+                    <h2 className="font-cormorant text-[4rem] md:text-[10rem] leading-[0.85] text-white font-semibold uppercase mb-10 drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
                       <span className="block">{(slide.title || "").split(' ')[0]}</span>
-                      <span className="block italic ml-0 md:ml-32 text-[#E8E1D3]/80">
+                      <span className="block ml-0 md:ml-32 text-white">
                         {(slide.title || "").split(' ').slice(1).join(' ')}
                       </span>
                     </h2>
-                    <p className="font-inter text-white/70 text-[0.9rem] md:text-[1.2rem] leading-relaxed max-w-[500px] font-light italic">
+                    <p className="font-inter text-white/90 text-[0.9rem] md:text-[1.2rem] leading-relaxed max-w-[500px] font-light tracking-wide">
                       {slide.description}
                     </p>
                   </div>
