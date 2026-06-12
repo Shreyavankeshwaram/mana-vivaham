@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
@@ -30,6 +30,16 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
   const bgRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const fullImageRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -59,8 +69,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
         { autoAlpha: 1, duration: 0.2 }
       );
 
-      const isMobile = window.innerWidth < 768;
-      const scaleAmt = isMobile ? 350 : 200; // Need a much larger scale on mobile to cover the tall screen
+      const scaleAmt = isMobile ? 80 : 200; // Significantly reduced for mobile stability
 
       // 2. The massive scale zoom!
       tl.fromTo(
@@ -74,7 +83,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
         {
           scaleX: scaleAmt,
           scaleY: scaleAmt,
-          x: 0, 
+          x: 0,
           transformOrigin: "50% 50%",
           ease: "power2.in", // Accelerates massively at the end
           duration: 1
@@ -102,7 +111,9 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
     }, wrapperRef); // Scope strictly to the wrapper
 
     return () => ctx.revert();
-  }, []);
+  }, [mounted, isMobile]);
+
+  if (!mounted) return null;
 
   return (
     <div ref={wrapperRef} className={`w-full relative ${bodoniModa.variable}`}>
@@ -156,7 +167,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
         */}
         <div
           className="w-full h-screen absolute inset-0 flex items-center justify-center bg-[#1A1110] z-20 overflow-hidden"
-          style={{ clipPath: "url(#royal-text-clip)" }}
+          style={{ clipPath: isMobile ? "none" : "url(#royal-text-clip)" }}
         >
           {/* Equivalent to hero-bg-svg: The actual cinematic imagery */}
           <div ref={bgRef} className="absolute inset-0 w-full h-full">
@@ -176,11 +187,17 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
           </div>
         </div>
 
-        {/* Foreground Subtitle: Outside the mask, fades gracefully */}
+        {/* Foreground Title & Subtitle: Outside the mask, fades gracefully */}
         <div
           ref={contentRef}
-          className="relative z-30 flex flex-col items-center drop-shadow-md pointer-events-none mt-[35vw] md:mt-[12vw]"
+          className="relative z-30 flex flex-col items-center drop-shadow-md pointer-events-none mt-[20vw] md:mt-[12vw]"
         >
+          {/* Mobile-only visible title since SVG mask is disabled for stability */}
+          {isMobile && (
+            <h1 className="font-cormorant font-bold text-white text-[16vw] uppercase mb-4 tracking-wider leading-none text-center">
+              {title}
+            </h1>
+          )}
           <div className="flex items-center gap-4">
             <div className="w-8 h-[1px] bg-[#B68A4C]" />
             <p className="font-sans text-[10px] md:text-xs tracking-[0.4em] text-[#B68A4C] uppercase font-bold text-center">

@@ -76,10 +76,10 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     const loadNearbyMobileFrames = (center: number) => {
       if (!isMobile) return;
 
-      const radius = isIOS ? 2 : 3;
+      const radius = isIOS ? 1 : 3; // Absolute minimum for iOS memory stability
       for (let i = center - radius; i <= center + radius; i++) loadImage(i);
 
-      const keepRadius = isIOS ? 5 : 7;
+      const keepRadius = isIOS ? 2 : 7; // Drop old frames instantly on iOS
       for (let i = 0; i < images.length; i++) {
         if (images[i] && Math.abs(i - center) > keepRadius) {
           images[i]!.src = "";
@@ -150,8 +150,8 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       // Use window dimensions directly to avoid client-side navigation layout delay bugs
       const containerWidth = window.innerWidth;
       const containerHeight = window.innerHeight;
-      // Allow higher DPR for desktop to achieve 4K-like clarity when source images are large.
-      const maxDpr = isMobile ? 1.5 : 3; // increase cap to 3 for sharper desktop rendering
+      // Cap DPR to 1 on mobile and 1.5 on desktop to prevent massive GPU throttling
+      const maxDpr = isMobile ? 1 : 1.5;
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
       // Set backing store size to device pixels, but keep CSS size at 100% so layout remains unchanged.
@@ -190,13 +190,6 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
           render();
         },
       });
-
-      // Slight scale increase effect on canvas during scroll
-      tl.to(canvas, {
-        scale: 1.1,
-        ease: "none",
-        duration: tl.duration()
-      }, 0);
 
     }, containerRef);
 

@@ -19,8 +19,20 @@ export async function generateMetadata(): Promise<Metadata> {
     title: globalSettings?.seoTitle || "MANA VIVAHAM | Premium Wedding Photography",
     description: globalSettings?.seoDescription || "A cinematic wedding photography experience.",
     icons: [
-      { rel: 'icon', type: 'image/png', url: '/icon.png?v=fixed-now-2' },
-      { rel: 'apple-touch-icon', type: 'image/png', url: '/icon.png?v=fixed-now-2' }
+      { 
+        rel: 'icon', 
+        type: 'image/png', 
+        url: globalSettings?.browserFavicon?.asset 
+          ? `${urlForImage(globalSettings.browserFavicon).url()}?v=${Date.now()}` 
+          : 'https://mana-vivaham.vercel.app/logo.png' 
+      },
+      { 
+        rel: 'apple-touch-icon', 
+        type: 'image/png', 
+        url: globalSettings?.browserFavicon?.asset 
+          ? `${urlForImage(globalSettings.browserFavicon).url()}?v=${Date.now()}` 
+          : 'https://mana-vivaham.vercel.app/logo.png' 
+      }
     ]
   };
 }

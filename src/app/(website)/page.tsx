@@ -38,12 +38,12 @@ export default async function Home() {
     "globalSettings": *[_type == "globalSettings"][0],
     "blogPosts": *[_type == "blogPost"] | order(publishedAt desc)[0...3]
   }`;
-  
+
   let data: any = {};
   try {
     const rawData = await client.fetch(query) || {};
     const homePage = rawData.homePage || {};
-    
+
     // Merge standalone collections with homePage fields
     data = {
       ...homePage,
@@ -83,10 +83,10 @@ export default async function Home() {
       </div>
 
       <div id="selected-works-wrapper" className="bg-white">
-        <SelectedWorks 
-          works={data.selectedWorks} 
-          title={data.selectedWorksTitle} 
-          description={data.selectedWorksDescription} 
+        <SelectedWorks
+          works={data.selectedWorks}
+          title={data.selectedWorksTitle}
+          description={data.selectedWorksDescription}
         />
       </div>
 
@@ -146,10 +146,10 @@ export default async function Home() {
       </div>
 
       <div id="divider-wrapper" className="my-20 md:my-40 bg-lumus-beige">
-        <MountainTerrainDivider 
-          height="600px" 
-          showFlowers={data.mountainDivider?.showFlowers ?? true} 
-          showText={data.mountainDivider?.showText ?? true} 
+        <MountainTerrainDivider
+          height="600px"
+          showFlowers={data.mountainDivider?.showFlowers ?? true}
+          showText={data.mountainDivider?.showText ?? true}
           opacity={0.8}
           data={data.mountainDivider}
         />

@@ -214,36 +214,35 @@ export default function GlobalScrollAnimations() {
         }
 
         /* ─────────────────────────────────────────────────────────────
-           7. AMBIENT SECTION PARALLAX — Subtle Y-parallax on all
-              section-level images that are NOT already inside a
-              GSAP-managed container.  Uses ScrollTrigger.batch for
-              good performance.
+           7. AMBIENT SECTION PARALLAX — [DISABLED FOR PERFORMANCE]
+           Subtle Y-parallax on all section-level images. 
+           Disabled because it forces heavy repaints across dozens of large images.
         ───────────────────────────────────────────────────────────── */
-        const safeImageSections = [
-          ".mv-selected-works",
-          ".mv-cinematic-slideshow",
-          "footer",
-        ];
-        safeImageSections.forEach((sel) => {
-          const sec = document.querySelector(sel);
-          if (!sec) return;
-          sec.querySelectorAll("img").forEach((img) => {
-            gsap.fromTo(
-              img,
-              { scale: 1.08 },
-              {
-                scale: 1,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: img,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: true,
-                },
-              }
-            );
-          });
-        });
+        // const safeImageSections = [
+        //   ".mv-selected-works",
+        //   ".mv-cinematic-slideshow",
+        //   "footer",
+        // ];
+        // safeImageSections.forEach((sel) => {
+        //   const sec = document.querySelector(sel);
+        //   if (!sec) return;
+        //   sec.querySelectorAll("img").forEach((img) => {
+        //     gsap.fromTo(
+        //       img,
+        //       { scale: 1.08 },
+        //       {
+        //         scale: 1,
+        //         ease: "none",
+        //         scrollTrigger: {
+        //           trigger: img,
+        //           start: "top bottom",
+        //           end: "bottom top",
+        //           scrub: true,
+        //         },
+        //       }
+        //     );
+        //   });
+        // });
 
         /* ─────────────────────────────────────────────────────────────
            8. INDIAN WEDDING BORDER DIVIDERS — subtle fade-in-up

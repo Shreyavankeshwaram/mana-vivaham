@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import { urlForImage } from "@/sanity/lib/image";
 
 const navLinks = [
   { label: "Home", url: "#morph-wrapper" },
@@ -176,7 +178,7 @@ const PremiumNav = ({ data }: { data?: any }) => {
         <button
           type="button"
           onClick={() => setShowWelcome((prev) => !prev)}
-          className="text-[11px] font-serif italic tracking-[0.2em] uppercase text-[#8B1E2D]"
+          className="text-[11px] font-playfair italic tracking-[0.2em] uppercase text-[#8B1E2D]"
         >
           {brandName}
         </button>
