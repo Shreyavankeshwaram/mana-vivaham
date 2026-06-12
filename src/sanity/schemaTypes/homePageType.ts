@@ -137,6 +137,7 @@ export const homePageType = defineType({
     { name: 'mountainDividerSet', title: '⛰ ALPINE ELEGANCE: Decorative Terrain Divider', options: { collapsible: true, collapsed: true } },
     { name: 'infiniteGallerySet', title: '🏛 DECOR & RITUALS: Infinite Column Gallery', options: { collapsible: true, collapsed: true } },
     { name: 'cinematicSlideshowSet', title: '🎞 FINALE: Fullscreen Cinematic Slideshow', options: { collapsible: true, collapsed: true } },
+    { name: 'blogSectionSet', title: '📝 EDITORIAL JOURNAL: Blog & Articles Section', options: { collapsible: true, collapsed: true } },
   ],
 
   fields: [
@@ -510,6 +511,19 @@ export const homePageType = defineType({
       description: '🎞️ Fullscreen rotating artwork slideshow showing near the bottom footer. Upload horizontal high-definition imagery.',
       fieldset: 'cinematicSlideshowSet',
       of: [{ type: 'image', options: { hotspot: true } }]
+    }),
+
+    // 📝 15. BLOG SECTION SETTINGS
+    defineField({
+      name: 'blogSettings',
+      title: 'Homepage Blog / Journal Settings',
+      type: 'object',
+      description: '📝 Setup the title and introduction for the Blog section on the homepage.',
+      fieldset: 'blogSectionSet',
+      fields: [
+        defineField({ name: 'heading', type: 'string', title: 'Blog Section Heading (e.g. "Journal")', initialValue: 'Journal' }),
+        defineField({ name: 'subheading', type: 'string', title: 'Blog Subheading', initialValue: 'Stories from behind the lens' }),
+      ]
     }),
 
     // LEGACY FIELDS

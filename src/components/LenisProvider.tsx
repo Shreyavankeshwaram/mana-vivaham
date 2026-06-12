@@ -13,6 +13,34 @@ export default function LenisProvider({
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
+    const isTouchMobile =
+      window.matchMedia?.("(max-width: 767px)").matches ||
+      window.matchMedia?.("(pointer: coarse)").matches;
+
+    if (isTouchMobile) {
+      const handleNavigation = (event: Event) => {
+        const navigationEvent = event as CustomEvent<{ target?: string; offset?: number }>;
+        const target = navigationEvent.detail?.target
+          ? document.querySelector<HTMLElement>(navigationEvent.detail.target)
+          : null;
+
+        if (!target) return;
+
+        navigationEvent.preventDefault();
+        const offset = navigationEvent.detail?.offset ?? -96;
+        const top = target.getBoundingClientRect().top + window.scrollY + offset;
+        window.scrollTo({ top, behavior: "smooth" });
+      };
+
+      window.addEventListener("mana:navigate", handleNavigation);
+      const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 500);
+
+      return () => {
+        clearTimeout(refreshTimer);
+        window.removeEventListener("mana:navigate", handleNavigation);
+      };
+    }
+
     const lenis = new Lenis({
       autoRaf: false,
       // 0.1 is the Lenis-recommended default; 0.08 felt sluggish and caused

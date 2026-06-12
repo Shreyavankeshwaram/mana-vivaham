@@ -2,13 +2,10 @@
 
 import { useState } from "react";
 
-export default function FloatingWhatsApp({ data }: { data?: any }) {
-  const [showWelcome, setShowWelcome] = useState(false);
+const whatsappUrl = "https://wa.me/919391158480";
 
-  // Extract phone, remove spaces and any non-numeric characters except +
-  const rawPhone = data?.phone || "+91 9391158480";
-  const cleanPhone = rawPhone.replace(/[^\d+]/g, "");
-  const whatsappUrl = `https://wa.me/${cleanPhone.replace("+", "")}`;
+export default function FloatingWhatsApp() {
+  const [showWelcome, setShowWelcome] = useState(false);
 
   const handleWhatsAppClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();

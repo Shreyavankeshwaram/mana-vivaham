@@ -4,7 +4,38 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import { urlForImage } from "@/sanity/lib/image";
 
-// Removed fallback images
+const storytellingImages = [
+  {
+    src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1974&auto=format&fit=crop",
+    alt: "Preparation Scene",
+    label: "SCENE_01",
+    metadata: "T 2.8 | 1/50",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=2070&auto=format&fit=crop",
+    alt: "The Gaze",
+    label: "SCENE_02",
+    metadata: "T 1.4 | 1/125",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1974&auto=format&fit=crop",
+    alt: "Temple Reveal",
+    label: "SCENE_03",
+    metadata: "T 4.0 | 1/200",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=2070&auto=format&fit=crop",
+    alt: "Royal Procession",
+    label: "SCENE_04",
+    metadata: "T 2.0 | 1/80",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop",
+    alt: "Eternal Vows",
+    label: "SCENE_05",
+    metadata: "T 1.2 | 1/250",
+  },
+];
 
 const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,17 +56,17 @@ const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
 
   const filmStripImages =
     Array.isArray(data?.featuredImages) && data.featuredImages.length
-      ? data.featuredImages.slice(0, 5).filter((img: any) => img?.asset || typeof img === 'string').map((img: any, idx: number) => ({
-          src: img?.asset ? urlForImage(img)?.url() : img,
+      ? data.featuredImages.slice(0, 5).map((img: any, idx: number) => ({
+          src: img?.asset ? urlForImage(img)?.url() : storytellingImages[idx % storytellingImages.length].src,
           alt: `Film frame ${idx + 1}`,
           label: `SCENE_${String(idx + 1).padStart(2, "0")}`,
-          metadata: "T 1.4 | 1/125",
+          metadata: storytellingImages[idx % storytellingImages.length].metadata,
         }))
-      : [];
+      : storytellingImages;
 
   const heroImage = data?.heroImage?.asset
     ? urlForImage(data.heroImage)?.url()
-    : data?.clientImage || '';
+    : data?.clientImage || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop';
 
   return (
     <section 
@@ -43,12 +74,7 @@ const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
       className="relative w-full pt-24 md:pt-48 pb-16 md:pb-12 px-5 md:px-12 lg:px-24 bg-[#E7DFC8] overflow-hidden select-none border-t border-black/5"
       id="cinematography-storytelling"
     >
-      <div 
-        className="absolute -top-[18%] -right-[6%] w-[70vw] h-[70vw] rounded-full pointer-events-none opacity-10 mix-blend-overlay"
-        style={{
-          background: "radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(139,30,45,0.06) 40%, rgba(231,223,200,0) 70%)"
-        }}
-      />
+
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-14 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12">
@@ -67,7 +93,7 @@ const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
           {filmStripImages.map((img: any, idx: number) => (
             <div 
               key={idx}
-              className="relative w-[72vw] max-w-[270px] flex-none md:w-[19%] md:max-w-none aspect-[3/5] overflow-hidden grayscale contrast-[1.2] brightness-[0.85] hover:grayscale-0 hover:brightness-105 transition-all duration-[1500ms] ease-out group shadow-2xl shadow-black/10 snap-center"
+              className="relative w-[72vw] max-w-[270px] flex-none md:w-[19%] md:max-w-none aspect-[3/5] overflow-hidden grayscale contrast-[1.2] brightness-[0.85] hover:grayscale-0 hover:brightness-105 transition-all duration-[1500ms] ease-out cursor-none group shadow-2xl shadow-black/10 snap-center"
             >
               <div className="absolute inset-0 z-20 border-[12px] border-black/5 opacity-40 pointer-events-none" />
               <div className="absolute inset-0 z-30 border-[1px] border-white/5 group-hover:border-white/20 transition-colors duration-700 pointer-events-none" />
@@ -90,6 +116,7 @@ const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 20vw"
                   priority={idx === 0}
+                  unoptimized
                 />
               </div>
               
@@ -107,16 +134,14 @@ const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
             <div className="border-y border-lumus-dark/10 py-8 md:py-12 w-full">
               <div className="w-full md:flex md:items-stretch md:gap-12">
                 <div className="md:w-1/2 flex-shrink-0">
-                  <div className="relative w-full h-[100svh] md:h-[720px] rounded-none md:rounded-lg overflow-hidden shadow-2xl border-0 md:border border-[#D4AF37]/12 ring-0 md:ring-1 ring-[#D4AF37]/8 -mx-5 md:mx-0 w-[calc(100%+2.5rem)] md:w-full">
-                    {heroImage && (
-                      <Image
-                        src={heroImage}
-                        alt={heroHeading}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    )}
+                  <div className="relative w-full h-[420px] md:h-[720px] rounded-lg overflow-hidden shadow-2xl border border-[#D4AF37]/12 ring-1 ring-[#D4AF37]/8">
+                    <Image
+                      src={heroImage}
+                      alt={heroHeading}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
                   </div>
                 </div>
 

@@ -46,9 +46,8 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
           trigger: wrapperRef.current, // Trigger on the outer wrapper
           pin: sectionRef.current,     // Explicitly pin the inner section (bulletproof pattern)
           start: "top top",
-          end: () => window.innerWidth < 768 ? "+=110%" : "+=200%",
-          scrub: 0.8,
-          anticipatePin: 1,
+          end: () => window.innerWidth < 768 ? "+=140%" : "+=200%",
+          scrub: true,
           invalidateOnRefresh: true,
         }
       });
@@ -61,8 +60,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
       );
 
       const isMobile = window.innerWidth < 768;
-      // Keep title centered while scaling to avoid side drift on mobile/desktop.
-      const scaleAmt = isMobile ? 28 : 160;
+      const scaleAmt = isMobile ? 350 : 200; // Need a much larger scale on mobile to cover the tall screen
 
       // 2. The massive scale zoom!
       tl.fromTo(
@@ -76,7 +74,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
         {
           scaleX: scaleAmt,
           scaleY: scaleAmt,
-          x: 0,
+          x: 0, 
           transformOrigin: "50% 50%",
           ease: "power2.in", // Accelerates massively at the end
           duration: 1
@@ -107,7 +105,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
   }, []);
 
   return (
-    <div ref={wrapperRef} className={`w-full relative overflow-x-hidden ${bodoniModa.variable}`}>
+    <div ref={wrapperRef} className={`w-full relative ${bodoniModa.variable}`}>
       {/* 
         Bulletproof GSAP Pinning: The outer wrapper holds the trigger, 
         and this inner section gets pinned. This prevents SelectedWorks from being affected!
@@ -140,7 +138,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
                 x="50%"
                 y="50%"
                 textAnchor="middle"
-                dominantBaseline="middle"
+                dominantBaseline="central"
                 className="font-cormorant font-bold whitespace-nowrap text-[16vw] md:text-[11vw]"
                 style={{ letterSpacing: "0.02em" }}
               >
@@ -174,14 +172,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
             <div className="absolute inset-0 bg-gradient-to-b from-[#2A1D1B]/50 via-transparent to-[#2A1D1B]/90 pointer-events-none" />
             <div className="absolute inset-0 bg-[#B68A4C]/10 mix-blend-color-burn pointer-events-none" />
 
-            {/* Pre-rendered safe CSS particles (No Math.random() to prevent React Hydration errors!) */}
-            <div className="absolute inset-0 pointer-events-none z-20">
-              <div className="mv-particle mv-p1" />
-              <div className="mv-particle mv-p2" />
-              <div className="mv-particle mv-p3" />
-              <div className="mv-particle mv-p4" />
-              <div className="mv-particle mv-p5" />
-            </div>
+
           </div>
         </div>
 
@@ -199,29 +190,10 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
           </div>
         </div>
 
-        {/* Safe vanilla CSS for the particles */}
+        {/* Font definitions */}
         <style dangerouslySetInnerHTML={{
           __html: `
           .font-cormorant { font-family: var(--font-playfair), serif; }
-          .mv-particle {
-            position: absolute;
-            width: 12px; height: 12px;
-            border-radius: 50% 0 50% 50%;
-            background-color: #B68A4C;
-            opacity: 0;
-          }
-          .mv-p1 { left: 20%; top: 80%; animation: float 15s ease-in-out infinite -2s; filter: blur(1px); }
-          .mv-p2 { left: 60%; top: 70%; animation: float 18s ease-in-out infinite -5s; background-color: #7B2331; }
-          .mv-p3 { left: 40%; top: 90%; animation: float 20s ease-in-out infinite -1s; filter: blur(2px); }
-          .mv-p4 { left: 80%; top: 85%; animation: float 16s ease-in-out infinite -7s; }
-          .mv-p5 { left: 10%; top: 60%; animation: float 19s ease-in-out infinite -4s; background-color: #7B2331; filter: blur(1.5px); }
-
-          @keyframes float {
-            0% { transform: translateY(10vh) rotate(0deg) scale(0.8); opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100% { transform: translateY(-30vh) rotate(360deg) scale(1.2); opacity: 0; }
-          }
         `}} />
       </section>
     </div>

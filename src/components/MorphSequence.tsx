@@ -21,16 +21,26 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     // so map indices safely to avoid initial blank/404 flashes.
     const localFrameStart = 7;
     const localFrameEnd = 134;
-    const frameCount = frames && frames.length > 0 ? frames.length : (localFrameEnd - localFrameStart + 1);
+    // If Sanity provides only a very small number of frames (for example a single
+    // placeholder image), prefer the local frames stored in `public/sequence-1`.
+    const useFramesFromProps = Boolean(frames && frames.length > 8);
+    const sourceFrameCount = useFramesFromProps ? frames!.length : (localFrameEnd - localFrameStart + 1);
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const frameStep = isMobile ? 3 : 1;
+    const frameCount = Math.ceil(sourceFrameCount / frameStep);
     const currentFrame = (index: number) => {
-      if (frames && frames[index]) return frames[index];
+      const sourceIndex = Math.min(index * frameStep, sourceFrameCount - 1);
+      if (useFramesFromProps && frames && frames[sourceIndex]) return frames[sourceIndex];
       // Match local pattern in public/sequence-1/ezgif-frame-XXX.jpg
       // and offset to existing files.
-      const frameNum = (index + localFrameStart).toString().padStart(3, '0');
+      const frameNum = (sourceIndex + localFrameStart).toString().padStart(3, '0');
       return `/sequence-1/ezgif-frame-${frameNum}.jpg`;
     };
 
-    const images: HTMLImageElement[] = new Array(frameCount);
+    const images: Array<HTMLImageElement | undefined> = new Array(frameCount);
     const sequence = {
       frame: 0,
     };
@@ -38,18 +48,43 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     let rafId: number;
     let timerId: NodeJS.Timeout;
     let firstLoaded = false;
+    let cancelled = false;
+
+    const loadImage = (index: number) => {
+      if (cancelled || index < 0 || index >= frameCount || images[index]) return;
+
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = () => {
+        if (index === sequence.frame && img.complete && img.naturalWidth > 0) {
+          render();
+        }
+      };
+      img.src = currentFrame(index);
+      images[index] = img;
+    };
 
     const loadRemainingImages = () => {
-      for (let i = 1; i < frameCount; i++) {
-        const img = new Image();
-        img.decoding = "async";
-        img.onload = () => {
-          if (i === sequence.frame && img.complete && img.naturalWidth > 0) {
-            render();
-          }
-        };
-        img.src = currentFrame(i);
-        images[i] = img;
+      if (isMobile) {
+        for (let i = 1; i <= Math.min(frameCount - 1, 4); i++) loadImage(i);
+        return;
+      }
+
+      for (let i = 1; i < frameCount; i++) loadImage(i);
+    };
+
+    const loadNearbyMobileFrames = (center: number) => {
+      if (!isMobile) return;
+
+      const radius = isIOS ? 2 : 3;
+      for (let i = center - radius; i <= center + radius; i++) loadImage(i);
+
+      const keepRadius = isIOS ? 5 : 7;
+      for (let i = 0; i < images.length; i++) {
+        if (images[i] && Math.abs(i - center) > keepRadius) {
+          images[i]!.src = "";
+          images[i] = undefined;
+        }
       }
     };
 
@@ -83,27 +118,26 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     function render() {
       if (!canvas || !context) return;
 
-      // Calculate aspect ratio to cover canvas
+      // Calculate aspect ratio to cover canvas using CSS pixel sizes (not backing store)
       const img = images[sequence.frame];
       if (!img || !img.complete || img.naturalWidth === 0) return;
 
-      const hRatio = canvas.width / img.naturalWidth;
-      const vRatio = canvas.height / img.naturalHeight;
+      // Use exact window dimensions since the section is mathematically `w-full h-screen`
+      // This bypasses React hydration / layout reflow race conditions on client navigation.
+      const cssWidth = window.innerWidth;
+      const cssHeight = window.innerHeight;
 
-      // On mobile (portrait), 'cover' (Math.max) cuts off the sides of the horizontal logo.
-      // Use 'contain' (Math.min) for mobile, and 'cover' for desktop.
-      const isMobile = window.innerWidth < 768;
-      let ratio = isMobile ? Math.min(hRatio, vRatio) : Math.max(hRatio, vRatio);
+      const hRatio = cssWidth / img.naturalWidth;
+      const vRatio = cssHeight / img.naturalHeight;
 
-      // Slightly scale down on mobile to give the logo some breathing room from the edges
-      if (isMobile) {
-        ratio *= 0.85;
-      }
+      const mobileViewport = window.innerWidth < 768;
+      let ratio = mobileViewport ? Math.min(hRatio, vRatio) * 0.85 : Math.max(hRatio, vRatio);
 
-      const centerShift_x = (canvas.width - img.naturalWidth * ratio) / 2;
-      const centerShift_y = (canvas.height - img.naturalHeight * ratio) / 2;
+      const centerShift_x = (cssWidth - img.naturalWidth * ratio) / 2;
+      const centerShift_y = (cssHeight - img.naturalHeight * ratio) / 2;
 
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear using CSS coords — the context has been transformed to DPR in setCanvasSize()
+      context.clearRect(0, 0, cssWidth, cssHeight);
       context.drawImage(
         img,
         0, 0, img.naturalWidth, img.naturalHeight,
@@ -112,12 +146,24 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     }
 
     const setCanvasSize = () => {
-      if (canvasRef.current) {
-        const dpr = window.devicePixelRatio || 1;
-        canvasRef.current.width = window.innerWidth * dpr;
-        canvasRef.current.height = window.innerHeight * dpr;
-        render();
-      }
+      if (!canvasRef.current || !containerRef.current) return;
+      // Use window dimensions directly to avoid client-side navigation layout delay bugs
+      const containerWidth = window.innerWidth;
+      const containerHeight = window.innerHeight;
+      // Allow higher DPR for desktop to achieve 4K-like clarity when source images are large.
+      const maxDpr = isMobile ? 1.5 : 3; // increase cap to 3 for sharper desktop rendering
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+
+      // Set backing store size to device pixels, but keep CSS size at 100% so layout remains unchanged.
+      canvasRef.current.width = Math.round(containerWidth * dpr);
+      canvasRef.current.height = Math.round(containerHeight * dpr);
+      canvasRef.current.style.width = `${containerWidth}px`;
+      canvasRef.current.style.height = `${containerHeight}px`;
+
+      // Ensure the drawing context uses the DPR for crisp rendering.
+      if (context) context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      render();
     };
 
     setCanvasSize();
@@ -139,7 +185,10 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
         frame: frameCount - 1,
         snap: "frame",
         ease: "none",
-        onUpdate: render,
+        onUpdate: () => {
+          loadNearbyMobileFrames(sequence.frame);
+          render();
+        },
       });
 
       // Slight scale increase effect on canvas during scroll
@@ -152,10 +201,15 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     }, containerRef);
 
     return () => {
+      cancelled = true;
       window.removeEventListener("resize", setCanvasSize);
       ctx.revert();
       if (rafId) cancelAnimationFrame(rafId);
       if (timerId) clearTimeout(timerId);
+      images.forEach((img, index) => {
+        if (img) img.src = "";
+        images[index] = undefined;
+      });
     };
   }, [frames]);
   return (

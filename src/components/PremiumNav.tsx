@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-const defaultNavLinks = [
+const navLinks = [
   { label: "Home", url: "#morph-wrapper" },
   { label: "Stories", url: "#premium-slides-wrapper" },
   { label: "Portfolio", url: "#selected-works-wrapper" },
@@ -13,16 +13,14 @@ const defaultNavLinks = [
   { label: "Contact", url: "#contact-wrapper" },
 ];
 
-const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
+const PremiumNav = ({ data }: { data?: any }) => {
   const brandName = data?.brandName || "MANA VIVAHAM";
   const ctaText = data?.ctaText || "Inquire Now";
-  const ownerEmail = footerData?.email || "manavivaham@gmail.com";
-  const activeNavLinks = data?.navbarLinks?.length ? data.navbarLinks : defaultNavLinks;
-
+  const ownerEmail = "manavivaham@gmail.com";
   const [scrolled, setScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeUrl, setActiveUrl] = useState(activeNavLinks[0].url);
+  const [activeUrl, setActiveUrl] = useState(navLinks[0].url);
   const [showWelcome, setShowWelcome] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -38,9 +36,7 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
-    let ticking = false;
-
-    const updateScroll = () => {
+    const handleScroll = () => {
       const currentY = window.scrollY;
       setScrolled(currentY > 50);
       const scrollingUp = currentY < lastScrollY.current;
@@ -49,10 +45,10 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
       lastScrollY.current = currentY;
 
       const markerY = currentY + Math.min(window.innerHeight * 0.35, 240);
-      let nextActiveUrl = activeNavLinks[0].url;
+      let nextActiveUrl = navLinks[0].url;
       let nearestSectionTop = Number.NEGATIVE_INFINITY;
 
-      activeNavLinks.forEach((link: any) => {
+      navLinks.forEach((link) => {
         const section = document.querySelector<HTMLElement>(link.url);
         const sectionTop = section ? section.getBoundingClientRect().top + currentY : null;
         if (sectionTop !== null && sectionTop <= markerY && sectionTop > nearestSectionTop) {
@@ -61,25 +57,11 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
         }
       });
 
-      setActiveUrl((prevActive: string) => {
-        if (prevActive !== nextActiveUrl) {
-          return nextActiveUrl;
-        }
-        return prevActive;
-      });
-
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScroll);
-        ticking = true;
-      }
+      setActiveUrl(nextActiveUrl);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    updateScroll();
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -152,8 +134,7 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
           return;
         }
         setSendError(result?.error || "Send failed");
-        setSendError(result?.error || "Send failed");
-        throw new Error(result?.error || "Send failed");
+        throw new Error(result.error || "Send failed");
       }
 
       setSendStatus("success");
@@ -203,9 +184,9 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
         <div className="hidden md:block h-3 w-px bg-black/10" />
 
         <div className="hidden md:flex items-center gap-6 text-[10px] uppercase tracking-[0.25em]">
-          {activeNavLinks.map((link: any, i: number) => (
+          {navLinks.map((link: any) => (
             <a
-              key={link.label || link.url || i}
+              key={link.label}
               href={link.url}
               onClick={(event) => scrollToSection(event, link.url)}
               aria-current={activeUrl === link.url ? "page" : undefined}
@@ -249,9 +230,9 @@ const PremiumNav = ({ data, footerData }: { data?: any, footerData?: any }) => {
         {menuOpen && (
           <div className="absolute left-0 right-0 top-[calc(100%+8px)] md:hidden rounded-[18px] border border-black/5 bg-white/95 p-3 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
             <div className="flex flex-col">
-              {activeNavLinks.map((link: any, i: number) => (
+              {navLinks.map((link: any) => (
                 <a
-                  key={link.label || link.url || i}
+                  key={link.label}
                   href={link.url}
                   onClick={(event) => scrollToSection(event, link.url)}
                   aria-current={activeUrl === link.url ? "page" : undefined}

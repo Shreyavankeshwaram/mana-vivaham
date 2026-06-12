@@ -21,9 +21,12 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
   data
 }) => {
   const quote = data?.quote || "A bit of shameless self-glorification: I'm a Way Up North Finalist, which means my work has been recognised by some of the best in the industry.";
+  const coordinates = data?.coordinates || "51°03'N, 3°43'E";
+  const locationName = data?.locationName || "Gent, BE";
   const containerRef = useRef<HTMLDivElement>(null);
   const mountainLayer1Ref = useRef<HTMLDivElement>(null);
   const mountainLayer2Ref = useRef<HTMLDivElement>(null);
+  const textSubRef = useRef<HTMLDivElement>(null);
   const textMainRef = useRef<HTMLHeadingElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -38,43 +41,56 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
       const ctx = gsap.context(() => {
         // Background mountain parallax
         gsap.to(mountainLayer1Ref.current, {
-          y: -24,
+          y: -50,
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: 0.7,
+            scrub: true,
           }
         });
 
         // Foreground mountain parallax
         gsap.to(mountainLayer2Ref.current, {
-          y: -48,
+          y: -100,
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: 0.7,
+            scrub: true,
           }
         });
 
-        // Quote GSAP scroll animation
-        if (textMainRef.current) {
+        // Text Reveal Animations
+        if (textSubRef.current && textMainRef.current) {
+          gsap.fromTo(
+            textSubRef.current,
+            { opacity: 0, y: 10 },
+            {
+              opacity: 0.6,
+              y: 0,
+              duration: 1.5,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: textSubRef.current,
+                start: "top 90%",
+              }
+            }
+          );
+
           gsap.fromTo(
             textMainRef.current,
-            { opacity: 0, y: 32, scale: 0.98 },
+            { opacity: 0, y: 20 },
             {
               opacity: 1,
               y: 0,
-              scale: 1,
-              ease: "none",
+              duration: 2,
+              ease: "power2.out",
               scrollTrigger: {
                 trigger: textMainRef.current,
-                start: "top 92%",
-                end: "top 62%",
-                scrub: 0.6,
+                start: "top 90%",
               }
             }
           );
@@ -95,9 +111,9 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
       {/* Layered Mountains for Depth (Parallax) */}
       <div
         ref={mountainLayer1Ref}
-        className="absolute bottom-[-28px] w-full"
+        className="absolute bottom-[-50px] w-full"
       >
-        <svg viewBox="0 0 1440 320" className="w-full h-[320px]" preserveAspectRatio="none">
+        <svg viewBox="0 0 1440 320" className="w-full h-[450px]" preserveAspectRatio="none">
           <path
             d="M0,240 C300,200 600,300 900,260 C1200,220 1440,280 1440,280"
             fill="none"
@@ -110,16 +126,16 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
       {/* Foreground Mountain Terrain */}
       <div
         ref={mountainLayer2Ref}
-        className="absolute bottom-[-72px] w-full z-30"
+        className="absolute bottom-[-100px] w-full z-30"
       >
         {/* Thin Elegant Line Contour */}
         <svg
           viewBox="0 0 1440 320"
-          className="w-full h-[240px] pointer-events-none overflow-visible"
+          className="w-full h-[320px] pointer-events-none overflow-visible"
           preserveAspectRatio="none"
         >
           <path
-            d="M0,180 C150,140 300,220 450,200 C600,180 750,120 900,140 C1050,160 1200,240 1350,220 S1400,210 1440,220"
+            d="M0,180 C150,140 300,220 450,200 C600,180 750,120 900,140 C1050,160 1200,240 1350,220 C1400,210 1440,220"
             fill="none"
             stroke="rgba(139, 30, 45, 0.3)"
             strokeWidth="1.2"
@@ -177,7 +193,18 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
 
       {/* Text Overlay - Detached from parallax mountain container */}
       {isMounted && showText && (
-        <div className="relative z-40 flex w-full max-w-5xl flex-col items-center justify-center text-lumus-dark/90 px-5 md:px-6 -mt-8">
+        <div className="relative z-40 flex w-full max-w-5xl flex-col items-center justify-center text-lumus-dark/90 px-5 md:px-6 -mt-20">
+          <div
+            ref={textSubRef}
+            className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-6 text-[8px] md:text-[10px] tracking-[0.24em] md:tracking-[0.5em] uppercase font-medium mb-8 md:mb-10 opacity-0 text-center"
+          >
+            <span>Coordinates</span>
+            <span className="w-5 md:w-16 h-[1px] bg-lumus-dark/20" />
+            <span>{coordinates}</span>
+            <span className="w-5 md:w-16 h-[1px] bg-lumus-dark/20" />
+            <span>{locationName}</span>
+          </div>
+
           <h3
             ref={textMainRef}
             className="text-xl sm:text-2xl md:text-5xl font-serif italic text-center max-w-4xl md:px-12 leading-[1.3] tracking-tight text-[#8B1E2D] opacity-0"
@@ -188,7 +215,7 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
       )}
 
       {/* Grain Texture Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('/noise.svg')]" />
+      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </div>
   );
 };

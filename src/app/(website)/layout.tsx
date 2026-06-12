@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 import "../globals.css";
 import LenisProvider from "../../components/LenisProvider";
-import CustomCursor from "../../components/CustomCursor";
-import FilmGrain from "../../components/FilmGrain";
+
 import PremiumNav from "../../components/PremiumNav";
 import FloatingWhatsApp from "../../components/FloatingWhatsApp";
 import GlobalScrollAnimations from "@/components/GlobalScrollAnimations";
@@ -12,27 +11,17 @@ import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 
 const playfair = Bodoni_Moda({ subsets: ["latin"], variable: "--font-playfair", weight: ["400", "500", "600", "700", "800", "900"], style: ["normal", "italic"] });
+const modernSans = Inter({ subsets: ["latin"], variable: "--font-sans", weight: ["400", "500", "600", "700", "800", "900"], style: ["normal", "italic"] });
 
 export async function generateMetadata(): Promise<Metadata> {
-  let globalSettings: any = null;
-  try {
-    globalSettings = await client.fetch(`*[_type == "globalSettings"][0]`, {}, { cache: "no-store" });
-  } catch (e) {
-    console.warn("Metadata fetch failed:", e);
-  }
-
-  const faviconUrl = globalSettings?.favicon?.asset
-    ? urlForImage(globalSettings.favicon).width(64).url()
-    : "/favicon.png";
-
+  const globalSettings = await client.fetch(`*[_type == "globalSettings"][0]`);
   return {
     title: globalSettings?.seoTitle || "MANA VIVAHAM | Premium Wedding Photography",
     description: globalSettings?.seoDescription || "A cinematic wedding photography experience.",
-    icons: {
-      icon: faviconUrl,
-      shortcut: faviconUrl,
-      apple: faviconUrl,
-    },
+    icons: [
+      { rel: 'icon', type: 'image/png', url: '/icon.png?v=fixed-now-2' },
+      { rel: 'apple-touch-icon', type: 'image/png', url: '/icon.png?v=fixed-now-2' }
+    ]
   };
 }
 
@@ -41,26 +30,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let globalSettings: any = null;
-  let footerSettings: any = null;
-  try {
-    globalSettings = await client.fetch(`*[_type == "globalSettings"][0]`, {}, { cache: "no-store" });
-    footerSettings = await client.fetch(`*[_type == "footerSettings"][0]`, {}, { cache: "no-store" });
-  } catch (e) {
-    console.warn("Layout fetch failed:", e);
-  }
+  const globalSettings = await client.fetch(`*[_type == "globalSettings"][0]`);
 
   return (
     <html lang="en">
-      <body className={`${playfair.variable} antialiased`}>
-        <PremiumNav data={globalSettings} footerData={footerSettings} />
-        <FloatingWhatsApp data={footerSettings} />
-        <FilmGrain />
-        <CustomCursor />
-        <LenisProvider>
-          {children}
-          <GlobalScrollAnimations />
-        </LenisProvider>
+      <body className={`${playfair.variable} ${modernSans.variable} antialiased`}>
+        <div style={{ fontFamily: 'var(--font-playfair), serif' }}>
+          <PremiumNav data={globalSettings} />
+          <FloatingWhatsApp />
+          <LenisProvider>
+            {children}
+            <GlobalScrollAnimations />
+          </LenisProvider>
+        </div>
       </body>
     </html>
   );

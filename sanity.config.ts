@@ -53,6 +53,17 @@ export default defineConfig({
 
             S.divider(),
 
+            // ─── 📝 EDITORIAL BLOG (Journal Articles) ───────────────────────
+            S.listItem()
+              .title('📝 Editorial Blog & Journal')
+              .schemaType('blogPost')
+              .child(
+                S.documentTypeList('blogPost')
+                  .title('📝 Blog Posts')
+              ),
+
+            S.divider(),
+
             // ─── 🤵 COVER REVEAL CONFIGURATION ───────────────────────────────
             S.listItem()
               .title('👰 Bride & Groom Moments (Grand Cover Reveal)')

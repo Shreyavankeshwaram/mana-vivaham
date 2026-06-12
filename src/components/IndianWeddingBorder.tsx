@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, memo } from "react";
+import React, { useRef, memo, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 interface IndianWeddingBorderProps {
@@ -23,7 +23,17 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
   opacity = 1.0, // 100% solid opacity for high contrast vibrancy
 }: IndianWeddingBorderProps) {
   const borderRef = useRef<HTMLDivElement>(null);
-  
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // Subtle parallax scroll movement to make the border feel alive
   const { scrollYProgress } = useScroll({
     target: borderRef,
@@ -31,7 +41,7 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
   });
 
   const xTranslation = useTransform(scrollYProgress, [0, 1], parallax ? ["-3%", "3%"] : ["0%", "0%"]);
-  
+
   // Define premium heights for detailed repeating patterns
   const defaultHeights = {
     zari: 38,
@@ -39,7 +49,7 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
     mandala: 38,
     paisley: 38,
   };
-  
+
   const borderHeight = height || defaultHeights[type];
 
   // Unique ID for SVG pattern mapping
@@ -48,16 +58,15 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
   return (
     <div
       ref={borderRef}
-      style={{ 
+      style={{
         height: borderHeight,
         opacity,
       }}
-      className={`mv-indian-border w-full overflow-hidden select-none pointer-events-none relative z-20 ${
-        flip ? "transform rotate-180" : ""
-      } ${className}`}
+      className={`mv-indian-border w-full overflow-hidden select-none pointer-events-none relative z-20 ${flip ? "transform rotate-180" : ""
+        } ${className}`}
     >
-      <motion.div 
-        style={{ x: xTranslation }}
+      <motion.div
+        style={isMobile || !parallax ? { willChange: "transform" } : { x: xTranslation, willChange: "transform" }}
         className="w-[110%] h-full -left-[5%] absolute"
       >
         <svg width="100%" height="100%" className="block">
@@ -72,25 +81,25 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
                 <rect x="0" y="35" width="60" height="3" fill="#7b2331" />
 
                 {/* Central golden floral vine (zari wave) */}
-                <path 
-                  d="M 0,18 C 10,8 20,8 30,18 C 40,28 50,28 60,18" 
-                  fill="none" 
-                  stroke="#c9a46a" 
-                  strokeWidth="2.5" 
+                <path
+                  d="M 0,18 C 10,8 20,8 30,18 C 40,28 50,28 60,18"
+                  fill="none"
+                  stroke="#c9a46a"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                 />
-                <path 
-                  d="M 0,18 C 10,28 20,28 30,18 C 40,8 50,8 60,18" 
-                  fill="none" 
-                  stroke="#c9a46a" 
-                  strokeWidth="1" 
+                <path
+                  d="M 0,18 C 10,28 20,28 30,18 C 40,8 50,8 60,18"
+                  fill="none"
+                  stroke="#c9a46a"
+                  strokeWidth="1"
                   strokeDasharray="2,2"
                 />
 
                 {/* Crimson Flowers (Kumkum) */}
                 <circle cx="15" cy="11" r="3" fill="#7b2331" stroke="#c9a46a" strokeWidth="0.75" />
                 <circle cx="45" cy="25" r="3" fill="#7b2331" stroke="#c9a46a" strokeWidth="0.75" />
-                
+
                 {/* Mehendi Green Leaves */}
                 <path d="M 12,24 C 14,21 18,21 19,25 C 16,26 13,26 12,24 Z" fill="#2a522c" stroke="#c9a46a" strokeWidth="0.5" />
                 <path d="M 48,12 C 46,15 42,15 41,11 C 44,10 47,10 48,12 Z" fill="#2a522c" stroke="#c9a46a" strokeWidth="0.5" />
@@ -108,28 +117,28 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
                 {/* Horizontal Mandap Wood/Gold Beam */}
                 <rect x="0" y="0" width="80" height="4" fill="#7b2331" />
                 <rect x="0" y="4" width="80" height="2" fill="#c9a46a" />
-                
+
                 {/* Repeating Architectural Temple Spire Scallop */}
                 <path d="M 0,6 Q 20,16 40,6 Q 60,16 80,6" fill="none" stroke="#7b2331" strokeWidth="1.5" />
                 <path d="M 0,8 Q 20,18 40,8 Q 60,18 80,8" fill="none" stroke="#c9a46a" strokeWidth="1" />
 
                 {/* Hanging Mango Leaves (Maavilai) in Forest Green & Gold */}
                 {/* Leaf 1 (Left) */}
-                <path 
-                  d="M 20,11 C 17,17 16,28 20,44 C 24,28 23,17 20,11 Z" 
-                  fill="#2a522c" 
-                  stroke="#c9a46a" 
-                  strokeWidth="1.25" 
+                <path
+                  d="M 20,11 C 17,17 16,28 20,44 C 24,28 23,17 20,11 Z"
+                  fill="#2a522c"
+                  stroke="#c9a46a"
+                  strokeWidth="1.25"
                   strokeLinejoin="round"
                 />
                 <path d="M 20,11 L 20,42" fill="none" stroke="#c9a46a" strokeWidth="0.75" opacity="0.6" />
-                
+
                 {/* Leaf 2 (Right) */}
-                <path 
-                  d="M 60,11 C 57,17 56,28 60,44 C 64,28 63,17 60,11 Z" 
-                  fill="#2a522c" 
-                  stroke="#c9a46a" 
-                  strokeWidth="1.25" 
+                <path
+                  d="M 60,11 C 57,17 56,28 60,44 C 64,28 63,17 60,11 Z"
+                  fill="#2a522c"
+                  stroke="#c9a46a"
+                  strokeWidth="1.25"
                   strokeLinejoin="round"
                 />
                 <path d="M 60,11 L 60,42" fill="none" stroke="#c9a46a" strokeWidth="0.75" opacity="0.6" />
@@ -184,13 +193,13 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
                 <line x1="0" y1="4" x2="60" y2="4" stroke="#c9a46a" strokeWidth="1" />
                 <line x1="0" y1="34" x2="60" y2="34" stroke="#c9a46a" strokeWidth="1" />
                 <line x1="0" y1="36" x2="60" y2="36" stroke="#7b2331" strokeWidth="1.5" />
-                
+
                 {/* Detailed Mandala Center */}
                 <g transform="translate(30, 19)">
                   {/* Outer flower ring */}
                   <circle cx="0" cy="0" r="12" fill="none" stroke="#c9a46a" strokeWidth="1.5" />
                   <circle cx="0" cy="0" r="9" fill="#7b2331" stroke="#c9a46a" strokeWidth="0.75" />
-                  
+
                   {/* Petals radiating */}
                   {[...Array(8)].map((_, i) => {
                     const angle = (i * Math.PI) / 4;
@@ -199,18 +208,18 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
                     const x2 = Math.cos(angle) * 8;
                     const y2 = Math.sin(angle) * 8;
                     return (
-                      <line 
-                        key={i} 
-                        x1={x1} 
-                        y1={y1} 
-                        x2={x2} 
-                        y2={y2} 
-                        stroke="#c9a46a" 
-                        strokeWidth="1.25" 
+                      <line
+                        key={i}
+                        x1={x1}
+                        y1={y1}
+                        x2={x2}
+                        y2={y2}
+                        stroke="#c9a46a"
+                        strokeWidth="1.25"
                       />
                     );
                   })}
-                  
+
                   <circle cx="0" cy="0" r="3" fill="#c9a46a" />
                   <circle cx="0" cy="0" r="1" fill="#2a522c" />
                 </g>
@@ -242,37 +251,37 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
                 <line x1="0" y1="5" x2="80" y2="5" stroke="#c9a46a" strokeWidth="1" />
                 <line x1="0" y1="33" x2="80" y2="33" stroke="#c9a46a" strokeWidth="1" />
                 <line x1="0" y1="36" x2="80" y2="36" stroke="#7b2331" strokeWidth="1.5" />
-                
+
                 {/* Paisley 1 (Facing Right, Maroon & Gold) */}
                 <g transform="translate(20, 19) scale(0.9)">
                   {/* Paisley Outer Body */}
-                  <path 
-                    d="M -12,8 C -18,8 -20,2 -20,-4 C -20,-11 -14,-14 -9,-14 C -4,-14 -1,-9 -4,-4 C -7,1 -3,4 -3,8 C -3,10 -6,10 -12,8 Z" 
-                    fill="#7b2331" 
-                    stroke="#c9a46a" 
-                    strokeWidth="1.5" 
+                  <path
+                    d="M -12,8 C -18,8 -20,2 -20,-4 C -20,-11 -14,-14 -9,-14 C -4,-14 -1,-9 -4,-4 C -7,1 -3,4 -3,8 C -3,10 -6,10 -12,8 Z"
+                    fill="#7b2331"
+                    stroke="#c9a46a"
+                    strokeWidth="1.5"
                   />
                   {/* Inner Golden detailing */}
                   <path d="M -12,4 C -15,4 -16,1 -16,-2 C -16,-6 -13,-8 -10,-8 C -7,-8 -6,-5 -7,-2" fill="none" stroke="#c9a46a" strokeWidth="0.75" />
                   <circle cx="-12" cy="-2" r="1.5" fill="#c9a46a" />
-                  
+
                   {/* Small Mehendi Green leaves emerging from tail */}
                   <path d="M -4,-12 Q 2,-16 4,-10" fill="none" stroke="#2a522c" strokeWidth="1.5" strokeLinecap="round" />
                 </g>
 
                 {/* Paisley 2 (Facing Left, Flipped color scheme) */}
                 <g transform="translate(60, 19) scale(0.9) rotate(180)">
-                  <path 
-                    d="M -12,8 C -18,8 -20,2 -20,-4 C -20,-11 -14,-14 -9,-14 C -4,-14 -1,-9 -4,-4 C -7,1 -3,4 -3,8 C -3,10 -6,10 -12,8 Z" 
-                    fill="#2a522c" 
-                    stroke="#c9a46a" 
-                    strokeWidth="1.25" 
+                  <path
+                    d="M -12,8 C -18,8 -20,2 -20,-4 C -20,-11 -14,-14 -9,-14 C -4,-14 -1,-9 -4,-4 C -7,1 -3,4 -3,8 C -3,10 -6,10 -12,8 Z"
+                    fill="#2a522c"
+                    stroke="#c9a46a"
+                    strokeWidth="1.25"
                   />
                   <path d="M -12,4 C -15,4 -16,1 -16,-2 C -16,-6 -13,-8 -10,-8 C -7,-8 -6,-5 -7,-2" fill="none" stroke="#c9a46a" strokeWidth="0.75" />
                   <circle cx="-12" cy="-2" r="1.5" fill="#7b2331" />
                   <path d="M -4,-12 Q 2,-16 4,-10" fill="none" stroke="#c9a46a" strokeWidth="1" strokeLinecap="round" />
                 </g>
-                
+
                 {/* Tiny Gold separator dots */}
                 <circle cx="40" cy="19" r="2.5" fill="#c9a46a" stroke="#7b2331" strokeWidth="0.5" />
                 <circle cx="0" cy="19" r="1.5" fill="#c9a46a" />
@@ -280,7 +289,7 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
               </pattern>
             )}
           </defs>
-          
+
           <rect width="100%" height="100%" fill={`url(#${patternId})`} />
         </svg>
       </motion.div>

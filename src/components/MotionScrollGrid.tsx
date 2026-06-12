@@ -1,6 +1,6 @@
 'use client';
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion';
 import { urlForImage } from "@/sanity/lib/image";
 
 interface VisualPoetryData {
@@ -18,10 +18,17 @@ interface VisualPoetryData {
 
 export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const lastScrollYRef = useRef(0);
+  const [isScrollingUp, setIsScrollingUp] = useState(false);
 
-  const { scrollYProgress } = useScroll({
+  const { scrollY, scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end']
+  });
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrollingUp(latest < lastScrollYRef.current);
+    lastScrollYRef.current = latest;
   });
 
   // Scale animation is GPU-composited — no layout reflow, no lag
@@ -40,26 +47,46 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
   const layer3Opacity = useTransform(scrollYProgress, [0.4, 0.8], [0, 1]);
   const layer3Scale = useTransform(scrollYProgress, [0.1, 0.8], [0, 1]);
 
-  const layer1Urls = [0,1,2,3,4,5].map(idx => {
-    const img = data?.layer1Images?.[idx];
-    return img?.asset ? urlForImage(img)?.width(600).url() : "";
-  });
-  const layer2Urls = [0,1,2,3,4,5].map(idx => {
-    const img = data?.layer2Images?.[idx];
-    return img?.asset ? urlForImage(img)?.width(600).url() : "";
-  });
-  const layer3Urls = [0,1].map(idx => {
-    const img = data?.layer3Images?.[idx];
-    return img?.asset ? urlForImage(img)?.width(600).url() : "";
-  });
+  // Fallbacks and mappings
+  const fallbackLayer1 = [
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png"
+  ];
+  const fallbackLayer2 = [
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png"
+  ];
+  const fallbackLayer3 = [
+    "/images/wedding_botanical_1.png",
+    "/images/wedding_botanical_1.png"
+  ];
+  const fallbackCenter = "/images/wedding_botanical_1.png";
 
+  const layer1Urls = fallbackLayer1.map((fallback, idx) => {
+    const img = data?.layer1Images?.[idx];
+    return img?.asset ? urlForImage(img)?.url() : fallback;
+  });
+  const layer2Urls = fallbackLayer2.map((fallback, idx) => {
+    const img = data?.layer2Images?.[idx];
+    return img?.asset ? urlForImage(img)?.url() : fallback;
+  });
+  const layer3Urls = fallbackLayer3.map((fallback, idx) => {
+    const img = data?.layer3Images?.[idx];
+    return img?.asset ? urlForImage(img)?.url() : fallback;
+  });
   const centerUrl = data?.centerImage?.asset
-    ? urlForImage(data.centerImage)?.width(1200).url()
+    ? urlForImage(data.centerImage)?.url()
     : typeof data?.centerImage === "string"
       ? data.centerImage
-      : data?.centerImage?.url || data?.centerImage?.asset?.url || "";
-
-  if (!centerUrl) return <section ref={sectionRef} style={{ display: "none" }} />;
+      : data?.centerImage?.url || data?.centerImage?.asset?.url || fallbackCenter;
 
   return (
     <div className="motion-scroll-grid-wrapper bg-[#FAF8F5] text-[#2A2A2A] font-sans overflow-clip">
@@ -180,7 +207,6 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
           aspect-ratio: 4 / 5;
           object-fit: cover;
           border-radius: 1rem;
-          will-change: transform;
         }
         .msg-grid .msg-scaler {
           position: relative;
@@ -269,37 +295,37 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
 
               {/* Layer 1: Outer edges (6 images) */}
               <motion.div
-                className="msg-layer transform-gpu"
-                style={{ opacity: layer1Opacity, scale: layer1Scale, z: 0, willChange: 'transform, opacity' }}
+                className="msg-layer"
+                style={{ opacity: isScrollingUp ? layer1Opacity : 1, scale: layer1Scale, willChange: 'transform, opacity' }}
               >
-                <div>{layer1Urls[0] && <img src={layer1Urls[0]} alt="" />}</div>
-                <div>{layer1Urls[1] && <img src={layer1Urls[1]} alt="" />}</div>
-                <div>{layer1Urls[2] && <img src={layer1Urls[2]} alt="" />}</div>
-                <div>{layer1Urls[3] && <img src={layer1Urls[3]} alt="" />}</div>
-                <div>{layer1Urls[4] && <img src={layer1Urls[4]} alt="" />}</div>
-                <div>{layer1Urls[5] && <img src={layer1Urls[5]} alt="" />}</div>
+                <div><img src={layer1Urls[0]} alt="" /></div>
+                <div><img src={layer1Urls[1]} alt="" /></div>
+                <div><img src={layer1Urls[2]} alt="" /></div>
+                <div><img src={layer1Urls[3]} alt="" /></div>
+                <div><img src={layer1Urls[4]} alt="" /></div>
+                <div><img src={layer1Urls[5]} alt="" /></div>
               </motion.div>
 
               {/* Layer 2: Inner columns (6 images) */}
               <motion.div
-                className="msg-layer transform-gpu"
-                style={{ opacity: layer2Opacity, scale: layer2Scale, z: 0, willChange: 'transform, opacity' }}
+                className="msg-layer"
+                style={{ opacity: isScrollingUp ? layer2Opacity : 1, scale: layer2Scale, willChange: 'transform, opacity' }}
               >
-                <div>{layer2Urls[0] && <img src={layer2Urls[0]} alt="" />}</div>
-                <div>{layer2Urls[1] && <img src={layer2Urls[1]} alt="" />}</div>
-                <div>{layer2Urls[2] && <img src={layer2Urls[2]} alt="" />}</div>
-                <div>{layer2Urls[3] && <img src={layer2Urls[3]} alt="" />}</div>
-                <div>{layer2Urls[4] && <img src={layer2Urls[4]} alt="" />}</div>
-                <div>{layer2Urls[5] && <img src={layer2Urls[5]} alt="" />}</div>
+                <div><img src={layer2Urls[0]} alt="" /></div>
+                <div><img src={layer2Urls[1]} alt="" /></div>
+                <div><img src={layer2Urls[2]} alt="" /></div>
+                <div><img src={layer2Urls[3]} alt="" /></div>
+                <div><img src={layer2Urls[4]} alt="" /></div>
+                <div><img src={layer2Urls[5]} alt="" /></div>
               </motion.div>
 
               {/* Layer 3: Center column top and bottom (2 images) */}
               <motion.div
-                className="msg-layer transform-gpu"
-                style={{ opacity: layer3Opacity, scale: layer3Scale, z: 0, willChange: 'transform, opacity' }}
+                className="msg-layer"
+                style={{ opacity: isScrollingUp ? layer3Opacity : 1, scale: layer3Scale, willChange: 'transform, opacity' }}
               >
-                <div>{layer3Urls[0] && <img src={layer3Urls[0]} alt="" />}</div>
-                <div>{layer3Urls[1] && <img src={layer3Urls[1]} alt="" />}</div>
+                <div><img src={layer3Urls[0]} alt="" /></div>
+                <div><img src={layer3Urls[1]} alt="" /></div>
               </motion.div>
 
               {/* Center scaler image — scale is GPU composited, no layout reflow */}

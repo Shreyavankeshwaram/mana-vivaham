@@ -14,7 +14,7 @@ import CinematicStorytelling from "../../components/CinematicStorytelling";
 import CinematicAperture from "../../components/CinematicAperture";
 import MotionScrollGrid from "../../components/MotionScrollGrid";
 import Testimonials from "../../components/Testimonials";
-
+import EditorialJournal from "../../components/EditorialJournal";
 
 import { client } from "@/sanity/lib/client";
 import { unstable_noStore as noStore } from "next/cache";
@@ -25,50 +25,40 @@ export const revalidate = 0;
 export default async function Home() {
   noStore();
   const query = `{
-    "homePage": *[_type == "homePage"] | order(_updatedAt desc)[0] {
+    "homePage": *[_type == "homePage"][0] {
       ...,
       "morphSequence": morphSequence[].asset->url,
       mountainDivider
     },
-    "heroSection": *[_type == "heroSection"] | order(_updatedAt desc)[0],
+    "heroSection": *[_type == "heroSection"][0],
     "portfolioGalleries": *[_type == "portfolioGallery"] | order(featured desc, _createdAt desc),
-    "cinematicStory": *[_type == "cinematicStorytelling"] | order(_updatedAt desc)[0],
+    "cinematicStory": *[_type == "cinematicStorytelling"][0],
     "testimonialsList": *[_type == "testimonial"],
-    "footerSettings": *[_type == "footerSettings"] | order(_updatedAt desc)[0],
-    "globalSettings": *[_type == "globalSettings"] | order(_updatedAt desc)[0]
+    "footerSettings": *[_type == "footerSettings"][0],
+    "globalSettings": *[_type == "globalSettings"][0],
+    "blogPosts": *[_type == "blogPost"] | order(publishedAt desc)[0...3]
   }`;
-
+  
   let data: any = {};
   try {
-    const rawData = await client.fetch(query, {}, { cache: "no-store" }) || {};
+    const rawData = await client.fetch(query) || {};
     const homePage = rawData.homePage || {};
-
+    
     // Merge standalone collections with homePage fields
     data = {
       ...homePage,
       hero: rawData.heroSection?.title ? rawData.heroSection : homePage.hero,
+      // Prefer the homepage-managed cinematicStorytelling block (contains heroHeading/heroImage/etc).
+      // Fallback to standalone document only if homepage block is missing.
       cinematicStorytelling: homePage.cinematicStorytelling || rawData.cinematicStory,
       testimonials: (rawData.testimonialsList?.length) ? rawData.testimonialsList : homePage.testimonials,
       footer: rawData.footerSettings?.email ? rawData.footerSettings : homePage.footer,
       globalSettings: rawData.globalSettings || {},
-      portfolioGalleries: rawData.portfolioGalleries || []
+      portfolioGalleries: rawData.portfolioGalleries || [],
+      blogPosts: rawData.blogPosts || []
     };
-
-    console.log(`=========================================`);
-    console.log(`SANITY FETCH SUCCESSFUL`);
-    console.log(`HomePage Document ID:`, homePage._id);
-    console.log(`Number of Infinite Gallery Images loaded:`, data.infiniteGalleryImages?.length || 0);
-    console.log(`Number of Morph Sequence Images loaded:`, data.morphSequence?.length || 0);
-    console.log(`Number of Portfolio Galleries loaded:`, data.portfolioGalleries?.length || 0);
-    console.log(`Number of Testimonials loaded:`, data.testimonials?.length || 0);
-    console.log(`=========================================`);
-
   } catch (error) {
-    console.error(`=========================================`);
-    console.error(`SANITY FETCH FAILED.`);
-    console.error(`Error details:`, error);
-    console.error(`=========================================`);
-    throw error;
+    console.warn("Sanity fetch failed (likely not configured yet), falling back to hardcoded data:", error);
   }
 
   return (
@@ -93,10 +83,10 @@ export default async function Home() {
       </div>
 
       <div id="selected-works-wrapper" className="bg-white">
-        <SelectedWorks
-          works={data.selectedWorks}
-          title={data.selectedWorksTitle}
-          description={data.selectedWorksDescription}
+        <SelectedWorks 
+          works={data.selectedWorks} 
+          title={data.selectedWorksTitle} 
+          description={data.selectedWorksDescription} 
         />
       </div>
 
@@ -155,11 +145,11 @@ export default async function Home() {
         <IndianWeddingBorder type="paisley" color="both" flip={true} parallax={true} opacity={0.7} />
       </div>
 
-      <div id="divider-wrapper" className="my-10 md:my-20 bg-lumus-beige">
-        <MountainTerrainDivider
-          height="420px"
-          showFlowers={data.mountainDivider?.showFlowers ?? true}
-          showText={data.mountainDivider?.showText ?? true}
+      <div id="divider-wrapper" className="my-20 md:my-40 bg-lumus-beige">
+        <MountainTerrainDivider 
+          height="600px" 
+          showFlowers={data.mountainDivider?.showFlowers ?? true} 
+          showText={data.mountainDivider?.showText ?? true} 
           opacity={0.8}
           data={data.mountainDivider}
         />
@@ -169,7 +159,11 @@ export default async function Home() {
         <InfiniteColumnGallery images={data.infiniteGalleryImages} />
       </div>
 
-      <div id="cinematic-slideshow-wrapper" className="mt-20 md:mt-40 bg-black">
+      <div id="editorial-journal-wrapper">
+        <EditorialJournal data={data.blogSettings} posts={data.blogPosts} />
+      </div>
+
+      <div id="cinematic-slideshow-wrapper" className="bg-black">
         <CinematicSlideshow slides={data.cinematicSlideshow} />
       </div>
 

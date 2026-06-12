@@ -1,39 +1,29 @@
-export default function FilmGrain() {
-  return (
-    <>
-      <div
-        className="pointer-events-none fixed -inset-[10%] z-[9998] opacity-15 md:opacity-20 mix-blend-overlay film-grain-overlay"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "150px 150px",
-          contain: "strict",
-        }}
-      />
-      <style>{`
-        @media (prefers-reduced-motion: no-preference) {
-          .film-grain-overlay {
-            /* Desktop/Tablets: Slowed to 1.5s steps(3) to minimize GPU compositing overhead */
-            animation: grain-flicker 1.5s steps(3) infinite;
-            will-change: transform;
-          }
-        }
-        
-        @media (max-width: 768px) {
-          .film-grain-overlay {
-            /* Mobile: Disable infinite animation to preserve battery and prevent lag */
-            animation: none !important;
-            opacity: 0.1;
-          }
-        }
+"use client";
 
-        @keyframes grain-flicker {
-          0%   { transform: translate(0, 0); }
-          33%  { transform: translate(-1.5%, 1.5%); }
-          66%  { transform: translate(1.5%, -1%); }
-          100% { transform: translate(-1%, 1%); }
-        }
-      `}</style>
-    </>
+import { useEffect, useState } from "react";
+
+// Lightweight film grain replacement — only render on fine-pointer
+// devices and when the user hasn't requested reduced motion. Avoid
+// SVG filters (expensive) in favor of a simple CSS pattern.
+export default function FilmGrain() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const isCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
+    if (!prefersReduced && !isCoarse) setShow(true);
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[9998] h-full w-full opacity-25 mix-blend-overlay">
+      <div
+        aria-hidden
+        className="w-full h-full bg-[repeating-linear-gradient(0deg,#0000_0px,#0000_1px,#0002_1px,#0002_2px)] opacity-10"
+        style={{ backgroundSize: '3px 3px' }}
+      />
+    </div>
   );
 }

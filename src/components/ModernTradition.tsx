@@ -13,17 +13,20 @@ export default function ModernTradition({ data }: { data?: any }) {
     ? urlForImage(data.portraitImage)?.url()
     : data?.image?.asset
       ? urlForImage(data.image)?.url()
-      : "";
+      : "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1964&auto=format&fit=crop";
   const landscapeImg = data?.landscapeImage?.asset
     ? urlForImage(data.landscapeImage)?.url()
     : data?.image?.asset
       ? urlForImage(data.image)?.url()
-      : "";
+      : "/images/wedding_botanical_1.png";
   const paragraphs = data?.paragraphs?.length
     ? data.paragraphs
     : data?.description
       ? [data.description]
-      : [];
+      : [
+        "Considered to be the epitome of Modern Photography and Filmmaking, HOTC has transformed the Indian Wedding landscape on a regular basis. For almost a decade House On The Clouds has been creating photographs and films which are timeless and have been etched in memories of thousands of people forever.",
+        "Awarded as the Wedding Filmmaker of the year for four consecutive years at the Weddingsutra awards along with numerous other awards, we are the only company listed on IMDB for its award-winning films."
+      ];
 
   return (
     <section className="relative w-full py-20 md:py-36 px-4 md:px-20 bg-[#E8E1D3] text-[#1a1a1a] overflow-hidden">
@@ -90,15 +93,13 @@ export default function ModernTradition({ data }: { data?: any }) {
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                 className="relative aspect-[3/4] w-1/2 md:w-full shadow-lg md:shadow-2xl overflow-hidden rounded-sm group cursor-pointer"
               >
-                {portraitImg && (
-                  <Image
-                    src={portraitImg}
-                    alt="Traditional Indian Miniature Painting"
-                    fill
-                    className="object-cover transition-transform duration-[2s] cubic-bezier(0.16, 1, 0.3, 1) group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                  />
-                )}
+                <Image
+                  src={portraitImg}
+                  alt="Traditional Indian Miniature Painting"
+                  fill
+                  className="object-cover transition-transform duration-[2s] cubic-bezier(0.16, 1, 0.3, 1) group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                />
               </motion.div>
 
               {/* Mobile second image placeholder */}
@@ -109,15 +110,13 @@ export default function ModernTradition({ data }: { data?: any }) {
                   transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
                   className="relative aspect-[3/4] w-full shadow-lg overflow-hidden grayscale mt-8"
                 >
-                  {landscapeImg && (
-                    <Image
-                      src={landscapeImg}
-                      alt="Cinematic Moment"
-                      fill
-                      className="object-cover"
-                      sizes="50vw"
-                    />
-                  )}
+                  <Image
+                    src={landscapeImg}
+                    alt="Cinematic Moment"
+                    fill
+                    className="object-cover"
+                    sizes="50vw"
+                  />
                 </motion.div>
               </div>
             </div>
@@ -147,15 +146,13 @@ export default function ModernTradition({ data }: { data?: any }) {
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative aspect-[3/4] md:aspect-[4/5] w-full shadow-lg md:shadow-2xl overflow-hidden grayscale"
             >
-              {landscapeImg && (
-                <Image
-                  src={landscapeImg}
-                  alt="Cinematic Moment"
-                  fill
-                  className="object-cover"
-                  sizes="33vw"
-                />
-              )}
+              <Image
+                src={landscapeImg}
+                alt="Cinematic Moment"
+                fill
+                className="object-cover"
+                sizes="33vw"
+              />
             </motion.div>
           </div>
         </div>
@@ -181,7 +178,7 @@ export default function ModernTradition({ data }: { data?: any }) {
       </div>
 
       {/* Atmospheric detail */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('/noise.svg')]" />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </section>
   );
 }

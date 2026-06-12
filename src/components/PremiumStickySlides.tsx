@@ -16,7 +16,7 @@ const bodoniModa = Bodoni_Moda({
 
 export default function PremiumStickySlides({ slides = [] }: { slides?: any[] }) {
   const displaySlides = (slides || []).filter((s: any) => s.title || s.subtitle || s.description || s.image?.asset);
-  
+
   if (!displaySlides.length) return null;
 
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
         <div className="relative w-full h-full">
           {displaySlides.map((slide: any, index: number) => {
             const imgSrc = slide.image?.asset ? urlForImage(slide.image)?.url() : null;
-            
+
             return (
               <div
                 key={index}

@@ -85,7 +85,7 @@ export const globalSettings = defineType({
       fieldset: 'logos'
     }),
     defineField({
-      name: 'mobileLogo',
+      name: 'mobileBrandLogo',
       type: 'image',
       title: '📱 Mobile Logo (Optional)',
       description: 'Alternate logo for mobile screens. If not set, the main logo will be used. Recommended: square or compact crop.',
@@ -93,7 +93,7 @@ export const globalSettings = defineType({
       fieldset: 'logos'
     }),
     defineField({
-      name: 'favicon',
+      name: 'browserFavicon',
       type: 'image',
       title: '🔖 Browser Favicon / Tab Icon',
       description: 'The small icon that appears in the browser tab. PNG recommended (32×32 or 64×64px with transparent background).',

@@ -91,7 +91,7 @@ export default function CinematicDifference({ data }: { data?: any }) {
       <div className="max-w-[1600px] mx-auto relative z-10">
 
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-32 lg:mb-40 gap-8 relative z-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

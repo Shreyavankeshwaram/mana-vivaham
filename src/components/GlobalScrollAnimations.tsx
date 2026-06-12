@@ -18,12 +18,6 @@
  *  - #divider-wrapper           (MountainTerrainDivider — own GSAP)
  *  - #infinite-column-gallery-wrapper (InfiniteColumnGallery — own GSAP)
  *  - ModernTradition, IndianWeddingBorder (framer-motion whileInView)
- *
- * PERFORMANCE NOTES:
- *  - ScrollTrigger is NOT re-registered here — LenisProvider already does it.
- *  - Skipped on mobile & prefers-reduced-motion.
- *  - Only ONE ScrollTrigger.refresh() is called, after a 400 ms settle.
- *  - No scrub parallax (removed: caused the worst lag).
  */
 
 import { useEffect } from "react";
@@ -32,12 +26,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function GlobalScrollAnimations() {
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia?.("(max-width: 767px)").matches;
-    // Skip global animation layer on mobile/reduced motion for smoothness.
-    if (prefersReducedMotion || isMobile) return;
-
-    // ScrollTrigger is already registered by LenisProvider — no need to re-register.
+    gsap.registerPlugin(ScrollTrigger);
+    // Don't run heavy global animations on touch devices or when the user
+    // prefers reduced motion — this dramatically reduces main-thread work
+    // during scroll and improves perceived performance on low-end devices.
+    if (typeof window !== "undefined") {
+      const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const isCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
+      if (prefersReduced || isCoarse) return;
+    }
 
     // Wait for all components and Lenis to boot up
     const t = setTimeout(() => {
@@ -69,7 +66,6 @@ export default function GlobalScrollAnimations() {
               scrollTrigger: {
                 trigger: container,
                 start: "top 82%",
-                once: true,
               },
               ...overrides,
             }
@@ -86,11 +82,7 @@ export default function GlobalScrollAnimations() {
               duration: 1.6,
               ease: "power4.out",
               delay,
-              scrollTrigger: {
-                trigger: el,
-                start: "top 88%",
-                once: true,
-              },
+              scrollTrigger: { trigger: el, start: "top 88%" },
             }
           );
         }
@@ -103,41 +95,28 @@ export default function GlobalScrollAnimations() {
           // eyebrow label
           batchReveal(swSection, "span.text-\\[10px\\]", { stagger: 0 });
           // main heading
-          const swH2 = swSection.querySelector("h2");
-          if (swH2) {
-            gsap.fromTo(
-              swH2,
-              { y: 80, opacity: 0, skewY: 2 },
-              {
-                y: 0, opacity: 1, skewY: 0,
-                duration: 1.6, ease: "power4.out",
-                scrollTrigger: {
-                  trigger: swSection,
-                  start: "top 78%",
-                  once: true,
-                },
-              }
-            );
-          }
+          gsap.fromTo(
+            swSection.querySelector("h2"),
+            { y: 80, opacity: 0, skewY: 2 },
+            {
+              y: 0, opacity: 1, skewY: 0,
+              duration: 1.6, ease: "power4.out",
+              scrollTrigger: { trigger: swSection, start: "top 78%" },
+            }
+          );
           // horizontal rule
           lineExpand(swSection.querySelector(".border-b"), 0.2);
           // cards stagger in
           const cards = swSection.querySelectorAll(".group");
-          if (cards.length) {
-            gsap.fromTo(
-              cards,
-              { y: 100, opacity: 0 },
-              {
-                y: 0, opacity: 1,
-                duration: 1.4, ease: "power3.out", stagger: 0.18,
-                scrollTrigger: {
-                  trigger: swSection,
-                  start: "top 65%",
-                  once: true,
-                },
-              }
-            );
-          }
+          gsap.fromTo(
+            cards,
+            { y: 100, opacity: 0 },
+            {
+              y: 0, opacity: 1,
+              duration: 1.4, ease: "power3.out", stagger: 0.18,
+              scrollTrigger: { trigger: swSection, start: "top 65%" },
+            }
+          );
           // paragraph text
           batchReveal(swSection, "p", { y: 30, duration: 1, stagger: 0 });
         }
@@ -153,11 +132,7 @@ export default function GlobalScrollAnimations() {
             {
               y: 0, opacity: 1,
               duration: 1.3, ease: "power3.out", stagger: 0.1,
-              scrollTrigger: {
-                trigger: servicesSection,
-                start: "top 75%",
-                once: true,
-              },
+              scrollTrigger: { trigger: servicesSection, start: "top 75%" },
             }
           );
         }
@@ -172,11 +147,7 @@ export default function GlobalScrollAnimations() {
             { opacity: 0 },
             {
               opacity: 1, duration: 1.5, ease: "power2.out",
-              scrollTrigger: {
-                trigger: cdSection,
-                start: "top 88%",
-                once: true,
-              },
+              scrollTrigger: { trigger: cdSection, start: "top 88%" },
             }
           );
         }
@@ -200,11 +171,7 @@ export default function GlobalScrollAnimations() {
             {
               y: 0, opacity: 1,
               duration: 1.8, ease: "power3.out",
-              scrollTrigger: {
-                trigger: slideshow,
-                start: "top 90%",
-                once: true,
-              },
+              scrollTrigger: { trigger: slideshow, start: "top 90%" },
             }
           );
         }
@@ -214,63 +181,69 @@ export default function GlobalScrollAnimations() {
         ───────────────────────────────────────────────────────────── */
         const footer = document.querySelector("footer");
         if (footer) {
-          const footerH2 = footer.querySelector("h2");
-          if (footerH2) {
-            gsap.fromTo(
-              footerH2,
-              { y: 100, opacity: 0, skewY: 4 },
-              {
-                y: 0, opacity: 1, skewY: 0,
-                duration: 1.8, ease: "power4.out",
-                scrollTrigger: {
-                  trigger: footer,
-                  start: "top 85%",
-                  once: true,
-                },
-              }
-            );
-          }
+          gsap.fromTo(
+            footer.querySelector("h2"),
+            { y: 100, opacity: 0, skewY: 4 },
+            {
+              y: 0, opacity: 1, skewY: 0,
+              duration: 1.8, ease: "power4.out",
+              scrollTrigger: { trigger: footer, start: "top 85%" },
+            }
+          );
 
-          const footerLinks = footer.querySelectorAll("a, span");
-          if (footerLinks.length) {
-            gsap.fromTo(
-              footerLinks,
-              { y: 30, opacity: 0 },
-              {
-                y: 0, opacity: 1,
-                duration: 0.9, ease: "power2.out", stagger: 0.07,
-                scrollTrigger: {
-                  trigger: footer,
-                  start: "top 80%",
-                  once: true,
-                },
-              }
-            );
-          }
+          gsap.fromTo(
+            footer.querySelectorAll("a, span"),
+            { y: 30, opacity: 0 },
+            {
+              y: 0, opacity: 1,
+              duration: 0.9, ease: "power2.out", stagger: 0.07,
+              scrollTrigger: { trigger: footer, start: "top 80%" },
+            }
+          );
 
-          // Bottom dot icon — only animate if it actually exists
-          const footerDot = footer.querySelector(".rounded-full");
-          if (footerDot) {
-            gsap.fromTo(
-              footerDot,
-              { scale: 0, opacity: 0 },
-              {
-                scale: 1, opacity: 1,
-                duration: 1, ease: "elastic.out(1, 0.5)",
-                scrollTrigger: {
-                  trigger: footer,
-                  start: "top 60%",
-                  once: true,
-                },
-              }
-            );
-          }
+          // Bottom dot icon
+          gsap.fromTo(
+            footer.querySelector(".rounded-full"),
+            { scale: 0, opacity: 0 },
+            {
+              scale: 1, opacity: 1,
+              duration: 1, ease: "elastic.out(1, 0.5)",
+              scrollTrigger: { trigger: footer, start: "top 60%" },
+            }
+          );
         }
 
         /* ─────────────────────────────────────────────────────────────
-           7. AMBIENT SECTION PARALLAX — REMOVED
-              (Attaching scrub ScrollTriggers to every image causes massive lag)
+           7. AMBIENT SECTION PARALLAX — Subtle Y-parallax on all
+              section-level images that are NOT already inside a
+              GSAP-managed container.  Uses ScrollTrigger.batch for
+              good performance.
         ───────────────────────────────────────────────────────────── */
+        const safeImageSections = [
+          ".mv-selected-works",
+          ".mv-cinematic-slideshow",
+          "footer",
+        ];
+        safeImageSections.forEach((sel) => {
+          const sec = document.querySelector(sel);
+          if (!sec) return;
+          sec.querySelectorAll("img").forEach((img) => {
+            gsap.fromTo(
+              img,
+              { scale: 1.08 },
+              {
+                scale: 1,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: img,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                },
+              }
+            );
+          });
+        });
 
         /* ─────────────────────────────────────────────────────────────
            8. INDIAN WEDDING BORDER DIVIDERS — subtle fade-in-up
@@ -281,23 +254,28 @@ export default function GlobalScrollAnimations() {
             { opacity: 0, y: 20 },
             {
               opacity: 1, y: 0, duration: 1.2, ease: "power2.out",
-              scrollTrigger: {
-                trigger: el,
-                start: "top 90%",
-                once: true,
-              },
+              scrollTrigger: { trigger: el, start: "top 90%" },
             }
           );
         });
 
-        // ScrollTrigger.refresh() has been consolidated to LenisProvider to avoid duplicate layout calculations.
+        // Recalculate once after the initial DOM/animation setup settles. Refreshing
+        // on every lazy image load while pins are active can continually push later
+        // sections downward, making the footer feel unreachable.
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 200);
 
       }); // end gsap.context
 
+      const globalRefresh = () => ScrollTrigger.refresh();
+      window.addEventListener("load", globalRefresh);
+
       return () => {
         ctx.revert();
+        window.removeEventListener("load", globalRefresh);
       };
-    }, 600); // wait for page and Lenis to settle
+    }, 600); // wait for page to settle
 
     return () => clearTimeout(t);
   }, []);

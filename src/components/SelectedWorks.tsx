@@ -104,16 +104,7 @@ export default function SelectedWorks({
     const dx = (x - cx) / cx;
     const dy = (y - cy) / cy;
 
-    // Rotate tilt-container in 3D perspective
-    const tiltContainer = card.querySelector(".tilt-container");
-    if (tiltContainer) {
-      gsap.to(tiltContainer, {
-        rotateX: -dy * 6,
-        rotateY: dx * 6,
-        duration: 0.4,
-        ease: "power2.out"
-      });
-    }
+    // Rotate tilt-container removed for performance
 
     // Move floating VIEW custom cursor inside the card boundaries
     const cursor = card.querySelector(".card-cursor");
@@ -128,16 +119,7 @@ export default function SelectedWorks({
       });
     }
 
-    // Elegant gold foil light reflection sweep following cursor
-    const reflection = card.querySelector(".shimmer-reflection");
-    if (reflection) {
-      const reflectX = (x / rect.width) * 100;
-      const reflectY = (y / rect.height) * 100;
-      gsap.to(reflection, {
-        background: `radial-gradient(circle at ${reflectX}% ${reflectY}%, rgba(197, 168, 128, 0.12) 0%, transparent 60%)`,
-        duration: 0.3
-      });
-    }
+    // Shimmer reflection removed for performance
   }, []);
 
   const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -149,12 +131,11 @@ export default function SelectedWorks({
       gsap.to(img, { scale: 1.18, duration: 0.8, ease: "power3.out" });
     }
 
-    // Frosted glass frame border glow & gold bezel outline
+    // Frosted glass frame border glow simplified
     const tiltContainer = card.querySelector(".tilt-container");
     if (tiltContainer) {
       gsap.to(tiltContainer, {
         borderColor: "rgba(197, 168, 128, 0.35)",
-        boxShadow: "0 40px 80px -20px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 15px rgba(197, 168, 128, 0.08)",
         duration: 0.6,
         ease: "power2.out"
       });
@@ -164,16 +145,13 @@ export default function SelectedWorks({
   const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget;
 
-    // Reset card rotations & glass border styles
+    // Reset card rotations simplified
     const tiltContainer = card.querySelector(".tilt-container");
     if (tiltContainer) {
       gsap.to(tiltContainer, {
-        rotateX: 0,
-        rotateY: 0,
         borderColor: "rgba(255, 255, 255, 0.07)",
-        boxShadow: "0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08)",
         duration: 0.8,
-        ease: "elastic.out(1, 0.6)"
+        ease: "power2.out"
       });
     }
 
@@ -194,14 +172,7 @@ export default function SelectedWorks({
       });
     }
 
-    // Fade out light reflection
-    const reflection = card.querySelector(".shimmer-reflection");
-    if (reflection) {
-      gsap.to(reflection, {
-        background: "transparent",
-        duration: 0.5
-      });
-    }
+    // Light reflection removed for performance
   }, []);
 
   // GSAP Animations setup
@@ -299,7 +270,7 @@ export default function SelectedWorks({
   return (
     <section
       ref={containerRef}
-      className={`mv-selected-works relative w-full bg-[#080809] pt-28 pb-20 md:pt-36 md:pb-28 px-6 md:px-14 overflow-hidden ${bodoniModa.variable}`}
+      className={`mv-selected-works relative w-full bg-[#080809] pt-36 pb-20 md:pt-48 md:pb-28 px-6 md:px-14 overflow-hidden ${bodoniModa.variable}`}
       style={{ fontFamily: "var(--font-playfair), serif" }}
     >
       {/* Ambient luxurious glowing radial backlights — native gradient, zero GPU cost */}
@@ -340,7 +311,7 @@ export default function SelectedWorks({
       <div className="max-w-[1700px] mx-auto relative z-10">
 
         {/* 🏛 Header Section */}
-        <div className="reveal-header-trigger flex flex-col md:flex-row justify-between items-end mb-24 md:mb-32 gap-10 border-b border-white/[0.06] pb-16 relative">
+        <div className="reveal-header-trigger flex flex-col md:flex-row justify-between items-end mb-24 md:mb-32 gap-10 border-b border-white/[0.06] pb-16 relative z-20">
 
           {/* Top Left Title */}
           <div className="flex flex-col gap-5">
@@ -409,15 +380,16 @@ export default function SelectedWorks({
             const isEven = index % 2 === 0;
             const cardAspect = "aspect-[3/4]";
 
-            // Apply staggered translation offsets to alternating columns on desktop
+            // Apply staggered translation offsets to alternating columns on desktop.
+            // Reduce the vertical offsets to avoid overlapping the previous section's content.
             const staggeredClass = !isEven
-              ? "md:translate-y-32 md:mt-16"
-              : "md:-translate-y-4";
+              ? "md:translate-y-12 md:mt-8"
+              : "md:-translate-y-2";
 
             return (
               <div
                 key={index}
-                className={`premium-card-wrapper flex flex-col gap-10 group cursor-pointer ${staggeredClass}`}
+                className={`premium-card-wrapper relative z-10 flex flex-col gap-10 group cursor-pointer ${staggeredClass}`}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}

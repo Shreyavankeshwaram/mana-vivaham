@@ -1,7 +1,14 @@
 /* All fonts unified to Bodoni Moda via --font-playfair from layout.tsx */
 @import "tailwindcss";
 
-/* Removed page-entry fade to prevent initial black flash */
+/* ── Premium page-entry animation ───────────────────────── */
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+html body {
+  animation: page-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
 
 /* ── Marquee animations ──────────────────────────────────── */
 @keyframes slide-up {
@@ -31,7 +38,6 @@
 html {
   min-height: 100%;
   overflow-y: auto;
-  background: hsl(var(--background));
 }
 
 body {
@@ -69,6 +75,14 @@ html.lenis body {
 h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select, label,
 .serif, .font-cormorant, .font-editorial, .font-sans, .font-inter, .font-mono, .sans-modern, .font-sans-modern {
   font-family: var(--font-playfair), serif !important;
+}
+
+/* Force the mathematical sans-serif bold italic aesthetic for all main headings */
+h1, h2, h3 {
+  font-family: var(--font-sans), sans-serif !important;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 /* ── Scrollbar hidden ────────────────────────────────────── */
@@ -307,7 +321,7 @@ h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select, label,
   pointer-events: none;
   opacity: 0.04;
   z-index: 9;
-  background-image: url('/noise.svg');
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
 }
 
 .ca-grid {

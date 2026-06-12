@@ -28,9 +28,7 @@ export async function POST(req: NextRequest) {
     }
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      service: "gmail",
       auth: { user: gmailUser, pass: gmailPass },
     });
 
@@ -63,15 +61,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (err: any) {
     console.error("Inquiry email error:", err);
-    if (err?.code === "EAUTH") {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Gmail rejected SMTP credentials (EAUTH). Check GMAIL_USER and GMAIL_APP_PASSWORD.",
-        },
-        { status: 401 }
-      );
-    }
     return NextResponse.json(
       { success: false, error: err?.message || "Unknown error" },
       { status: 500 }

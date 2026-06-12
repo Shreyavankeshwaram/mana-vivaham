@@ -137,115 +137,109 @@ export default function CinematicAperture({ data }: { data?: any }) {
 
   return (
     <div ref={scrollWrapperRef} className="relative w-full h-[210vh] md:h-[250vh]">
-      <div
-        ref={containerRef}
-        className="ca-pinned-container"
-        id="ca-aperture-reveal"
-        style={{ position: "sticky", top: 0 }}
-      >
-        {/* Decorative overlays */}
-        <div className="ca-vignette" />
-        <div className="ca-film-grain" />
+    <div
+      ref={containerRef}
+      className="ca-pinned-container"
+      id="ca-aperture-reveal"
+      style={{ position: "sticky", top: 0 }}
+    >
+      {/* Decorative overlays */}
+      <div className="ca-vignette" />
+      <div className="ca-film-grain" />
 
-        {/* Decorative ambient lighting glows — optimized with native gradients */}
-        <div 
-          className="absolute top-10 left-1/4 hidden md:block w-[400px] h-[400px] rounded-full pointer-events-none opacity-30" 
-          style={{ background: "radial-gradient(circle, rgba(231,223,200,0.15) 0%, transparent 70%)" }}
-        />
-        <div 
-          className="absolute bottom-10 right-1/4 hidden md:block w-[500px] h-[500px] rounded-full pointer-events-none opacity-25" 
-          style={{ background: "radial-gradient(circle, rgba(139,30,45,0.05) 0%, transparent 70%)" }}
-        />
+      {/* Decorative ambient lighting glows */}
+      <div className="absolute top-10 left-1/4 hidden md:block w-[400px] h-[400px] bg-[#E7DFC8]/15 rounded-full blur-[100px] pointer-events-none opacity-30" />
+      <div className="absolute bottom-10 right-1/4 hidden md:block w-[500px] h-[500px] bg-[#8B1E2D]/5 rounded-full blur-[120px] pointer-events-none opacity-25" />
 
-        <div className="ca-grid">
+      <div className="ca-grid">
 
-          {/* LEFT SIDE: Narrative Editorial Typography */}
-          <div ref={textColRef} className="ca-text-col">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-6 h-[1px] bg-[#8B1E2D]/40" />
-              <span className="text-[10px] tracking-[0.4em] uppercase text-[#8B1E2D] font-bold">
-                {sectionTag}
-              </span>
-            </div>
-
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-[#8B1E2D] leading-[1.05] tracking-tight mb-8 font-light italic">
-              {headingLine1} <br /> {headingLine2} <br /> {headingLine3}
-            </h2>
-
-            <p className="text-zinc-600 text-sm md:text-base lg:text-lg leading-relaxed font-light font-sans max-w-md">
-              {description}
-            </p>
-
-            <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-8 md:mt-12 font-mono text-[8px] md:text-[9px] text-zinc-400 tracking-widest uppercase">
-              <span>[ {apertureSpec} ]</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B1E2D]/30" />
-              <span>[ {shutterSpec} ]</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B1E2D]/30" />
-              <span>[ {cameraSpec} ]</span>
-            </div>
+        {/* LEFT SIDE: Narrative Editorial Typography */}
+        <div ref={textColRef} className="ca-text-col">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-6 h-[1px] bg-[#8B1E2D]/40" />
+            <span className="text-[10px] tracking-[0.4em] uppercase text-[#8B1E2D] font-bold">
+              {sectionTag}
+            </span>
           </div>
 
-          {/* RIGHT SIDE: The Relative marker that the image starts fitted to */}
-          <div className="ca-image-col">
-            <div ref={markerRef} className="ca-inline-frame" />
-          </div>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-[#8B1E2D] leading-[1.05] tracking-tight mb-8 font-light italic">
+            {headingLine1} <br /> {headingLine2} <br /> {headingLine3}
+          </h2>
 
-        </div>
-
-        {/* ── THE SINGLE ANIMATED IMAGE WRAPPER ── */}
-        {/* Positioned absolute relative to containerRef; fitted to markerRef using Flip.fit() on load */}
-        <div ref={imageRef} className="ca-animated-image group">
-          <Image
-            src={centerImage}
-            alt="Vintage Miniature Bride Portrait"
-            fill
-            className="object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105"
-            sizes="100vw"
-            priority
-          />
-          {/* Shutter shadows / film grade vignettes inside image */}
-          <div className="ca-image-overlay-bg" />
-
-          {/* Viewfinder element lines inside image */}
-          <div className="absolute inset-8 border border-white/5 pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-700 z-10">
-            <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-white/60" />
-            <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-white/60" />
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-white/60" />
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-white/60" />
-          </div>
-        </div>
-
-        {/* FULLSCREEN OVERLAY CONTENT (Fades in when image goes fullscreen) */}
-        <div ref={overlayRef} className="ca-fullscreen-overlay px-6 text-center opacity-0 translate-y-8 pointer-events-none">
-
-          {/* Subtle gold viewfinder focus center */}
-          <div className="mb-8 relative flex items-center justify-center">
-            <div className="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#E7DFC8] animate-ping" />
-            </div>
-            <div className="absolute w-8 h-[1px] bg-white/40" />
-            <div className="absolute h-8 w-[1px] bg-white/40" />
-          </div>
-
-          <span className="text-[10px] md:text-xs font-mono tracking-[0.5em] text-[#E7DFC8] uppercase mb-4 block">
-            {fullscreenLocation}
-          </span>
-
-          <h3 className="text-4xl md:text-7xl font-serif font-light text-white italic tracking-tighter max-w-4xl leading-tight">
-            "{caption}"
-          </h3>
-
-          <p className="max-w-md mx-auto text-zinc-300 text-xs md:text-sm mt-6 font-light tracking-wide leading-relaxed">
-            {fullscreenDescription}
+          <p className="text-zinc-600 text-sm md:text-base lg:text-lg leading-relaxed font-light font-sans max-w-md">
+            {description}
           </p>
 
-          <div className="absolute bottom-7 md:bottom-12 inset-x-0 flex flex-wrap justify-center gap-x-5 gap-y-2 md:gap-12 px-5 font-mono text-[8px] md:text-[10px] text-white/50 tracking-[0.16em] md:tracking-[0.2em] uppercase">
-            <span>{fullscreenIso}</span>
-            <span>{fullscreenFilm}</span>
-            <span>{fullscreenShutter}</span>
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-8 md:mt-12 font-mono text-[8px] md:text-[9px] text-zinc-400 tracking-widest uppercase">
+            <span>[ {apertureSpec} ]</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B1E2D]/30" />
+            <span>[ {shutterSpec} ]</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B1E2D]/30" />
+            <span>[ {cameraSpec} ]</span>
           </div>
         </div>
+
+        {/* RIGHT SIDE: The Relative marker that the image starts fitted to */}
+        <div className="ca-image-col">
+          <div ref={markerRef} className="ca-inline-frame" />
+        </div>
+
       </div>
+
+      {/* ── THE SINGLE ANIMATED IMAGE WRAPPER ── */}
+      {/* Positioned absolute relative to containerRef; fitted to markerRef using Flip.fit() on load */}
+      <div ref={imageRef} className="ca-animated-image group">
+        <Image
+          src={centerImage}
+          alt="Vintage Miniature Bride Portrait"
+          fill
+          className="object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105"
+          sizes="100vw"
+          priority
+        />
+        {/* Shutter shadows / film grade vignettes inside image */}
+        <div className="ca-image-overlay-bg" />
+
+        {/* Viewfinder element lines inside image */}
+        <div className="absolute inset-8 border border-white/5 pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-700 z-10">
+          <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-white/60" />
+          <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-white/60" />
+          <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-white/60" />
+          <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-white/60" />
+        </div>
+      </div>
+
+      {/* FULLSCREEN OVERLAY CONTENT (Fades in when image goes fullscreen) */}
+      <div ref={overlayRef} className="ca-fullscreen-overlay px-6 text-center opacity-0 translate-y-8 pointer-events-none">
+
+        {/* Subtle gold viewfinder focus center */}
+        <div className="mb-8 relative flex items-center justify-center">
+          <div className="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#E7DFC8] animate-ping" />
+          </div>
+          <div className="absolute w-8 h-[1px] bg-white/40" />
+          <div className="absolute h-8 w-[1px] bg-white/40" />
+        </div>
+
+        <span className="text-[10px] md:text-xs font-mono tracking-[0.5em] text-[#E7DFC8] uppercase mb-4 block">
+          {fullscreenLocation}
+        </span>
+
+        <h3 className="text-4xl md:text-7xl font-serif font-light text-white italic tracking-tighter max-w-4xl leading-tight">
+          "{caption}"
+        </h3>
+
+        <p className="max-w-md mx-auto text-zinc-300 text-xs md:text-sm mt-6 font-light tracking-wide leading-relaxed">
+          {fullscreenDescription}
+        </p>
+
+        <div className="absolute bottom-7 md:bottom-12 inset-x-0 flex flex-wrap justify-center gap-x-5 gap-y-2 md:gap-12 px-5 font-mono text-[8px] md:text-[10px] text-white/50 tracking-[0.16em] md:tracking-[0.2em] uppercase">
+          <span>{fullscreenIso}</span>
+          <span>{fullscreenFilm}</span>
+          <span>{fullscreenShutter}</span>
+        </div>
+      </div>
+    </div>
     </div>
   );
 }

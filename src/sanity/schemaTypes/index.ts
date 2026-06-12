@@ -6,6 +6,7 @@ import { cinematicStory } from './cinematicStory'
 import { testimonial } from './testimonial'
 import { footerSettings } from './footerSettings'
 import { globalSettings } from './globalSettings'
+import { blogPost } from './blogPost'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -15,6 +16,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     cinematicStory,
     testimonial,
     footerSettings,
-    globalSettings
+    globalSettings,
+    blogPost
   ],
 }
