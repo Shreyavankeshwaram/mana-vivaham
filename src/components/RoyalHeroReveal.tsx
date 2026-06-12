@@ -167,7 +167,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
         */}
         <div
           className="w-full h-screen absolute inset-0 flex items-center justify-center bg-[#1A1110] z-20 overflow-hidden"
-          style={{ clipPath: isMobile ? "none" : "url(#royal-text-clip)" }}
+          style={{ clipPath: "url(#royal-text-clip)" }}
         >
           {/* Equivalent to hero-bg-svg: The actual cinematic imagery */}
           <div ref={bgRef} className="absolute inset-0 w-full h-full">
@@ -192,12 +192,6 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
           ref={contentRef}
           className="relative z-30 flex flex-col items-center drop-shadow-md pointer-events-none mt-[20vw] md:mt-[12vw]"
         >
-          {/* Mobile-only visible title since SVG mask is disabled for stability */}
-          {isMobile && (
-            <h1 className="font-cormorant font-bold text-white text-[16vw] uppercase mb-4 tracking-wider leading-none text-center">
-              {title}
-            </h1>
-          )}
           <div className="flex items-center gap-4">
             <div className="w-8 h-[1px] bg-[#B68A4C]" />
             <p className="font-sans text-[10px] md:text-xs tracking-[0.4em] text-[#B68A4C] uppercase font-bold text-center">

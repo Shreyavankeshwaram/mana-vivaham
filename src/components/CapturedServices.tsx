@@ -264,7 +264,7 @@ function ServiceCard({ service, index }: { service: any, index: string }) {
             src={service.image}
             alt={service.title || "Service image"}
             fill
-            className="object-cover grayscale opacity-80 transition-all duration-[1500ms] group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100"
+            className="object-cover md:grayscale opacity-100 md:opacity-80 transition-all duration-[1500ms] md:group-hover:scale-105 md:group-hover:grayscale-0 md:group-hover:opacity-100"
             sizes="(max-width: 768px) 100vw, 30vw"
           />
         ) : (
@@ -277,13 +277,13 @@ function ServiceCard({ service, index }: { service: any, index: string }) {
       </div>
 
       <div className="relative z-10 mt-auto">
-        <span className="text-[8px] font-mono tracking-[0.5em] uppercase text-white/30 mb-3 block opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+        <span className="text-[10px] md:text-[8px] font-mono tracking-[0.4em] md:tracking-[0.5em] uppercase text-[#C5A880] md:text-white/30 mb-3 block opacity-100 md:opacity-0 md:group-hover:opacity-100 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-500">
           {service.tagline}
         </span>
-        <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-4 text-white group-hover:pl-2 transition-all duration-700">
+        <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-4 text-white md:group-hover:pl-2 transition-all duration-700">
           {service.title}
         </h3>
-        <p className="text-white font-light leading-relaxed text-sm md:text-base group-hover:text-white transition-colors duration-700">
+        <p className="text-white/90 md:text-white font-light leading-relaxed text-sm md:text-base md:group-hover:text-white transition-colors duration-700">
           {service.description}
         </p>
       </div>
