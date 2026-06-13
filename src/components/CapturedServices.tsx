@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { urlForImage } from "@/sanity/lib/image";
@@ -111,13 +111,27 @@ export default function CapturedServices({ data }: { data?: any }) {
   };
 
   const containerRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () =>
+      setIsMobile(
+        window.matchMedia('(pointer: coarse)').matches ||
+        window.innerWidth < 768
+      );
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-  const lineScale = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
+  // Disable parallax scrolling on mobile to prevent layout thrashing/flicker
+  const bgY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-20%", "20%"]);
+  const lineScale = useTransform(scrollYProgress, [0.1, 0.4], isMobile ? [1, 1] : [0, 1]);
   const bgImageObj = data?.backgroundImage;
 
   const bgImageUrl = resolveImageUrl(bgImageObj, services[2]?.image || fallbackServices[2].image);
@@ -135,6 +149,7 @@ export default function CapturedServices({ data }: { data?: any }) {
           backgroundImage: `url('${bgImageUrl}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          willChange: "transform",
         }}
         className="absolute -top-[15%] -bottom-[15%] left-0 right-0 opacity-[0.35] pointer-events-none select-none grayscale contrast-[1.2]"
       />

@@ -155,32 +155,46 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
             { x: 750, y: 120 },
             { x: 975, y: 150 },
             { x: 1275, y: 220 },
-          ].map((pos, i) => (
-            // Static circles on mobile — framer-motion with repeat:Infinity on 5 simultaneous
-            // elements is a known Safari WebKit memory-pressure / tab-crash trigger.
-            <g key={i}>
-              <line
-                x1={pos.x} y1={pos.y}
-                x2={pos.x} y2={pos.y - 15}
-                stroke="rgba(139, 30, 45, 0.2)"
-                strokeWidth="1"
-              />
-              <circle
-                cx={pos.x}
-                cy={pos.y - 15}
-                r="3.5"
-                fill="#8B1E2D"
-                opacity="0.85"
-              />
-              <circle
-                cx={pos.x}
-                cy={pos.y - 15}
-                r="8"
-                fill="url(#flowerGlow)"
-                opacity="0.6"
-              />
-            </g>
-          ))}
+          ].map((pos, i) => {
+            const isTouchMobile =
+              typeof window !== "undefined" &&
+              (window.matchMedia('(pointer: coarse)').matches ||
+              window.innerWidth < 768);
+
+            return (
+              <motion.g key={i}>
+                <line
+                  x1={pos.x} y1={pos.y}
+                  x2={pos.x} y2={pos.y - 15}
+                  stroke="rgba(139, 30, 45, 0.2)"
+                  strokeWidth="1"
+                />
+                <motion.circle
+                  cx={pos.x}
+                  cy={pos.y - 15}
+                  r="3.5"
+                  fill="#8B1E2D"
+                  initial={isTouchMobile ? { scale: 1, opacity: 0.85 } : { scale: 0 }}
+                  animate={isTouchMobile ? {} : {
+                    scale: [1, 1.2, 1],
+                    opacity: [0.7, 1, 0.7]
+                  }}
+                  transition={isTouchMobile ? {} : {
+                    duration: 2 + (i % 2),
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <circle
+                  cx={pos.x}
+                  cy={pos.y - 15}
+                  r="8"
+                  fill="url(#flowerGlow)"
+                  className="opacity-60"
+                />
+              </motion.g>
+            );
+          })}
 
           <defs>
             <radialGradient id="flowerGlow">

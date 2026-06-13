@@ -63,7 +63,9 @@ export default function EditorialJournal({ data, posts }: { data?: any, posts?: 
           </motion.div>
 
           <motion.a 
-            href="/journal"
+            href="https://rvrpro.in/blog/"
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -85,7 +87,10 @@ export default function EditorialJournal({ data, posts }: { data?: any, posts?: 
             });
 
             return (
-              <motion.article 
+              <motion.a 
+                href="https://rvrpro.in/blog/"
+                target="_blank"
+                rel="noopener noreferrer"
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -132,7 +137,7 @@ export default function EditorialJournal({ data, posts }: { data?: any, posts?: 
                     <div className="w-4 h-[1px] bg-[#1A1110]/30 group-hover:bg-[#8B1E2D] group-hover:w-8 transition-all duration-300" />
                   </div>
                 </div>
-              </motion.article>
+              </motion.a>
             );
           })}
         </div>
