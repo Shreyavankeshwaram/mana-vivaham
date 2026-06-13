@@ -162,13 +162,15 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       const drawRatio = mobileViewport ? Math.min(hRatio, vRatio) : Math.max(hRatio, vRatio);
       const drawWidth = sourceWidth * drawRatio;
       const drawHeight = sourceHeight * drawRatio;
-      // Keep the canvas backing store sharp on retina screens without asking the
-      // browser to upscale beyond the 1920px source frames more than necessary.
+      // Keep mobile conservative for memory, but let desktop use a Retina backing
+      // store so the pinned canvas does not look soft while the sequence scrolls.
       const sourceDprLimit = Math.max(
         1,
         Math.min(2, sourceWidth / drawWidth, sourceHeight / drawHeight)
       );
-      const dpr = Math.min(window.devicePixelRatio || 1, sourceDprLimit);
+      const dpr = mobileViewport
+        ? Math.min(window.devicePixelRatio || 1, sourceDprLimit)
+        : Math.min(window.devicePixelRatio || 1, 2);
 
       // Set backing store size to device pixels, but keep CSS size at 100% so layout remains unchanged.
       canvasRef.current.width = Math.round(containerWidth * dpr);
@@ -181,6 +183,7 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
         context.setTransform(dpr, 0, 0, dpr, 0, 0);
         context.imageSmoothingEnabled = true;
         context.imageSmoothingQuality = "high";
+        context.filter = "none";
       }
 
       render();
@@ -250,7 +253,8 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       
       <canvas
         ref={canvasRef}
-        className="relative z-10 block w-full h-full object-cover will-change-transform transform-gpu"
+        className="relative z-10 block w-full h-full object-cover"
+        style={{ imageRendering: "auto" }}
       />
     </section>
   );

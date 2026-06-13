@@ -43,8 +43,9 @@ const PremiumNav = ({ data }: { data?: any }) => {
       const currentY = window.scrollY;
       setScrolled(currentY > 50);
       const scrollingUp = currentY < lastScrollY.current;
+      const scrollingDown = currentY > lastScrollY.current;
       const nearTop = currentY < 64;
-      setNavVisible(scrollingUp || nearTop);
+      setNavVisible(nearTop || scrollingDown || currentY === lastScrollY.current);
       lastScrollY.current = currentY;
 
       const markerY = currentY + Math.min(window.innerHeight * 0.35, 240);
