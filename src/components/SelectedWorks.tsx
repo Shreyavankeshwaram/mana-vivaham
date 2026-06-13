@@ -98,11 +98,6 @@ export default function SelectedWorks({
 
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const cx = rect.width / 2;
-    const cy = rect.height / 2;
-
-    const dx = (x - cx) / cx;
-    const dy = (y - cy) / cy;
 
     // Rotate tilt-container removed for performance
 
@@ -180,6 +175,9 @@ export default function SelectedWorks({
     if (!isMounted) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    const isTouchMobile =
+      window.matchMedia?.("(max-width: 767px)")?.matches ||
+      window.matchMedia?.("(pointer: coarse)")?.matches;
 
     const ctx = gsap.context(() => {
       // 1. Reveal headers
@@ -225,20 +223,22 @@ export default function SelectedWorks({
           );
 
           // Parallax shift inside container
-          gsap.fromTo(
-            parallaxImg,
-            { yPercent: -10 },
-            {
-              yPercent: 10,
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true
+          if (!isTouchMobile) {
+            gsap.fromTo(
+              parallaxImg,
+              { yPercent: -10 },
+              {
+                yPercent: 10,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: card,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true
+                }
               }
-            }
-          );
+            );
+          }
         }
 
         // Split rising metadata reveals

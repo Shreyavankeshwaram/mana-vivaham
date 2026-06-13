@@ -43,6 +43,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    if (!mounted || isMobile) return;
 
     // Prevent address bar hiding on mobile from instantly breaking the animation coordinates!
     ScrollTrigger.config({ ignoreMobileResize: true });
@@ -113,17 +114,36 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
     return () => ctx.revert();
   }, [mounted, isMobile]);
 
-  if (!mounted) return null;
-
   return (
     <div ref={wrapperRef} className={`w-full relative ${bodoniModa.variable}`}>
+      <section className="md:hidden relative min-h-[92svh] overflow-hidden bg-[#1A1110] flex items-end px-6 pb-16">
+        <Image
+          src={imgSrc}
+          alt="Royal Indian Cinematic Wedding"
+          fill
+          className="object-cover opacity-90"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2A1D1B]/20 via-transparent to-[#2A1D1B]/85 pointer-events-none" />
+        <div className="relative z-10">
+          <h2 className="font-cormorant text-[16vw] leading-[0.86] text-[#E7DFC8] uppercase italic">
+            {title}
+          </h2>
+          <div className="mt-6 flex items-center gap-4">
+            <div className="w-8 h-[1px] bg-[#B68A4C]" />
+            <p className="font-sans text-[10px] tracking-[0.35em] text-[#B68A4C] uppercase font-bold">
+              {subtitle}
+            </p>
+          </div>
+        </div>
+      </section>
       {/* 
         Bulletproof GSAP Pinning: The outer wrapper holds the trigger, 
         and this inner section gets pinned. This prevents SelectedWorks from being affected!
       */}
       <section
         ref={sectionRef}
-        className="w-full h-screen min-h-[100svh] flex items-center justify-center relative overflow-hidden z-20 bg-[#F5EBDD]"
+        className="hidden md:flex w-full h-screen min-h-[100svh] items-center justify-center relative overflow-hidden z-20 bg-[#F5EBDD]"
       >
         {/* DUPLICATE FULL SCREEN IMAGE */}
         {/* This is hidden behind the mask and fades in at the end to guarantee a 100% picture reveal! */}
@@ -134,7 +154,6 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
             fill
             className="object-cover opacity-90"
             sizes="100vw"
-            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#2A1D1B]/30 via-transparent to-[#2A1D1B]/80 pointer-events-none" />
           <div className="absolute inset-0 bg-[#B68A4C]/10 mix-blend-color-burn pointer-events-none" />
@@ -177,7 +196,6 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
               fill
               className="object-cover opacity-90"
               sizes="100vw"
-              priority
             />
             {/* Dark luxury gradients */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#2A1D1B]/50 via-transparent to-[#2A1D1B]/90 pointer-events-none" />

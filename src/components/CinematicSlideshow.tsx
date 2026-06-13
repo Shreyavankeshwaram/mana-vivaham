@@ -14,21 +14,30 @@ export default function CinematicSlideshow({ slides: cmsSlides }: { slides?: any
     label: s.title || "CINEMA",
   })).filter(s => s.src);
 
-  if (!slides.length) return null;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (slides.length < 2) return;
+
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
     }, 5000); // Change every 5 seconds
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
+
+  useEffect(() => {
+    setIndex(0);
+  }, [slides.length]);
+
+  if (!slides.length) return null;
+
+  const activeIndex = index % slides.length;
 
   return (
     <section className={`mv-cinematic-slideshow relative w-full h-screen overflow-hidden bg-black ${bodoniModa.variable}`}>
       <AnimatePresence mode="wait">
         <motion.div
-          key={index}
+          key={activeIndex}
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
@@ -36,12 +45,12 @@ export default function CinematicSlideshow({ slides: cmsSlides }: { slides?: any
           className="absolute inset-0 w-full h-full"
         >
           <Image
-            src={slides[index].src}
+            src={slides[activeIndex].src}
             alt="Cinematic Slide"
             fill
             className="object-cover"
             sizes="100vw"
-            priority={index === 0}
+            priority={activeIndex === 0}
           />
           <div className="absolute inset-0 bg-black/40" />
         </motion.div>
@@ -72,7 +81,7 @@ export default function CinematicSlideshow({ slides: cmsSlides }: { slides?: any
         {slides.map((_, i) => (
           <div
             key={i}
-            className={`h-[2px] transition-all duration-700 ${i === index ? "w-12 bg-white" : "w-6 bg-white/20"}`}
+            className={`h-[2px] transition-all duration-700 ${i === activeIndex ? "w-12 bg-white" : "w-6 bg-white/20"}`}
           />
         ))}
       </div>

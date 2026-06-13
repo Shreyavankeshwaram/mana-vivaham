@@ -120,7 +120,7 @@ export default function CapturedServices({ data }: { data?: any }) {
   const lineScale = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
   const bgImageObj = data?.backgroundImage;
 
-  const bgImageUrl = resolveImageUrl(bgImageObj, "");
+  const bgImageUrl = resolveImageUrl(bgImageObj, services[2]?.image || fallbackServices[2].image);
 
   return (
     <section

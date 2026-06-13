@@ -49,7 +49,8 @@ export default function InfiniteColumnGallery({
 
   // Duplicate images to keep every column filled while the sticky grid moves.
   let expandedImages = [...processedImages];
-  const cardsPerColumn = 16;
+  const isMobileLayout = activeColumns < columns;
+  const cardsPerColumn = isMobileLayout ? 8 : 16;
   const targetImageCount = activeColumns * cardsPerColumn;
   
   if (processedImages.length > 0) {
@@ -65,7 +66,7 @@ export default function InfiniteColumnGallery({
   useEffect(() => {
     setIsMounted(true);
     const syncColumns = () => {
-      setActiveColumns(window.innerWidth < 640 ? Math.min(3, columns) : columns);
+      setActiveColumns(window.innerWidth < 640 ? Math.min(2, columns) : columns);
     };
     syncColumns();
     window.addEventListener("resize", syncColumns);
@@ -126,7 +127,7 @@ export default function InfiniteColumnGallery({
 
   return (
     // ── Outer wrapper: tall, creates the scroll room ──────────────────────
-    <div ref={wrapperRef} style={{ height: activeColumns < columns ? "280vh" : scrollHeight }} className="relative w-full">
+    <div ref={wrapperRef} style={{ height: isMobileLayout ? "180vh" : scrollHeight }} className="relative w-full">
 
       {/* ── Inner: sticky, stays in viewport while user scrolls through wrapper ── */}
       <div ref={stickyRef} className="sticky top-0 w-full h-screen overflow-hidden bg-black">

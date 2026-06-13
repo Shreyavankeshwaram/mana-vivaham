@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useRef, memo, useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useRef, memo } from "react";
 
 interface IndianWeddingBorderProps {
   type?: "zari" | "temple" | "mandala" | "paisley";
@@ -18,29 +17,10 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
   color = "both",
   height,
   className = "",
-  parallax = true,
   flip = false,
   opacity = 1.0, // 100% solid opacity for high contrast vibrancy
 }: IndianWeddingBorderProps) {
   const borderRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Subtle parallax scroll movement to make the border feel alive
-  const { scrollYProgress } = useScroll({
-    target: borderRef,
-    offset: ["start end", "end start"],
-  });
-
-  const xTranslation = useTransform(scrollYProgress, [0, 1], parallax ? ["-3%", "3%"] : ["0%", "0%"]);
 
   // Define premium heights for detailed repeating patterns
   const defaultHeights = {
@@ -65,8 +45,7 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
       className={`mv-indian-border w-full overflow-hidden select-none pointer-events-none relative z-20 ${flip ? "transform rotate-180" : ""
         } ${className}`}
     >
-      <motion.div
-        style={isMobile || !parallax ? { willChange: "transform" } : { x: xTranslation, willChange: "transform" }}
+      <div
         className="w-[110%] h-full -left-[5%] absolute"
       >
         <svg width="100%" height="100%" className="block">
@@ -292,7 +271,7 @@ const IndianWeddingBorder = memo(function IndianWeddingBorder({
 
           <rect width="100%" height="100%" fill={`url(#${patternId})`} />
         </svg>
-      </motion.div>
+      </div>
     </div>
   );
 });

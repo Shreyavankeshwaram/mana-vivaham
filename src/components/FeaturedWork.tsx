@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -20,16 +20,14 @@ export default function FeaturedWork({ images: cmsImages }: { images?: any[] }) 
   const containerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const images = (cmsImages || []).filter(img => img?.asset || typeof img === 'string').map((img: any, i: number) => ({
+  const images = useMemo(() => (cmsImages || []).filter(img => img?.asset || typeof img === 'string').map((img: any, i: number) => ({
       id: img._id || i,
       src: img.asset ? urlForImage(img)?.url() : img,
       span: spanClasses[i % spanClasses.length],
-  }));
-
-  if (!images.length) return null;
+  })), [cmsImages]);
 
   useEffect(() => {
-    if (!gridRef.current) return;
+    if (!images.length || !gridRef.current) return;
 
     const ctx = gsap.context(() => {
       const cards = gridRef.current?.children;
@@ -54,7 +52,9 @@ export default function FeaturedWork({ images: cmsImages }: { images?: any[] }) 
     }, containerRef);
 
     return () => ctx.revert();
-  }, [images]);
+  }, [images.length]);
+
+  if (!images.length) return null;
 
   return (
     <section ref={containerRef} className="relative w-full bg-transparent py-24 md:py-32 px-4 md:px-12 text-lumus-dark overflow-hidden z-20">

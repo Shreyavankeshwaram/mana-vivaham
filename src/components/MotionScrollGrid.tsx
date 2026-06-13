@@ -1,6 +1,6 @@
 'use client';
-import React, { useRef, useState } from 'react';
-import { motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { urlForImage } from "@/sanity/lib/image";
 
 interface VisualPoetryData {
@@ -18,17 +18,10 @@ interface VisualPoetryData {
 
 export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const lastScrollYRef = useRef(0);
-  const [isScrollingUp, setIsScrollingUp] = useState(false);
 
-  const { scrollY, scrollYProgress } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end']
-  });
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrollingUp(latest < lastScrollYRef.current);
-    lastScrollYRef.current = latest;
   });
 
   // Scale animation is GPU-composited — no layout reflow, no lag
@@ -296,36 +289,36 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
               {/* Layer 1: Outer edges (6 images) */}
               <motion.div
                 className="msg-layer"
-                style={{ opacity: isScrollingUp ? layer1Opacity : 1, scale: layer1Scale, willChange: 'transform, opacity' }}
+                style={{ opacity: layer1Opacity, scale: layer1Scale, willChange: 'transform, opacity' }}
               >
-                <div><img src={layer1Urls[0]} alt="" /></div>
-                <div><img src={layer1Urls[1]} alt="" /></div>
-                <div><img src={layer1Urls[2]} alt="" /></div>
-                <div><img src={layer1Urls[3]} alt="" /></div>
-                <div><img src={layer1Urls[4]} alt="" /></div>
-                <div><img src={layer1Urls[5]} alt="" /></div>
+                <div><img src={layer1Urls[0]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer1Urls[1]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer1Urls[2]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer1Urls[3]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer1Urls[4]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer1Urls[5]} alt="" loading="lazy" decoding="async" /></div>
               </motion.div>
 
               {/* Layer 2: Inner columns (6 images) */}
               <motion.div
                 className="msg-layer"
-                style={{ opacity: isScrollingUp ? layer2Opacity : 1, scale: layer2Scale, willChange: 'transform, opacity' }}
+                style={{ opacity: layer2Opacity, scale: layer2Scale, willChange: 'transform, opacity' }}
               >
-                <div><img src={layer2Urls[0]} alt="" /></div>
-                <div><img src={layer2Urls[1]} alt="" /></div>
-                <div><img src={layer2Urls[2]} alt="" /></div>
-                <div><img src={layer2Urls[3]} alt="" /></div>
-                <div><img src={layer2Urls[4]} alt="" /></div>
-                <div><img src={layer2Urls[5]} alt="" /></div>
+                <div><img src={layer2Urls[0]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer2Urls[1]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer2Urls[2]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer2Urls[3]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer2Urls[4]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer2Urls[5]} alt="" loading="lazy" decoding="async" /></div>
               </motion.div>
 
               {/* Layer 3: Center column top and bottom (2 images) */}
               <motion.div
                 className="msg-layer"
-                style={{ opacity: isScrollingUp ? layer3Opacity : 1, scale: layer3Scale, willChange: 'transform, opacity' }}
+                style={{ opacity: layer3Opacity, scale: layer3Scale, willChange: 'transform, opacity' }}
               >
-                <div><img src={layer3Urls[0]} alt="" /></div>
-                <div><img src={layer3Urls[1]} alt="" /></div>
+                <div><img src={layer3Urls[0]} alt="" loading="lazy" decoding="async" /></div>
+                <div><img src={layer3Urls[1]} alt="" loading="lazy" decoding="async" /></div>
               </motion.div>
 
               {/* Center scaler image — scale is GPU composited, no layout reflow */}
@@ -333,7 +326,7 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
                 <motion.img
                   src={centerUrl}
                   alt=""
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                   style={{
                     scale: imageScale,

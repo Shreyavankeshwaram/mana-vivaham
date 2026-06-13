@@ -10,26 +10,26 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const localFrameStart = 7;
+  const localFrameEnd = 134;
+  const useFramesFromProps = Boolean(frames && frames.length > 8);
+  const sourceFrameCount = useFramesFromProps ? frames!.length : (localFrameEnd - localFrameStart + 1);
+
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
 
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d", { alpha: false });
     if (!context) return;
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
 
-    // Local fallback frames currently start from 007 (001-006 are missing),
-    // so map indices safely to avoid initial blank/404 flashes.
-    const localFrameStart = 7;
-    const localFrameEnd = 134;
-    // If Sanity provides only a very small number of frames (for example a single
-    // placeholder image), prefer the local frames stored in `public/sequence-1`.
-    const useFramesFromProps = Boolean(frames && frames.length > 8);
-    const sourceFrameCount = useFramesFromProps ? frames!.length : (localFrameEnd - localFrameStart + 1);
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const isMobile =
+      window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches;
     const isIOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    const frameStep = isMobile ? 3 : 1;
+    const frameStep = 1;
     const frameCount = Math.ceil(sourceFrameCount / frameStep);
     const currentFrame = (index: number) => {
       const sourceIndex = Math.min(index * frameStep, sourceFrameCount - 1);
@@ -66,20 +66,23 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
 
     const loadRemainingImages = () => {
       if (isMobile) {
-        for (let i = 1; i <= Math.min(frameCount - 1, 4); i++) loadImage(i);
+        loadNearbyFrames(sequence.frame);
         return;
       }
 
       for (let i = 1; i < frameCount; i++) loadImage(i);
     };
 
-    const loadNearbyMobileFrames = (center: number) => {
+    const loadNearbyFrames = (center: number) => {
       if (!isMobile) return;
 
-      const radius = isIOS ? 1 : 3; // Absolute minimum for iOS memory stability
-      for (let i = center - radius; i <= center + radius; i++) loadImage(i);
+      const preloadRadius = isIOS ? 2 : 4;
+      const keepRadius = isIOS ? 6 : 12;
 
-      const keepRadius = isIOS ? 2 : 7; // Drop old frames instantly on iOS
+      for (let i = center - preloadRadius; i <= center + preloadRadius; i++) {
+        loadImage(i);
+      }
+
       for (let i = 0; i < images.length; i++) {
         if (images[i] && Math.abs(i - center) > keepRadius) {
           images[i]!.src = "";
@@ -130,8 +133,8 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       const hRatio = cssWidth / img.naturalWidth;
       const vRatio = cssHeight / img.naturalHeight;
 
-      const mobileViewport = window.innerWidth < 768;
-      let ratio = mobileViewport ? Math.min(hRatio, vRatio) * 0.85 : Math.max(hRatio, vRatio);
+      const mobileViewport = window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches;
+      const ratio = mobileViewport ? Math.min(hRatio, vRatio) : Math.max(hRatio, vRatio);
 
       const centerShift_x = (cssWidth - img.naturalWidth * ratio) / 2;
       const centerShift_y = (cssHeight - img.naturalHeight * ratio) / 2;
@@ -150,9 +153,22 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       // Use window dimensions directly to avoid client-side navigation layout delay bugs
       const containerWidth = window.innerWidth;
       const containerHeight = window.innerHeight;
-      // Cap DPR to 1 on mobile and 1.5 on desktop to prevent massive GPU throttling
-      const maxDpr = isMobile ? 1 : 1.5;
-      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+      const mobileViewport =
+        window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches;
+      const sourceWidth = images[sequence.frame]?.naturalWidth || 1920;
+      const sourceHeight = images[sequence.frame]?.naturalHeight || 1080;
+      const hRatio = containerWidth / sourceWidth;
+      const vRatio = containerHeight / sourceHeight;
+      const drawRatio = mobileViewport ? Math.min(hRatio, vRatio) : Math.max(hRatio, vRatio);
+      const drawWidth = sourceWidth * drawRatio;
+      const drawHeight = sourceHeight * drawRatio;
+      // Keep the canvas backing store sharp on retina screens without asking the
+      // browser to upscale beyond the 1920px source frames more than necessary.
+      const sourceDprLimit = Math.max(
+        1,
+        Math.min(2, sourceWidth / drawWidth, sourceHeight / drawHeight)
+      );
+      const dpr = Math.min(window.devicePixelRatio || 1, sourceDprLimit);
 
       // Set backing store size to device pixels, but keep CSS size at 100% so layout remains unchanged.
       canvasRef.current.width = Math.round(containerWidth * dpr);
@@ -161,7 +177,11 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       canvasRef.current.style.height = `${containerHeight}px`;
 
       // Ensure the drawing context uses the DPR for crisp rendering.
-      if (context) context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (context) {
+        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
+      }
 
       render();
     };
@@ -170,14 +190,15 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     window.addEventListener("resize", setCanvasSize);
 
     const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: isMobile ? "+=260%" : "+=400%",
+          end: "+=400%",
           scrub: 0.5,
           pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -186,7 +207,8 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
         snap: "frame",
         ease: "none",
         onUpdate: () => {
-          loadNearbyMobileFrames(sequence.frame);
+          loadImage(sequence.frame);
+          loadNearbyFrames(sequence.frame);
           render();
         },
       });
@@ -204,12 +226,12 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
         images[index] = undefined;
       });
     };
-  }, [frames]);
+  }, [frames, sourceFrameCount, useFramesFromProps]);
   return (
     <section ref={containerRef} className="relative w-full h-screen bg-lumus-beige overflow-hidden">
       <canvas
         ref={canvasRef}
-        className="w-full h-full object-cover will-change-transform transform-gpu"
+        className="block w-full h-full object-cover will-change-transform transform-gpu"
       />
     </section>
   );

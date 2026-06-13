@@ -17,13 +17,10 @@ import Testimonials from "../../components/Testimonials";
 import EditorialJournal from "../../components/EditorialJournal";
 
 import { client } from "@/sanity/lib/client";
-import { unstable_noStore as noStore } from "next/cache";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 300;
 
 export default async function Home() {
-  noStore();
   const query = `{
     "homePage": *[_type == "homePage"][0] {
       ...,

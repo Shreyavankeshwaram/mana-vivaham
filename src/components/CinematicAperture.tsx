@@ -37,6 +37,10 @@ export default function CinematicAperture({ data }: { data?: any }) {
   useEffect(() => {
     // Register GSAP plugins
     gsap.registerPlugin(ScrollTrigger);
+    const isTouchMobile =
+      window.matchMedia?.("(max-width: 767px)")?.matches ||
+      window.matchMedia?.("(pointer: coarse)")?.matches;
+    if (isTouchMobile) return;
 
     let ctx: gsap.Context;
 
@@ -84,15 +88,38 @@ export default function CinematicAperture({ data }: { data?: any }) {
 
       // 4. Initialize GSAP context for ScrollTrigger timeline scrub
       ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: scrollWrapper,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            invalidateOnRefresh: true,
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: scrollWrapper,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            gsap.set(image, { autoAlpha: 1 });
+            if (self.progress >= 0.98) {
+              gsap.set(image, {
+                x: 0,
+                y: 0,
+                width: "100%",
+                height: "100%",
+                borderRadius: "0px",
+                autoAlpha: 1,
+              });
+            }
           },
-        });
+          onLeaveBack: () => {
+            gsap.set(image, {
+              x: fitX,
+              y: fitY,
+              width: fitWidth,
+              height: fitHeight,
+              borderRadius: "24px",
+              autoAlpha: 1,
+            });
+          },
+        },
+      });
 
         // Smoothly interpolate from fitted initial state to fullscreen natural state
         tl.to(image, {
@@ -101,9 +128,20 @@ export default function CinematicAperture({ data }: { data?: any }) {
           width: "100%",
           height: "100%",
           borderRadius: "0px",
+          autoAlpha: 1,
           ease: "none",
-          duration: 1,
+          duration: 0.78,
         }, 0)
+          .to(image, {
+            x: 0,
+            y: 0,
+            width: "100%",
+            height: "100%",
+            borderRadius: "0px",
+            autoAlpha: 1,
+            ease: "none",
+            duration: 0.22,
+          }, 0.78)
           // Fade out initial narrative column
           .to(textCol, {
             opacity: 0,
@@ -136,7 +174,42 @@ export default function CinematicAperture({ data }: { data?: any }) {
   }, []);
 
   return (
-    <div ref={scrollWrapperRef} className="relative w-full h-[210vh] md:h-[250vh]">
+    <>
+    <section className="md:hidden relative min-h-[92svh] bg-[#F5EBDD] px-6 py-20 overflow-hidden">
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-6 h-[1px] bg-[#8B1E2D]/40" />
+          <span className="text-[10px] tracking-[0.35em] uppercase text-[#8B1E2D] font-bold">
+            {sectionTag}
+          </span>
+        </div>
+        <h2 className="text-4xl font-serif text-[#8B1E2D] leading-[1.05] tracking-tight mb-8 font-light italic">
+          {headingLine1} <br /> {headingLine2} <br /> {headingLine3}
+        </h2>
+        <p className="text-zinc-600 text-sm leading-relaxed font-light font-sans max-w-md">
+          {description}
+        </p>
+      </div>
+      <div className="relative mt-12 aspect-[4/5] overflow-hidden rounded-[18px] bg-[#E7DFC8]">
+        <Image
+          src={centerImage}
+          alt="Vintage Miniature Bride Portrait"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/45" />
+        <div className="absolute bottom-6 left-6 right-6">
+          <span className="text-[9px] font-mono tracking-[0.28em] text-[#E7DFC8] uppercase mb-3 block">
+            {fullscreenLocation}
+          </span>
+          <h3 className="text-3xl font-serif font-light text-white italic tracking-tight leading-tight">
+            "{caption}"
+          </h3>
+        </div>
+      </div>
+    </section>
+    <div ref={scrollWrapperRef} className="hidden md:block relative w-full h-[210vh] md:h-[250vh]">
     <div
       ref={containerRef}
       className="ca-pinned-container"
@@ -241,5 +314,6 @@ export default function CinematicAperture({ data }: { data?: any }) {
       </div>
     </div>
     </div>
+    </>
   );
 }
