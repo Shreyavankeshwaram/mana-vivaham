@@ -165,7 +165,7 @@ export default function Footer({ data }: { data?: any }) {
         className="w-full overflow-hidden flex justify-center items-end px-2 md:px-8 pointer-events-none z-10 select-none mt-4 md:mt-0"
       >
         <div 
-          className="text-[12vw] md:text-[10.5vw] leading-[0.75] font-black text-center tracking-tighter w-full whitespace-nowrap text-transparent bg-clip-text"
+          className="text-[9vw] sm:text-[10vw] md:text-[10.5vw] lg:text-[11vw] leading-[0.75] font-black text-center tracking-tighter w-full whitespace-nowrap text-transparent bg-clip-text"
           style={{ 
             fontFamily: 'var(--font-playfair), serif', 
             WebkitTextStroke: '1px rgba(255, 255, 255, 0.15)',

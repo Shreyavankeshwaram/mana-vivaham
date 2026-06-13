@@ -14,7 +14,8 @@ import CinematicStorytelling from "../../components/CinematicStorytelling";
 import CinematicAperture from "../../components/CinematicAperture";
 import MotionScrollGrid from "../../components/MotionScrollGrid";
 import Testimonials from "../../components/Testimonials";
-import EditorialJournal from "../../components/EditorialJournal";
+import AutoPlayVideo from "../../components/AutoPlayVideo";
+
 
 import { client } from "@/sanity/lib/client";
 
@@ -25,7 +26,11 @@ export default async function Home() {
     "homePage": *[_type == "homePage"][0] {
       ...,
       "morphSequence": morphSequence[].asset->url,
-      mountainDivider
+      mountainDivider,
+      autoPlayVideo {
+        ...,
+        "videoUrl": videoFile.asset->url
+      }
     },
     "heroSection": *[_type == "heroSection"][0],
     "portfolioGalleries": *[_type == "portfolioGallery"] | order(featured desc, _createdAt desc),
@@ -52,7 +57,8 @@ export default async function Home() {
       footer: rawData.footerSettings?.email ? rawData.footerSettings : homePage.footer,
       globalSettings: rawData.globalSettings || {},
       portfolioGalleries: rawData.portfolioGalleries || [],
-      blogPosts: rawData.blogPosts || []
+      blogPosts: rawData.blogPosts || [],
+      autoPlayVideo: homePage.autoPlayVideo
     };
   } catch (error) {
     console.warn("Sanity fetch failed (likely not configured yet), falling back to hardcoded data:", error);
@@ -156,8 +162,8 @@ export default async function Home() {
         <InfiniteColumnGallery images={data.infiniteGalleryImages} />
       </div>
 
-      <div id="editorial-journal-wrapper">
-        <EditorialJournal data={data.blogSettings} posts={data.blogPosts} />
+      <div id="autoplay-video-wrapper" className="bg-black">
+        <AutoPlayVideo data={data.autoPlayVideo} />
       </div>
 
       <div id="cinematic-slideshow-wrapper" className="bg-black">

@@ -526,6 +526,38 @@ export const homePageType = defineType({
       ]
     }),
 
+    // 🎬 16. AUTO PLAY VIDEO
+    defineField({
+      name: 'autoPlayVideo',
+      title: '🎬 Fullscreen Auto-Play Video',
+      type: 'object',
+      description: '🎬 Add a silent, auto-playing cinematic video section. (Expand to edit)',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ 
+          name: 'videoFile', 
+          type: 'file', 
+          title: '📹 Upload MP4 Video', 
+          description: 'Upload your wedding highlight reel or any MP4 video from your computer. This will autoplay silently in fullscreen.',
+          options: { accept: 'video/mp4,video/webm,video/ogg' } 
+        }),
+        defineField({ 
+          name: 'heading', 
+          type: 'string', 
+          title: '✍️ Main Heading (Large Bold Text)', 
+          description: 'e.g. "A Symphony of Light" — displayed in large italic font over the video.',
+          initialValue: 'A Symphony of Light' 
+        }),
+        defineField({ 
+          name: 'subheading', 
+          type: 'string', 
+          title: '✍️ Subheading (Small Gold Caps Above Title)', 
+          description: 'e.g. "Experience the emotion in motion." — displayed in small gold tracking text above the main heading.',
+          initialValue: 'Experience the emotion in motion.' 
+        }),
+      ]
+    }),
+
     // LEGACY FIELDS
     defineField({ name: 'brandName', type: 'string', title: 'Brand Name', initialValue: 'Mana Vivaham', hidden: true }),
     defineField({ name: 'ctaText', type: 'string', title: 'CTA Button Text', initialValue: 'Book Now', hidden: true }),

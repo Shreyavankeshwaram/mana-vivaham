@@ -95,15 +95,18 @@ export default function GlobalScrollAnimations() {
           // eyebrow label
           batchReveal(swSection, "span.text-\\[10px\\]", { stagger: 0 });
           // main heading
-          gsap.fromTo(
-            swSection.querySelector("h2"),
-            { y: 80, opacity: 0, skewY: 2 },
-            {
-              y: 0, opacity: 1, skewY: 0,
-              duration: 1.6, ease: "power4.out",
-              scrollTrigger: { trigger: swSection, start: "top 78%" },
-            }
-          );
+          const swHeading = swSection.querySelector("h2");
+          if (swHeading) {
+            gsap.fromTo(
+              swHeading,
+              { y: 80, opacity: 0, skewY: 2 },
+              {
+                y: 0, opacity: 1, skewY: 0,
+                duration: 1.6, ease: "power4.out",
+                scrollTrigger: { trigger: swSection, start: "top 78%" },
+              }
+            );
+          }
           // horizontal rule
           lineExpand(swSection.querySelector(".border-b"), 0.2);
           // cards stagger in
@@ -181,36 +184,45 @@ export default function GlobalScrollAnimations() {
         ───────────────────────────────────────────────────────────── */
         const footer = document.querySelector("footer");
         if (footer) {
-          gsap.fromTo(
-            footer.querySelector("h2"),
-            { y: 100, opacity: 0, skewY: 4 },
-            {
-              y: 0, opacity: 1, skewY: 0,
-              duration: 1.8, ease: "power4.out",
-              scrollTrigger: { trigger: footer, start: "top 85%" },
-            }
-          );
+          const footerHeading = footer.querySelector("h2");
+          if (footerHeading) {
+            gsap.fromTo(
+              footerHeading,
+              { y: 100, opacity: 0, skewY: 4 },
+              {
+                y: 0, opacity: 1, skewY: 0,
+                duration: 1.8, ease: "power4.out",
+                scrollTrigger: { trigger: footer, start: "top 85%" },
+              }
+            );
+          }
 
-          gsap.fromTo(
-            footer.querySelectorAll("a, span"),
-            { y: 30, opacity: 0 },
-            {
-              y: 0, opacity: 1,
-              duration: 0.9, ease: "power2.out", stagger: 0.07,
-              scrollTrigger: { trigger: footer, start: "top 80%" },
-            }
-          );
+          const footerLinks = footer.querySelectorAll("a, span");
+          if (footerLinks.length) {
+            gsap.fromTo(
+              footerLinks,
+              { y: 30, opacity: 0 },
+              {
+                y: 0, opacity: 1,
+                duration: 0.9, ease: "power2.out", stagger: 0.07,
+                scrollTrigger: { trigger: footer, start: "top 80%" },
+              }
+            );
+          }
 
           // Bottom dot icon
-          gsap.fromTo(
-            footer.querySelector(".rounded-full"),
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1, opacity: 1,
-              duration: 1, ease: "elastic.out(1, 0.5)",
-              scrollTrigger: { trigger: footer, start: "top 60%" },
-            }
-          );
+          const footerDot = footer.querySelector(".rounded-full");
+          if (footerDot) {
+            gsap.fromTo(
+              footerDot,
+              { scale: 0, opacity: 0 },
+              {
+                scale: 1, opacity: 1,
+                duration: 1, ease: "elastic.out(1, 0.5)",
+                scrollTrigger: { trigger: footer, start: "top 60%" },
+              }
+            );
+          }
         }
 
         /* ─────────────────────────────────────────────────────────────

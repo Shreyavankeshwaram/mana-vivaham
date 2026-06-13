@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Portfolio", url: "#selected-works-wrapper" },
   { label: "Films", url: "#cinematic-slideshow-wrapper" },
   { label: "About", url: "#cinematic-storytelling-wrapper" },
+  { label: "Blog", url: "https://rvrpro.in/blog/", external: true },
   { label: "Contact", url: "#contact-wrapper" },
 ];
 
@@ -51,6 +52,7 @@ const PremiumNav = ({ data }: { data?: any }) => {
       let nearestSectionTop = Number.NEGATIVE_INFINITY;
 
       navLinks.forEach((link) => {
+        if (link.external) return;
         const section = document.querySelector<HTMLElement>(link.url);
         const sectionTop = section ? section.getBoundingClientRect().top + currentY : null;
         if (sectionTop !== null && sectionTop <= markerY && sectionTop > nearestSectionTop) {
@@ -190,7 +192,9 @@ const PremiumNav = ({ data }: { data?: any }) => {
             <a
               key={link.label}
               href={link.url}
-              onClick={(event) => scrollToSection(event, link.url)}
+              onClick={link.external ? undefined : (event) => scrollToSection(event, link.url)}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
               aria-current={activeUrl === link.url ? "page" : undefined}
               className={`relative group transition-colors duration-300 ${
                 activeUrl === link.url ? "text-black" : "text-black/60 hover:text-black"
@@ -236,7 +240,9 @@ const PremiumNav = ({ data }: { data?: any }) => {
                 <a
                   key={link.label}
                   href={link.url}
-                  onClick={(event) => scrollToSection(event, link.url)}
+                  onClick={link.external ? undefined : (event) => scrollToSection(event, link.url)}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
                   aria-current={activeUrl === link.url ? "page" : undefined}
                   className={`border-b border-black/5 px-3 py-3 text-[10px] uppercase tracking-[0.24em] last:border-b-0 ${
                     activeUrl === link.url ? "text-[#8B1E2D]" : "text-black/65"

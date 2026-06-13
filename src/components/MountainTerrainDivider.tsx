@@ -210,7 +210,7 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
         <div className="relative z-40 flex w-full max-w-5xl flex-col items-center justify-center text-lumus-dark/90 px-5 md:px-6 -mt-20">
           <div
             ref={textSubRef}
-            className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-6 text-[8px] md:text-[10px] tracking-[0.24em] md:tracking-[0.5em] uppercase font-medium mb-8 md:mb-10 opacity-0 text-center"
+            className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-6 text-[8px] md:text-[10px] tracking-[0.24em] md:tracking-[0.5em] uppercase font-medium mb-8 md:mb-10 text-center"
           >
             <span>Coordinates</span>
             <span className="w-5 md:w-16 h-[1px] bg-lumus-dark/20" />
@@ -221,7 +221,7 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
 
           <h3
             ref={textMainRef}
-            className="text-xl sm:text-2xl md:text-5xl font-serif italic text-center max-w-4xl md:px-12 leading-[1.3] tracking-tight text-[#8B1E2D] opacity-0"
+            className="text-xl sm:text-2xl md:text-5xl font-serif italic text-center max-w-4xl md:px-12 leading-[1.3] tracking-tight text-[#8B1E2D]"
           >
             "{quote}"
           </h3>

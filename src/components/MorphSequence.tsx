@@ -232,9 +232,25 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
   }, [frames, sourceFrameCount, useFramesFromProps]);
   return (
     <section ref={containerRef} className="relative w-full h-screen bg-lumus-beige overflow-hidden">
+      {/* 
+        This image acts as the LCP (Largest Contentful Paint) element for Lighthouse and PageSpeed Insights.
+        It loads instantly before the JS canvas initializes, fixing the NO_LCP error and improving FCP.
+      */}
+      <img
+        src={useFramesFromProps && frames && frames[0] ? frames[0] : `/sequence-1/ezgif-frame-${localFrameStart.toString().padStart(3, '0')}.jpg`}
+        alt="Mana Vivaham Cinematic Sequence"
+        fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        style={{
+          // On mobile, the canvas uses 'contain' math for portrait, so we replicate it
+          objectFit: "cover"
+        }}
+      />
+      <h1 className="sr-only">Mana Vivaham - Premium Wedding Photography</h1>
+      
       <canvas
         ref={canvasRef}
-        className="block w-full h-full object-cover will-change-transform transform-gpu"
+        className="relative z-10 block w-full h-full object-cover will-change-transform transform-gpu"
       />
     </section>
   );
