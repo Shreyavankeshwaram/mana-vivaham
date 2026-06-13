@@ -15,7 +15,7 @@ export default function AutoPlayVideo({ data }: { data?: any }) {
   if (!videoUrl) return null;
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+    <section className="relative w-full h-[100dvh] overflow-hidden bg-black flex items-center justify-center">
 
       {/* ── VIDEO BACKGROUND ── */}
       <video

@@ -178,7 +178,7 @@ export default function Footer({ data }: { data?: any }) {
 
       {/* Copyright Bar */}
       <div className="relative z-20 w-full py-6 md:py-8 flex flex-col lg:flex-row justify-between items-center gap-4 px-6 md:px-12 bg-[#050505] border-t border-white/10 text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.15em] text-white/40 uppercase mt-[-1px]">
-        <p className="text-center lg:text-left">Designed & Built by Shreya Vankeshwaram</p>
+        <p className="text-center lg:text-left text-white font-bold tracking-widest">Designed &amp; Built by Shreya Vankeshwaram</p>
         <p className="text-center">{copyright}</p>
         <p className="text-center lg:text-right text-[#C5A880]/80 italic tracking-[0.2em] md:tracking-[0.25em] capitalize" style={{ fontFamily: 'var(--font-playfair), serif' }}>Timeless Wedding Stories</p>
       </div>
