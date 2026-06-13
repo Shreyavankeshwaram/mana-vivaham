@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -18,27 +18,36 @@ interface VisualPoetryData {
 
 export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () =>
+      setIsMobile(
+        window.matchMedia('(pointer: coarse)').matches ||
+        window.innerWidth < 768
+      );
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end']
   });
 
-  // Scale animation is GPU-composited — no layout reflow, no lag
-  // width/height animations cause full layout recalculation every frame
-  const imageScale = useTransform(scrollYProgress, [0, 0.6], [1.08, 1]);
+  // On touch/mobile: skip all scroll-driven transforms to avoid Safari compositor crash.
+  // Static values mirror the "fully revealed" end state so content is always visible.
+  const imageScale = useTransform(scrollYProgress, [0, 0.6], isMobile ? [1, 1] : [1.08, 1]);
 
-  // Layer 1 — add will-change hint so browser prepares GPU layer ahead of time
-  const layer1Opacity = useTransform(scrollYProgress, [0.4, 0.9], [0, 1]);
-  const layer1Scale = useTransform(scrollYProgress, [0.1, 0.9], [0, 1]);
+  const layer1Opacity = useTransform(scrollYProgress, [0.4, 0.9], isMobile ? [1, 1] : [0, 1]);
+  const layer1Scale   = useTransform(scrollYProgress, [0.1, 0.9], isMobile ? [1, 1] : [0, 1]);
 
-  // Layer 2
-  const layer2Opacity = useTransform(scrollYProgress, [0.4, 0.85], [0, 1]);
-  const layer2Scale = useTransform(scrollYProgress, [0.1, 0.85], [0, 1]);
+  const layer2Opacity = useTransform(scrollYProgress, [0.4, 0.85], isMobile ? [1, 1] : [0, 1]);
+  const layer2Scale   = useTransform(scrollYProgress, [0.1, 0.85], isMobile ? [1, 1] : [0, 1]);
 
-  // Layer 3
-  const layer3Opacity = useTransform(scrollYProgress, [0.4, 0.8], [0, 1]);
-  const layer3Scale = useTransform(scrollYProgress, [0.1, 0.8], [0, 1]);
+  const layer3Opacity = useTransform(scrollYProgress, [0.4, 0.8], isMobile ? [1, 1] : [0, 1]);
+  const layer3Scale   = useTransform(scrollYProgress, [0.1, 0.8], isMobile ? [1, 1] : [0, 1]);
 
   // Fallbacks and mappings
   const fallbackLayer1 = [
@@ -129,8 +138,10 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
           position: sticky;
           top: 0;
           overflow: hidden;
-          /* clip-path clips CSS scale transforms which overflow:hidden misses */
-          clip-path: inset(0);
+          /* NOTE: clip-path: inset(0) has been intentionally removed.
+             It caused a hard crash in Safari Mobile (compositor cannot handle
+             clip-path + sticky + framer-motion scroll transforms simultaneously).
+             overflow:hidden achieves the same visual clipping without crashing. */
         }
         .msg-section-last {
           min-height: 100vh;

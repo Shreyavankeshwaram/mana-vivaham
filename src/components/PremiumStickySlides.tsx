@@ -194,7 +194,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
           })}
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         .font-cormorant { font-family: var(--font-playfair), serif; } 
         .font-inter { font-family: var(--font-playfair), serif; }
       `}</style>

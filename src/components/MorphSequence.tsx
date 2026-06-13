@@ -76,8 +76,8 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     const loadNearbyFrames = (center: number) => {
       if (!isMobile) return;
 
-      const preloadRadius = isIOS ? 2 : 4;
-      const keepRadius = isIOS ? 6 : 12;
+      const preloadRadius = isIOS ? 2 : 3;
+      const keepRadius = isIOS ? 4 : 8;
 
       for (let i = center - preloadRadius; i <= center + preloadRadius; i++) {
         loadImage(i);
@@ -194,8 +194,11 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=400%",
-          scrub: 0.5,
+          // 400% is too much scroll room on mobile — the long pin exhausts GPU memory
+          // on low-RAM devices while canvas keeps drawing. 220% is sufficient for the
+          // full frame sequence and releases the compositor pin much sooner on phones.
+          end: isMobile ? "+=220%" : "+=400%",
+          scrub: isMobile ? 0.3 : 0.5,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,

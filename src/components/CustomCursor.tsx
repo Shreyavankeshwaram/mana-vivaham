@@ -31,6 +31,16 @@ export default function CustomCursor() {
     };
 
     const loop = () => {
+      // Small epsilon to detect when cursor has essentially reached the target
+      if (Math.abs(curX - mouseX) < 0.1 && Math.abs(curY - mouseY) < 0.1) {
+        curX = mouseX;
+        curY = mouseY;
+        if (cursorRef.current) cursorRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
+        if (dotRef.current) dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        rafId = null;
+        return;
+      }
+
       curX = lerp(curX, mouseX);
       curY = lerp(curY, mouseY);
       if (cursorRef.current) {

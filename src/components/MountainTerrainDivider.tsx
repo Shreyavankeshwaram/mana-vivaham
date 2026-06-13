@@ -34,6 +34,13 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
     setIsMounted(true);
     gsap.registerPlugin(ScrollTrigger);
 
+    // Skip parallax on touch/mobile — scrub animations on touch cause constant
+    // repaints that freeze Safari and Chrome on low-RAM phones.
+    const isTouchMobile =
+      window.matchMedia?.('(pointer: coarse)').matches ||
+      window.innerWidth < 768;
+    if (isTouchMobile) return;
+
     // Slight delay to ensure DOM and pins from previous sections are settled
     const timer = setTimeout(() => {
       if (!containerRef.current || !mountainLayer1Ref.current || !mountainLayer2Ref.current) return;
@@ -149,37 +156,30 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
             { x: 975, y: 150 },
             { x: 1275, y: 220 },
           ].map((pos, i) => (
-            <motion.g key={i}>
+            // Static circles on mobile — framer-motion with repeat:Infinity on 5 simultaneous
+            // elements is a known Safari WebKit memory-pressure / tab-crash trigger.
+            <g key={i}>
               <line
                 x1={pos.x} y1={pos.y}
                 x2={pos.x} y2={pos.y - 15}
                 stroke="rgba(139, 30, 45, 0.2)"
                 strokeWidth="1"
               />
-              <motion.circle
+              <circle
                 cx={pos.x}
                 cy={pos.y - 15}
                 r="3.5"
                 fill="#8B1E2D"
-                initial={{ scale: 0 }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.7, 1, 0.7]
-                }}
-                transition={{
-                  duration: 2 + (i % 2),
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
+                opacity="0.85"
               />
               <circle
                 cx={pos.x}
                 cy={pos.y - 15}
                 r="8"
                 fill="url(#flowerGlow)"
-                className="opacity-60"
+                opacity="0.6"
               />
-            </motion.g>
+            </g>
           ))}
 
           <defs>
