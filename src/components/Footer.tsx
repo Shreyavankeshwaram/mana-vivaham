@@ -159,22 +159,7 @@ export default function Footer({ data }: { data?: any }) {
         </div>
       </div>
 
-      {/* Massive Parallax Brand Name at the Bottom */}
-      <motion.div 
-        style={{ y: logoY, opacity: logoOpacity }}
-        className="w-full overflow-hidden flex justify-center items-end px-2 md:px-8 pointer-events-none z-10 select-none mt-4 md:mt-0"
-      >
-        <div 
-          className="text-[9vw] sm:text-[10vw] md:text-[10.5vw] lg:text-[11vw] leading-[0.75] font-black text-center tracking-tighter w-full whitespace-nowrap text-transparent bg-clip-text"
-          style={{ 
-            fontFamily: 'var(--font-playfair), serif', 
-            WebkitTextStroke: '1px rgba(255, 255, 255, 0.15)',
-            backgroundImage: 'linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%)',
-          }}
-        >
-          MANA VIVAHAM
-        </div>
-      </motion.div>
+      {/* Large parallax brand title removed per design update */}
 
       {/* Copyright Bar */}
       <div className="relative z-20 w-full py-6 md:py-8 flex flex-col lg:flex-row justify-between items-center gap-4 px-6 md:px-12 bg-[#050505] border-t border-white/10 text-[10px] md:text-xs tracking-[0.1em] md:tracking-[0.15em] text-white/40 uppercase mt-[-1px]">

@@ -14,7 +14,6 @@ import CinematicStorytelling from "../../components/CinematicStorytelling";
 import CinematicAperture from "../../components/CinematicAperture";
 import MotionScrollGrid from "../../components/MotionScrollGrid";
 import Testimonials from "../../components/Testimonials";
-import AutoPlayVideo from "../../components/AutoPlayVideo";
 
 
 import { client } from "@/sanity/lib/client";
@@ -162,9 +161,7 @@ export default async function Home() {
         <InfiniteColumnGallery images={data.infiniteGalleryImages} />
       </div>
 
-      <div id="autoplay-video-wrapper" className="bg-black">
-        <AutoPlayVideo data={data.autoPlayVideo} />
-      </div>
+      {/* Autoplay video section removed per request */}
 
       <div id="cinematic-slideshow-wrapper" className="bg-black">
         <CinematicSlideshow slides={data.cinematicSlideshow} />

@@ -56,6 +56,15 @@ export default function Testimonials({ testimonials: cmsTestimonials }: { testim
 
   const t1 = testimonials[index % testimonials.length];
   const t2 = testimonials[(index + 1) % testimonials.length];
+  const [expanded, setExpanded] = useState<boolean[]>([false, false]);
+
+  const toggleExpanded = (i: number) => {
+    setExpanded(prev => {
+      const next = [...prev];
+      next[i] = !next[i];
+      return next;
+    });
+  };
 
   return (
     <section
@@ -143,11 +152,32 @@ export default function Testimonials({ testimonials: cmsTestimonials }: { testim
 
                   {/* Quote */}
                   <blockquote
-                    className="text-white/80 text-base md:text-lg leading-relaxed font-light mb-10 relative z-10"
+                    className="text-white/80 text-base md:text-lg leading-relaxed font-light mb-4 relative z-10"
                     style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
                   >
-                    &ldquo;{quote}&rdquo;
+                    &ldquo;
+                    {(() => {
+                      const maxLen = 220;
+                      const isExpanded = !!expanded[cardIdx];
+                      if (quote.length <= maxLen) return quote;
+                      if (isExpanded) return quote;
+                      return quote.slice(0, maxLen).trimEnd() + '...';
+                    })()}
+                    &rdquo;
                   </blockquote>
+
+                  {/* Read more / Show less */}
+                  {quote.length > 220 && (
+                    <div className="mb-6">
+                      <button
+                        onClick={() => toggleExpanded(cardIdx)}
+                        className="text-sm text-[#C5A880] tracking-wider uppercase font-medium"
+                        aria-expanded={!!expanded[cardIdx]}
+                      >
+                        {expanded[cardIdx] ? 'Show less' : 'Read more'}
+                      </button>
+                    </div>
+                  )}
 
                   {/* Divider */}
                   <div className="h-px bg-gradient-to-r from-[#C5A880]/30 via-[#C5A880]/60 to-transparent mb-6" />
