@@ -29,7 +29,7 @@ export default function MarqueeDivider() {
         {[...Array(6)].map((_, i) => (
           <div key={i} className="flex gap-8 items-center px-4">
             <span className="text-lg md:text-2xl font-serif tracking-[0.2em] uppercase text-black/80">
-              Mana Vivaham
+              Macharla
             </span>
             <span className="text-black/30 text-sm">✦</span>
             <span className="text-lg md:text-2xl font-serif italic text-black/80">

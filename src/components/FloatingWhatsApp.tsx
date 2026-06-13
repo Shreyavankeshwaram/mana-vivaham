@@ -12,7 +12,7 @@ export default function FloatingWhatsApp() {
     setShowWelcome(true);
 
     const message = encodeURIComponent(
-      "Hi Mana Vivaham, welcome! I would like to share my event details and discuss booking."
+      "Hi Macharla, welcome! I would like to share my event details and discuss booking."
     );
     const targetUrl = `${whatsappUrl}?text=${message}`;
 
@@ -29,7 +29,7 @@ export default function FloatingWhatsApp() {
         target="_blank"
         rel="noopener noreferrer"
         onClick={handleWhatsAppClick}
-        aria-label="Chat with Mana Vivaham on WhatsApp"
+        aria-label="Chat with Macharla on WhatsApp"
         title="Chat on WhatsApp"
         className="relative flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full border-2 border-white bg-[#25D366] text-white shadow-[0_12px_32px_rgba(20,72,53,0.34)] transition-all duration-500 hover:-translate-y-1 hover:scale-105 hover:bg-[#1fbe5b] hover:shadow-[0_18px_42px_rgba(20,72,53,0.44)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A880] focus-visible:ring-offset-4"
       >

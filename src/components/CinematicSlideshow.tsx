@@ -68,7 +68,7 @@ export default function CinematicSlideshow({ slides: cmsSlides }: { slides?: any
             <div className="w-2 h-2 bg-white rounded-full" />
           </div>
           <h2 className="sanitize-heading font-cormorant text-[8vw] md:text-[6vw] italic text-white font-light tracking-tighter uppercase leading-none">
-            MANA VIVAHAM
+            MACHARLA
           </h2>
           <span className="font-sans text-[10px] md:text-xs tracking-[0.6em] text-white/50 uppercase mt-4">
             An Editorial Story

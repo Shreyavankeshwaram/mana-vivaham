@@ -238,7 +238,7 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
       */}
       <img
         src={useFramesFromProps && frames && frames[0] ? frames[0] : `/sequence-1/ezgif-frame-${localFrameStart.toString().padStart(3, '0')}.jpg`}
-        alt="Mana Vivaham Cinematic Sequence"
+        alt="Macharla Cinematic Sequence"
         fetchPriority="high"
         className="absolute inset-0 w-full h-full object-cover z-0"
         style={{
@@ -246,7 +246,7 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
           objectFit: "cover"
         }}
       />
-      <h1 className="sr-only">Mana Vivaham - Premium Wedding Photography</h1>
+      <h1 className="sr-only">Macharla - Premium Wedding Photography</h1>
       
       <canvas
         ref={canvasRef}

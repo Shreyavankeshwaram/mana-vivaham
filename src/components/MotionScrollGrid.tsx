@@ -368,7 +368,7 @@ export default function MotionScrollGrid({ data }: { data?: VisualPoetryData }) 
             {data?.bottomTitle || "Timeless."}
           </h2>
           <span className="text-[10px] tracking-[0.4em] uppercase text-[#C9A46A] mt-8">
-            {data?.bottomSubtitle || "A Mana Vivaham Signature"}
+            {data?.bottomSubtitle || "A Macharla Signature"}
           </span>
         </section>
       </main>

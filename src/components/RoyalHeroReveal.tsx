@@ -15,7 +15,7 @@ const bodoniModa = Bodoni_Moda({
 });
 
 export default function RoyalHeroReveal({ data }: { data?: any }) {
-  const title = data?.title || "MANA VIVAHAM";
+  const title = data?.title || "MACHARLA";
   const subtitle = data?.subtitle || "A Royal Cinematic Narrative";
   const imgSrc = data?.backgroundImage?.asset
     ? urlForImage(data.backgroundImage)?.url()

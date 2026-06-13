@@ -12,7 +12,7 @@ export default function Footer({ data }: { data?: any }) {
   const studioLocation = (typeof data?.location === 'string' && data.location)
     || (typeof data?.officeLocation === 'string' && data.officeLocation)
     || 'Hyderabad · Telangana';
-  const copyright = data?.copyrightText || data?.copyright || `© ${new Date().getFullYear()} Mana Vivaham`;
+  const copyright = data?.copyrightText || data?.copyright || `© ${new Date().getFullYear()} Macharla`;
 
   const footerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -107,7 +107,7 @@ export default function Footer({ data }: { data?: any }) {
                   <path id="circlePath" fill="none" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
                   <text className="text-[12.5px] tracking-[0.2em] uppercase font-bold" style={{ fill: 'currentColor' }}>
                     <textPath href="#circlePath" startOffset="0%">
-                      • MANA VIVAHAM • INQUIRE NOW 
+                      • MACHARLA • INQUIRE NOW 
                     </textPath>
                   </text>
                 </svg>

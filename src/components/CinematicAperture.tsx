@@ -14,7 +14,7 @@ export default function CinematicAperture({ data }: { data?: any }) {
   const headingLine1 = data?.headingLine1 || 'A';
   const headingLine2 = data?.headingLine2 || 'Cinematic';
   const headingLine3 = data?.headingLine3 || 'Love Legacy';
-  const description = data?.description || 'From the sacred knot to the quiet in-between glances, Mana Vivaham crafts your wedding into a timeless visual legacy filled with emotion, elegance, and soul.';
+  const description = data?.description || 'From the sacred knot to the quiet in-between glances, Macharla crafts your wedding into a timeless visual legacy filled with emotion, elegance, and soul.';
 
   const sectionTag = data?.sectionTag || 'THE APERTURE SEQUENCE // VOL_02';
   const apertureSpec = data?.aperture || 'APR_F1.2';

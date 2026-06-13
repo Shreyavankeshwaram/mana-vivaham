@@ -6,7 +6,7 @@ export const hero = defineType({
   type: 'document',
 
   initialValue: () => ({
-    title: 'MANA VIVAHAM',
+    title: 'MACHARLA',
     subtitle: 'A Royal Cinematic Narrative',
     ctaButton: {
       label: 'Book Now',
@@ -18,7 +18,7 @@ export const hero = defineType({
       name: 'title',
       type: 'string',
       title: 'Grand Reveal Title',
-      description: '🏛️ The giant text overlay revealed when visitors first enter the page (e.g. "MANA VIVAHAM")',
+      description: '🏛️ The giant text overlay revealed when visitors first enter the page (e.g. "MACHARLA")',
       validation: Rule => Rule.required()
     }),
     defineField({ 

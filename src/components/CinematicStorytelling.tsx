@@ -39,8 +39,15 @@ const storytellingImages = [
 
 const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroHeading = data?.heroHeading || data?.clientHeading || "Mana Vivaham";
+  const rawHeroHeading = data?.heroHeading || data?.clientHeading || "Macharla";
   const heroSubHeading = data?.heroSubHeading || data?.clientSubHeading || "Cinematic Storytelling";
+
+  // Ensure the heading uses "Macharla" instead of "Mana Vivaham".
+  // This will replace any CMS-provided "Mana Vivaham" text with "Macharla",
+  // while still respecting other custom headings when present.
+  const heroHeading = String(rawHeroHeading || "")
+    .replace(/Mana\s+Vivaham/ig, "Macharla")
+    .trim() || "Macharla";
   const tagline =
     data?.tagline ||
     data?.clientTagline ||
@@ -78,13 +85,9 @@ const CinematicStorytelling: React.FC<{ data?: any }> = ({ data }) => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-14 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12">
-          <div className="space-y-6">
-            <h2 className="text-4xl md:text-[5.25rem] lg:text-[6rem] leading-[0.9] font-serif italic text-[#8B1E2D] tracking-tight">
-              {heroHeading}
-            </h2>
-            <div className="mt-3">
-              <div className="w-24 h-1 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#8B1E2D]" />
-            </div>
+          {/* Heading intentionally removed for this section */}
+          <div className="space-y-6" aria-hidden>
+            {/* empty spacer to preserve layout */}
           </div>
           {/* removed small side metadata to keep client hero clean and premium */}
         </div>

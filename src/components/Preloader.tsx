@@ -74,7 +74,7 @@ export default function Preloader() {
 
       {/* Sub-text Name */}
       <div className="full-name flex flex-col items-center">
-        <h2 className="text-xl md:text-3xl font-serif tracking-[0.6em] uppercase text-[#8B1E2D]/80">Mana Vivaham</h2>
+        <h2 className="text-xl md:text-3xl font-serif tracking-[0.6em] uppercase text-[#8B1E2D]/80">Macharla</h2>
         <div className="mt-4 w-12 h-[1px] bg-[#8B1E2D]/20 animate-pulse" />
       </div>
 

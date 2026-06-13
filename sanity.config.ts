@@ -12,7 +12,7 @@ export default defineConfig({
     structureTool({
       structure: (S) =>
         S.list()
-          .title('⚜️ MANA VIVAHAM STUDIO CMS')
+          .title('⚜️ MACHARLA STUDIO CMS')
           .items([
             // ─── 🏛 HOMEPAGE EXPERIENCE (Singleton) ──────────────────────────
             S.listItem()

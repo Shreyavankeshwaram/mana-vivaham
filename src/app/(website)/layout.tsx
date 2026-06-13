@@ -16,7 +16,7 @@ const modernSans = Inter({ subsets: ["latin"], variable: "--font-sans", weight: 
 export async function generateMetadata(): Promise<Metadata> {
   const globalSettings = await client.fetch(`*[_type == "globalSettings"][0]`);
   return {
-    title: globalSettings?.seoTitle || "MANA VIVAHAM | Premium Wedding Photography",
+    title: globalSettings?.seoTitle || "MACHARLA | Premium Wedding Photography",
     description: globalSettings?.seoDescription || "A cinematic wedding photography experience.",
     icons: [
       { 

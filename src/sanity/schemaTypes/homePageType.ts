@@ -8,7 +8,7 @@ export const homePageType = defineType({
   initialValue: () => ({
     title: 'The Grand Homepage Experience',
     hero: {
-      title: 'MANA VIVAHAM',
+      title: 'MACHARLA',
       subtitle: 'A Royal Cinematic Narrative'
     },
     modernTradition: {
@@ -20,9 +20,9 @@ export const homePageType = defineType({
       ]
     },
     aboutSection: {
-      heading: 'About Mana Vivaham',
+      heading: 'About Macharla',
       subheading: 'Stories with soul, crafted with care',
-      description: 'Mana Vivaham documents weddings with a cinematic eye and an emotional heart, preserving every ritual, glance, and celebration as timeless family legacy.',
+      description: 'Macharla documents weddings with a cinematic eye and an emotional heart, preserving every ritual, glance, and celebration as timeless family legacy.',
     },
     selectedWorksTitle: 'Selected Works',
     selectedWorksDescription: 'EACH BODY OF WORK STANDS ON ITS OWN. A RECORD OF ONGOING EXPLORATION RATHER THAN FINISHED CONCLUSIONS.',
@@ -72,10 +72,10 @@ export const homePageType = defineType({
       subtitle: 'The Signature Collection',
       description: 'An immersive curation of our most breathtaking frames.\nWhere tradition meets unparalleled cinematic grandeur.',
       bottomTitle: 'Timeless.',
-      bottomSubtitle: 'A Mana Vivaham Signature'
+      bottomSubtitle: 'A Macharla Signature'
     },
     cinematicStorytelling: {
-      heroHeading: 'Mana Vivaham',
+      heroHeading: 'Macharla',
       heroSubHeading: 'Cinematic Storytelling',
       tagline: 'Wedding Films • Photography • Creative Direction',
       heroBio: [
@@ -98,7 +98,7 @@ export const homePageType = defineType({
       headingLine1: 'A',
       headingLine2: 'Cinematic',
       headingLine3: 'Love Legacy',
-      description: 'From the sacred knot to the quiet in-between glances, Mana Vivaham crafts your wedding into a timeless visual legacy filled with emotion, elegance, and soul.',
+      description: 'From the sacred knot to the quiet in-between glances, Macharla crafts your wedding into a timeless visual legacy filled with emotion, elegance, and soul.',
       aperture: 'APR_F1.2',
       shutter: 'SHUTTER_1/160',
       camera: 'LEICA_M11',
@@ -167,7 +167,7 @@ export const homePageType = defineType({
       type: 'object',
       fieldset: 'heroSet',
       fields: [
-        defineField({ name: 'title', type: 'string', title: 'Luxury Brand Title', description: 'Giant mask text (e.g. "MANA VIVAHAM")', initialValue: 'MANA VIVAHAM' }),
+        defineField({ name: 'title', type: 'string', title: 'Luxury Brand Title', description: 'Giant mask text (e.g. "MACHARLA")', initialValue: 'MACHARLA' }),
         defineField({ name: 'subtitle', type: 'string', title: 'Elegant Tagline', description: 'Small subtitle signature below the mask', initialValue: 'A Royal Cinematic Narrative' }),
         defineField({ name: 'image', type: 'image', title: 'Revealed Fine-Art Visual', description: '📷 The immersive visual revealed through the mask on scroll.', options: { hotspot: true } }),
       ]
@@ -235,7 +235,7 @@ export const homePageType = defineType({
           name: 'heading',
           title: 'About Heading',
           type: 'string',
-          initialValue: 'About Mana Vivaham'
+          initialValue: 'About Macharla'
         }),
         defineField({
           name: 'subheading',
@@ -247,7 +247,7 @@ export const homePageType = defineType({
           name: 'description',
           title: 'About Description',
           type: 'text',
-          initialValue: 'Mana Vivaham documents weddings with a cinematic eye and an emotional heart, preserving every ritual, glance, and celebration as timeless family legacy.'
+          initialValue: 'Macharla documents weddings with a cinematic eye and an emotional heart, preserving every ritual, glance, and celebration as timeless family legacy.'
         }),
         defineField({
           name: 'image',
@@ -383,7 +383,7 @@ export const homePageType = defineType({
         defineField({ name: 'layer3Images', type: 'array', title: 'Layer 3: Top/Bottom Floating Accents (2 recommended)', description: '📷 Moves slowest to ground the composition.', of: [{ type: 'image', options: { hotspot: true } }] }),
         defineField({ name: 'centerImage', type: 'image', title: 'Focal Centerpiece Artwork (Scales on scroll)', description: '📷 The gorgeous focal image that scales up to lock into the screen center.', options: { hotspot: true } }),
         defineField({ name: 'bottomTitle', type: 'string', title: 'Closing Title Accent', initialValue: 'Timeless.' }),
-        defineField({ name: 'bottomSubtitle', type: 'string', title: 'Closing Subtitle Accent', initialValue: 'A Mana Vivaham Signature' }),
+        defineField({ name: 'bottomSubtitle', type: 'string', title: 'Closing Subtitle Accent', initialValue: 'A Macharla Signature' }),
       ]
     }),
 
@@ -395,7 +395,7 @@ export const homePageType = defineType({
       description: '🎞️ Edit the elegant beige storytelling reel presenting a row of 5 film frames that transition into rich color on scroll.',
       fieldset: 'cinematicStorytellingSet',
       fields: [
-        defineField({ name: 'heroHeading', type: 'string', title: 'Hero Heading (Big Name)', initialValue: 'Mana Vivaham' }),
+        defineField({ name: 'heroHeading', type: 'string', title: 'Hero Heading (Big Name)', initialValue: 'Macharla' }),
         defineField({ name: 'heroSubHeading', type: 'string', title: 'Hero Subheading (Second Line)', initialValue: 'Cinematic Storytelling' }),
         defineField({ name: 'tagline', type: 'string', title: 'Small Tagline', initialValue: 'Wedding Films • Photography • Creative Direction' }),
         defineField({
@@ -464,7 +464,7 @@ export const homePageType = defineType({
         defineField({ name: 'headingLine1', type: 'string', title: 'Overlay Header Line 1', initialValue: 'A' }),
         defineField({ name: 'headingLine2', type: 'string', title: 'Overlay Header Line 2', initialValue: 'Cinematic' }),
         defineField({ name: 'headingLine3', type: 'string', title: 'Overlay Header Line 3', initialValue: 'Love Legacy' }),
-        defineField({ name: 'description', type: 'text', title: 'Creative Section Context', initialValue: 'From the sacred knot to the quiet in-between glances, Mana Vivaham crafts your wedding into a timeless visual legacy filled with emotion, elegance, and soul.' }),
+        defineField({ name: 'description', type: 'text', title: 'Creative Section Context', initialValue: 'From the sacred knot to the quiet in-between glances, Macharla crafts your wedding into a timeless visual legacy filled with emotion, elegance, and soul.' }),
         defineField({ name: 'aperture', type: 'string', title: 'Aperture Spec Overlay', initialValue: 'APR_F1.2' }),
         defineField({ name: 'shutter', type: 'string', title: 'Shutter Speed Spec', initialValue: 'SHUTTER_1/160' }),
         defineField({ name: 'camera', type: 'string', title: 'Leica / Camera Body Spec', initialValue: 'LEICA_M11' }),
@@ -559,7 +559,7 @@ export const homePageType = defineType({
     }),
 
     // LEGACY FIELDS
-    defineField({ name: 'brandName', type: 'string', title: 'Brand Name', initialValue: 'Mana Vivaham', hidden: true }),
+    defineField({ name: 'brandName', type: 'string', title: 'Brand Name', initialValue: 'Macharla', hidden: true }),
     defineField({ name: 'ctaText', type: 'string', title: 'CTA Button Text', initialValue: 'Book Now', hidden: true }),
   ]
 })

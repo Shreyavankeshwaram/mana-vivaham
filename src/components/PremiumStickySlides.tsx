@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { Bodoni_Moda } from "next/font/google";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { urlForImage } from "@/sanity/lib/image";
 
 const bodoniModa = Bodoni_Moda({
@@ -19,115 +17,125 @@ const fallbackSlideCopy = [
     title: "Sacred Beginnings",
     subtitle: "CHAPTER I",
     description: "The first breath of the celebration, where ritual, anticipation, and family gather into one frame.",
+    image: "/images/wedding_botanical_1.png",
   },
   {
     title: "Royal Entrance",
     subtitle: "CHAPTER II",
     description: "A cinematic arrival shaped by movement, music, and the quiet gravity of the moment.",
+    image: "/sequence-1/ezgif-frame-041.jpg",
   },
   {
     title: "Vows In Light",
     subtitle: "CHAPTER III",
     description: "The ceremony unfolds in intimate details, held in light, texture, and honest emotion.",
+    image: "/sequence-1/ezgif-frame-074.jpg",
   },
   {
     title: "Living Legacy",
     subtitle: "CHAPTER IV",
     description: "The night becomes memory, preserved as an heirloom chapter for the years ahead.",
+    image: "/sequence-1/ezgif-frame-115.jpg",
   },
 ];
 
 export default function PremiumStickySlides({ slides = [] }: { slides?: any[] }) {
   const triggerRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
-  const displaySlides = (slides || [])
-    .filter((s: any) => s.title || s.subtitle || s.description || s.image?.asset)
-    .map((slide: any, index: number) => ({
-      ...slide,
-      title: slide.title || fallbackSlideCopy[index % fallbackSlideCopy.length].title,
-      subtitle: slide.subtitle || fallbackSlideCopy[index % fallbackSlideCopy.length].subtitle,
-      description: slide.description || fallbackSlideCopy[index % fallbackSlideCopy.length].description,
-    }));
+  const displaySlides = useMemo(() => {
+    const cmsSlides = Array.isArray(slides) ? slides : [];
+    const slideCount = Math.max(fallbackSlideCopy.length, cmsSlides.length);
+
+    return Array.from({ length: slideCount }, (_, index) => {
+      const fallback = fallbackSlideCopy[index % fallbackSlideCopy.length];
+      const slide = cmsSlides[index] || {};
+
+      return {
+        ...slide,
+        title: slide.title || fallback.title,
+        subtitle: slide.subtitle || fallback.subtitle,
+        description: slide.description || fallback.description,
+        image: slide.image || fallback.image,
+      };
+    });
+  }, [slides]);
   const scrollRoom = `${displaySlides.length * 100}vh`;
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
     if (!displaySlides.length || !triggerRef.current || !pinRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const allSlides = gsap.utils.toArray(".mv-slide-wrapper") as HTMLElement[];
+    const section = triggerRef.current;
+    let frame = 0;
+
+    const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+
+    const updateSlides = () => {
+      frame = 0;
+
+      const allSlides = Array.from(section.querySelectorAll<HTMLElement>(".mv-slide-wrapper"));
       const totalSlides = allSlides.length;
+      if (totalSlides < 2) return;
+
+      const rect = section.getBoundingClientRect();
+      const scrollableDistance = Math.max(1, rect.height - window.innerHeight);
+      const progress = clamp(-rect.top / scrollableDistance);
+      const trackPosition = progress * (totalSlides - 1);
       const isMobile = window.innerWidth < 768;
 
-      // ✅ KEY FIX: Immediately push all slides except slide 0 below the viewport.
-      // Without this, all slides are stacked at absolute inset-0 on mount,
-      // and the highest z-index slide (last one) covers everything.
-      allSlides.forEach((slide, i) => {
-        if (i === 0) return;
-        gsap.set(slide, { yPercent: 100, force3D: true });
-        const content = slide.querySelector(".mv-slide-content");
-        if (content) gsap.set(content, { opacity: 0, y: isMobile ? 32 : 60, force3D: true });
-      });
+      allSlides.forEach((slide, index) => {
+        const content = slide.querySelector<HTMLElement>(".mv-slide-content");
+        const image = slide.querySelector<HTMLElement>(".mv-slide-image-inner");
 
-      const snapConfig = totalSlides > 1 && !isMobile
-        ? {
-          snapTo: 1 / (totalSlides - 1),
-          duration: { min: 0.25, max: 0.5 },
-          delay: 0.02,
-          ease: "power2.out"
-        }
-        : undefined;
-
-      const mainTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: isMobile ? 0.12 : 0.65,
-          snap: snapConfig,
-          anticipatePin: 1,
-          fastScrollEnd: true,
-          preventOverlaps: true,
-          invalidateOnRefresh: true
-        }
-      });
-
-      allSlides.forEach((slide, i) => {
-        if (i === 0) return;
-
-        const img = slide.querySelector(".mv-slide-image-inner");
-        const content = slide.querySelector(".mv-slide-content");
-
-        // Animate slide up from below
-        mainTl.fromTo(slide,
-          { yPercent: 100, force3D: true },
-          { yPercent: 0, ease: "none", force3D: true },
-          i - 1
-        );
-
-        // Parallax on the image inside
-        if (img && !isMobile) {
-          mainTl.fromTo(img,
-            { yPercent: -80, force3D: true },
-            { yPercent: 0, ease: "none", force3D: true },
-            i - 1
-          );
+        if (index === 0) {
+          slide.style.transform = "translate3d(0, 0, 0)";
+          if (content) {
+            content.style.opacity = `${clamp(1 - trackPosition * 1.4)}`;
+            content.style.transform = `translate3d(0, ${-clamp(trackPosition) * (isMobile ? 24 : 44)}px, 0)`;
+          }
+          if (image) image.style.transform = "translate3d(0, 0, 0)";
+          return;
         }
 
-        // Fade in content text as slide enters
+        const localProgress = trackPosition - (index - 1);
+        const yPercent = clamp(1 - localProgress) * 100;
+        const textProgress = clamp(localProgress * 1.4);
+        const textOffset = (1 - textProgress) * (isMobile ? 32 : 60);
+        const imageOffset = isMobile ? 0 : -clamp(1 - localProgress) * 18;
+
+        slide.style.transform = `translate3d(0, ${yPercent}%, 0)`;
         if (content) {
-          mainTl.fromTo(content,
-            { y: isMobile ? 32 : 60, opacity: 0, force3D: true },
-            { y: 0, opacity: 1, duration: isMobile ? 0.3 : 0.5, ease: "power2.out", force3D: true },
-            (i - 1) + (isMobile ? 0.08 : 0.25)
-          );
+          content.style.opacity = `${textProgress}`;
+          content.style.transform = `translate3d(0, ${textOffset}px, 0)`;
+        }
+        if (image) {
+          image.style.transform = `translate3d(0, ${imageOffset}%, 0)`;
         }
       });
+    };
 
-    }, triggerRef);
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateSlides);
+    };
 
-    return () => ctx.revert();
+    type LenisLike = {
+      on?: (event: "scroll", callback: () => void) => void;
+      off?: (event: "scroll", callback: () => void) => void;
+    };
+
+    const lenis = (window as Window & { __manaLenis?: LenisLike }).__manaLenis;
+
+    updateSlides();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    lenis?.on?.("scroll", scheduleUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      lenis?.off?.("scroll", scheduleUpdate);
+    };
   }, [displaySlides.length]);
 
   if (!displaySlides.length) return null;
@@ -144,13 +152,20 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
       >
         <div className="relative w-full h-full">
           {displaySlides.map((slide: any, index: number) => {
-            const imgSrc = slide.image?.asset ? urlForImage(slide.image)?.url() : null;
+            const imgSrc = typeof slide.image === "string"
+              ? slide.image
+              : slide.image?.asset
+                ? urlForImage(slide.image)?.url()
+                : null;
 
             return (
               <div
                 key={index}
                 className="mv-slide-wrapper absolute inset-0 w-full h-full overflow-hidden transform-gpu will-change-transform"
-                style={{ zIndex: index }}
+                style={{
+                  zIndex: index + 1,
+                  transform: index === 0 ? "translate3d(0, 0, 0)" : "translate3d(0, 100%, 0)",
+                }}
               >
                 <div className="mv-slide-image-container absolute inset-0 z-0 w-full h-full overflow-hidden">
                   <div className="mv-slide-image-inner absolute inset-0 w-full h-full md:h-[180%] md:-top-[40%] transform-gpu will-change-transform">
@@ -168,7 +183,10 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
                   </div>
                 </div>
 
-                <div className="mv-slide-content absolute inset-0 z-40 w-full h-full flex flex-col justify-center px-8 md:px-24 pointer-events-none">
+                <div
+                  className="mv-slide-content absolute inset-0 z-40 w-full h-full flex flex-col justify-center px-8 md:px-24 pointer-events-none"
+                  style={{ opacity: index === 0 ? 1 : 0 }}
+                >
                   <div className="max-w-[1200px] w-full">
                     <span className="font-inter text-[10px] md:text-[12px] tracking-[0.5em] text-white/70 uppercase mb-6 block font-bold drop-shadow-[0_2px_14px_rgba(0,0,0,0.75)]">
                       {slide.subtitle}

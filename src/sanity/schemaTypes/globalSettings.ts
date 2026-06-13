@@ -6,7 +6,7 @@ export const globalSettings = defineType({
   type: 'document',
 
   initialValue: () => ({
-    brandName: 'Mana Vivaham',
+    brandName: 'Macharla',
     ctaText: 'Book Now',
     navbarLinks: [
       { label: 'OUR STORY', url: '#modern-tradition-wrapper' },
@@ -14,8 +14,8 @@ export const globalSettings = defineType({
       { label: 'FILMS', url: '#cinematic-storytelling-wrapper' },
       { label: 'EXPERIENCE', url: '#testimonials-wrapper' }
     ],
-    seoTitle: 'Mana Vivaham | Luxury Wedding Cinema & Fine-Art Photography',
-    seoDescription: 'Considered to be the epitome of Modern Photography and Filmmaking, Mana Vivaham curates timeless visual poetry etched in memories forever.'
+    seoTitle: 'Macharla | Luxury Wedding Cinema & Fine-Art Photography',
+    seoDescription: 'Considered to be the epitome of Modern Photography and Filmmaking, Macharla curates timeless visual poetry etched in memories forever.'
   }),
 
   fieldsets: [
@@ -42,8 +42,8 @@ export const globalSettings = defineType({
       name: 'brandName', 
       type: 'string', 
       title: 'Luxury Brand Wordmark / Name',
-      description: '✨ The main display name of your fine-art wedding studio (e.g. "MANA VIVAHAM")',
-      initialValue: 'Mana Vivaham',
+      description: '✨ The main display name of your fine-art wedding studio (e.g. "MACHARLA")',
+      initialValue: 'Macharla',
       fieldset: 'appearance'
     }),
     defineField({ 
@@ -106,7 +106,7 @@ export const globalSettings = defineType({
       name: 'seoTitle', 
       type: 'string', 
       title: 'Search Engine Title (Meta Title)',
-      description: '🔍 The premium title shown in Google search results and browser tabs (Recommended: 50-60 characters, e.g. "Mana Vivaham | Luxury Wedding Cinema & Fine-Art Photography")',
+      description: '🔍 The premium title shown in Google search results and browser tabs (Recommended: 50-60 characters, e.g. "Macharla | Luxury Wedding Cinema & Fine-Art Photography")',
       fieldset: 'seo'
     }),
     defineField({ 

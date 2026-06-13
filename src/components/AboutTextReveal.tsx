@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const text = "We are Mana Vivaham. A collective of visual storytellers dedicated to the art of cinematic preservation. We believe in the raw, the unscripted, and the timeless. Our lens doesn't just record events; it captures the very soul of the moment, weaving together a narrative that will endure for generations.";
+const text = "We are Macharla. A collective of visual storytellers dedicated to the art of cinematic preservation. We believe in the raw, the unscripted, and the timeless. Our lens doesn't just record events; it captures the very soul of the moment, weaving together a narrative that will endure for generations.";
 
 export default function AboutTextReveal() {
   const containerRef = useRef<HTMLDivElement>(null);

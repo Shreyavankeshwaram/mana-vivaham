@@ -23,7 +23,7 @@ export default function FineArtClass() {
             </h2>
             
             <p className="text-base md:text-lg leading-relaxed font-serif italic text-[#1a1a1a]/80 max-w-lg mb-10">
-              Mana Vivaham is our finest offering with fine-art editorial style photography led by Siddharth Sharma, founder of Mana Vivaham. The essence of Ibtida is to create photographs that stand the test of time. 
+              Macharla is our finest offering with fine-art editorial style photography led by Siddharth Sharma, founder of Macharla. The essence of Ibtida is to create photographs that stand the test of time. 
               <br /><br />
               The classic, non-intrusive approach of documenting the most important day of your life with bright and airy images that take you back in time. This is an exclusive package which we offer to selected weddings only and we believe this it serves a website of its own. Click below to visit our studio.
             </p>
@@ -33,7 +33,7 @@ export default function FineArtClass() {
               whileTap={{ scale: 0.98 }}
               className="px-10 py-4 bg-[#7A6B5D] text-white font-serif italic text-lg rounded-sm shadow-xl hover:bg-[#6A5B4D] transition-colors"
             >
-              Visit Mana Vivaham
+              Visit Macharla
             </motion.button>
           </motion.div>
         </div>

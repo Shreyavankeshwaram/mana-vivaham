@@ -15,7 +15,7 @@ export default function EditorialJournal({ data, posts }: { data?: any, posts?: 
     {
       title: "The Golden Hour Aesthetic",
       excerpt: "Why the moments just before sunset provide the most immaculate lighting for editorial wedding portraits.",
-      author: "Mana Vivaham",
+      author: "Macharla",
       publishedAt: new Date().toISOString(),
       slug: { current: "golden-hour-aesthetic" },
       fallbackImage: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1974&auto=format&fit=crop"
@@ -31,7 +31,7 @@ export default function EditorialJournal({ data, posts }: { data?: any, posts?: 
     {
       title: "Film vs Digital",
       excerpt: "The tangible romance of 35mm film in modern luxury wedding storytelling.",
-      author: "Mana Vivaham",
+      author: "Macharla",
       publishedAt: new Date().toISOString(),
       slug: { current: "film-vs-digital" },
       fallbackImage: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069&auto=format&fit=crop"
@@ -109,7 +109,7 @@ export default function EditorialJournal({ data, posts }: { data?: any, posts?: 
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center opacity-30">
-                      <span className="font-playfair italic text-2xl text-[#8B1E2D]">Mana Vivaham</span>
+                      <span className="font-playfair italic text-2xl text-[#8B1E2D]">Macharla</span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     const htmlBody = `
       <div style="font-family:Georgia,serif;max-width:560px;margin:auto;padding:32px;border:1px solid #e5d9c5;border-radius:12px;background:#faf8f5;color:#1a1a1a;">
-        <h2 style="font-size:22px;color:#8B1E2D;margin:0 0 4px;">New Inquiry – Mana Vivaham</h2>
+        <h2 style="font-size:22px;color:#8B1E2D;margin:0 0 4px;">New Inquiry – Macharla</h2>
         <p style="font-size:11px;color:#888;margin:0 0 24px;letter-spacing:.08em;text-transform:uppercase;">Received from the website</p>
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
           <tr><td style="padding:8px 0;color:#888;width:120px;">Name</td><td style="padding:8px 0;font-weight:600;">${name}</td></tr>
@@ -46,15 +46,15 @@ export async function POST(req: NextRequest) {
           <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:.08em;">Message</p>
           <p style="margin:8px 0 0;font-size:14px;line-height:1.7;">${message || "No message provided"}</p>
         </div>
-        <p style="margin-top:24px;font-size:11px;color:#bbb;text-align:center;">Mana Vivaham · manavivaham@gmail.com</p>
+        <p style="margin-top:24px;font-size:11px;color:#bbb;text-align:center;">Macharla · manavivaham@gmail.com</p>
       </div>
     `;
 
     await transporter.sendMail({
-      from: `"Mana Vivaham Website" <${gmailUser}>`,
+      from: `"Macharla Website" <${gmailUser}>`,
       to: OWNER_EMAIL,
       replyTo: email,
-      subject: `New Inquiry from ${name} – Mana Vivaham`,
+      subject: `New Inquiry from ${name} – Macharla`,
       html: htmlBody,
     });
 

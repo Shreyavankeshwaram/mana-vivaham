@@ -48,11 +48,11 @@ export default function HeroSection({ images: cmsImages }: { images?: any[] }) {
       {/* Main Typography */}
       <div className="relative z-10 text-center px-4 flex flex-col items-center pointer-events-none">
         <h1 className="sanitize-heading text-6xl md:text-[10rem] font-serif tracking-tighter text-[#f4eee0] leading-none drop-shadow-2xl mix-blend-overlay">
-          Mana Vivaham
+          Macharla
         </h1>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <h1 className="sanitize-heading text-6xl md:text-[10rem] font-serif tracking-tighter text-[#f4eee0] leading-none drop-shadow-2xl opacity-90">
-            Mana Vivaham
+            Macharla
           </h1>
         </div>
         <p className="mt-8 text-xs md:text-lg font-serif text-[#f4eee0] tracking-[0.4em] font-light uppercase drop-shadow-md">

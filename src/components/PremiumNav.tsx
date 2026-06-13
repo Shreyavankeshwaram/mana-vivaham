@@ -17,7 +17,7 @@ const navLinks = [
 ];
 
 const PremiumNav = ({ data }: { data?: any }) => {
-  const brandName = data?.brandName || "MANA VIVAHAM";
+  const brandName = data?.brandName || "MACHARLA";
   const ctaText = data?.ctaText || "Inquire Now";
   const ownerEmail = "manavivaham@gmail.com";
   const [scrolled, setScrolled] = useState(false);

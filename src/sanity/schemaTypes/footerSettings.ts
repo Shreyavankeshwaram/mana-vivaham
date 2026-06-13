@@ -10,7 +10,7 @@ export const footerSettings = defineType({
     email: 'hello@manavivaham.com',
     location: 'Mumbai • Bangalore',
     instagram: 'https://instagram.com/manavivaham',
-    copyrightText: '© 2026 Mana Vivaham. All Rights Reserved.'
+    copyrightText: '© 2026 Macharla. All Rights Reserved.'
   }),
   
   fieldsets: [
