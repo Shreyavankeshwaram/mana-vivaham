@@ -1,60 +1,60 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 export default function AutoPlayVideo({ data }: { data?: any }) {
-  // Use uploaded Sanity video first, then local fallback
-  const videoUrl = data?.videoUrl || "/sample-wedding.mp4";
+  // Sanity-uploaded video takes priority, reliable CDN fallback for production
+  const videoUrl =
+    data?.videoUrl ||
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
   const heading = data?.heading || "A Symphony of Light";
   const subheading = data?.subheading || "Experience the emotion in motion.";
 
-  const sectionRef = useRef<HTMLDivElement>(null);
+  // Skip rendering entirely if no video is available
+  if (!videoUrl) return null;
 
   return (
-    /* Sticky wrapper — section stays pinned while inner content scrolls */
-    <div ref={sectionRef} className="relative h-[200vh]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-black flex items-center justify-center">
+    <section className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
 
-        {/* ── VIDEO BACKGROUND (no parallax = no glitch) ── */}
-        <video
-          src={videoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      {/* ── VIDEO BACKGROUND ── */}
+      <video
+        src={videoUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
-        {/* Subtle gradient so text stays readable */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/40 pointer-events-none" />
+      {/* Gradient overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50 pointer-events-none" />
 
-        {/* ── TEXT OVERLAY — fades in smoothly, stays visible ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.3 }}
-          className="relative z-10 flex flex-col items-center justify-center text-center px-6"
+      {/* ── TEXT OVERLAY ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.4 }}
+        className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-5xl"
+      >
+        {/* Small gold label */}
+        <span className="block text-[9px] sm:text-[10px] tracking-[0.45em] uppercase text-[#C5A880] mb-4 font-medium">
+          {subheading}
+        </span>
+
+        {/* Main heading */}
+        <h2
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif italic text-white tracking-wide leading-tight"
+          style={{
+            fontFamily: "var(--font-playfair, 'Playfair Display'), serif",
+            textShadow: "0 2px 40px rgba(0,0,0,0.8)",
+          }}
         >
-          {/* Subheading — small gold spaced caps */}
-          <span className="block text-[10px] md:text-[11px] tracking-[0.45em] uppercase text-[#C5A880] mb-5 font-medium">
-            {subheading}
-          </span>
-
-          {/* Main title */}
-          <h2
-            className="text-5xl sm:text-6xl md:text-8xl font-serif italic text-white tracking-wide leading-tight"
-            style={{
-              fontFamily: "var(--font-playfair, 'Playfair Display'), serif",
-              textShadow: "0 2px 40px rgba(0,0,0,0.7)",
-            }}
-          >
-            {heading}
-          </h2>
-        </motion.div>
-
-      </div>
-    </div>
+          {heading}
+        </h2>
+      </motion.div>
+    </section>
   );
 }
