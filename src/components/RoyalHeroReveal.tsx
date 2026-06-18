@@ -143,7 +143,7 @@ export default function RoyalHeroReveal({ data }: { data?: any }) {
       */}
       <section
         ref={sectionRef}
-        className="hidden md:flex w-full h-screen min-h-[100svh] items-center justify-center relative overflow-hidden z-20 bg-[#F5EBDD]"
+        className="hidden md:flex w-full h-screen min-h-[100svh] items-center justify-center relative overflow-hidden z-20"
       >
         {/* DUPLICATE FULL SCREEN IMAGE */}
         {/* This is hidden behind the mask and fades in at the end to guarantee a 100% picture reveal! */}

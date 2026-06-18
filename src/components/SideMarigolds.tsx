@@ -37,8 +37,8 @@ export default function SideMarigolds() {
           transformOrigin: "top center",
         }}
       >
-        {/* Core maroon ceremonial thread — strictly hidden on mobile/tablet to prevent red line glitch */}
-        <div className="absolute top-0 bottom-8 w-[1.2px] bg-[#8A5A60] left-1/2 -translate-x-1/2 z-0 hidden lg:block" />
+        {/* Core maroon ceremonial thread — hidden on mobile to prevent red line glitch */}
+        <div className="absolute top-0 bottom-8 w-[1.2px] bg-[#8A5A60] left-1/2 -translate-x-1/2 z-0 hidden md:block" />
 
         {/* Chain of Layered Authentic South Indian Mango Leaves (Maavilai) */}
         {Array.from({ length }).map((_, i) => (
@@ -48,12 +48,12 @@ export default function SideMarigolds() {
 
             <svg viewBox="0 0 30 50" className="w-full h-full filter drop-shadow-[0_2px_4px_rgba(42,82,44,0.08)]">
               {/* Detailed Organic Mango Leaf */}
-              <path 
-                d="M15,2 C10,13 6,26 15,48 C24,26 20,13 15,2 Z" 
-                fill="url(#mango-leaf-grad)" 
-                stroke="#C9A46A" 
+              <path
+                d="M15,2 C10,13 6,26 15,48 C24,26 20,13 15,2 Z"
+                fill="url(#mango-leaf-grad)"
+                stroke="#C9A46A"
                 strokeOpacity="0.35"
-                strokeWidth="0.75" 
+                strokeWidth="0.75"
               />
               {/* Fine delicate leaf veins in gold */}
               <path d="M15,2 L15,44" fill="none" stroke="#C9A46A" strokeOpacity="0.3" strokeWidth="0.5" />
@@ -71,12 +71,12 @@ export default function SideMarigolds() {
         <div className="relative z-20 mt-[-2px] w-[24px] h-[32px] md:w-[28px] md:h-[38px] flex flex-col items-center">
           {/* Maroon connection knot */}
           <div className="w-[5px] h-[5px] rounded-full bg-[#8A5A60] mb-[2px]" />
-          
+
           <svg viewBox="0 0 30 40" className="w-full h-full filter drop-shadow-[0_2px_4px_rgba(201,164,106,0.12)]">
             {/* Styled Gold Temple Bell */}
-            <path 
-              d="M15,4 C10,4 8,8 8,14 C8,18 6,24 5,26 L25,26 C24,24 22,18 22,14 C22,8 20,4 15,4 Z" 
-              fill="url(#temple-gold-grad)" 
+            <path
+              d="M15,4 C10,4 8,8 8,14 C8,18 6,24 5,26 L25,26 C24,24 22,18 22,14 C22,8 20,4 15,4 Z"
+              fill="url(#temple-gold-grad)"
               stroke="#C9A46A"
               strokeWidth="0.75"
             />

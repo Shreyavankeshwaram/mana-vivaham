@@ -64,9 +64,9 @@ export default async function Home() {
   }
 
   return (
-    <main className="relative w-full bg-lumus-beige min-h-screen text-lumus-dark">
+    <main className="relative w-full min-h-screen text-lumus-dark">
 
-      <div id="morph-wrapper" className="bg-lumus-beige">
+      <div id="morph-wrapper">
         <MorphSequence frames={data.morphSequence} />
       </div>
 
@@ -80,7 +80,7 @@ export default async function Home() {
       </div>
 
       {/* Mid-Page Royal Reveal Section */}
-      <div id="royal-hero-reveal-wrapper" className="bg-[#F5EBDD]">
+      <div id="royal-hero-reveal-wrapper">
         <RoyalHeroReveal data={data.hero} />
       </div>
 

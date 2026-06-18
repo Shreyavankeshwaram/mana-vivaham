@@ -41,10 +41,11 @@ export default function ModernTradition({ data }: { data?: any }) {
         <svg width="100%" height="100%">
           <defs>
             <pattern id="indian-border-top" width="40" height="28" patternUnits="userSpaceOnUse">
-              {/* Horizontal red line removed to clean up look */}
+              <rect x="0" y="0" width="40" height="2" fill="#8B1E2D" />
               <path d="M 20,2 C 16,2 14,5 14,10 C 14,16 20,22 20,24 C 20,22 26,16 26,10 C 26,5 24,2 20,2 Z" fill="#8B1E2D" />
               <path d="M 20,24 L 22,26 L 20,28 L 18,26 Z" fill="#8B1E2D" />
-              {/* Curved red line paths removed for maximum cleanliness */}
+              <path d="M 0,2 C 8,10 12,10 20,2" fill="none" stroke="#8B1E2D" strokeWidth="1.5" />
+              <path d="M 20,2 C 28,10 32,10 40,2" fill="none" stroke="#8B1E2D" strokeWidth="1.5" />
               <path d="M 8,5 L 10,9 L 6,9 Z" fill="#8B1E2D" />
               <path d="M 12,6 L 14,10 L 10,10 Z" fill="#8B1E2D" />
               <path d="M 28,6 L 30,10 L 26,10 Z" fill="#8B1E2D" />

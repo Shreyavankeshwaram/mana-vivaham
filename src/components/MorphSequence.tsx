@@ -234,7 +234,7 @@ export default function MorphSequence({ frames }: { frames?: string[] }) {
     };
   }, [frames, sourceFrameCount, useFramesFromProps]);
   return (
-    <section ref={containerRef} className="relative w-full h-screen bg-lumus-beige overflow-hidden">
+    <section ref={containerRef} className="relative w-full h-screen overflow-hidden">
       {/* 
         This image acts as the LCP (Largest Contentful Paint) element for Lighthouse and PageSpeed Insights.
         It loads instantly before the JS canvas initializes, fixing the NO_LCP error and improving FCP.

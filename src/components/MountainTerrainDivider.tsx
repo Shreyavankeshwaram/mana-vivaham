@@ -159,7 +159,7 @@ const MountainTerrainDivider: React.FC<MountainTerrainDividerProps> = ({
             const isTouchMobile =
               typeof window !== "undefined" &&
               (window.matchMedia('(pointer: coarse)').matches ||
-              window.innerWidth < 768);
+                window.innerWidth < 768);
 
             return (
               <motion.g key={i}>
