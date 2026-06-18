@@ -99,23 +99,16 @@ export default async function Home() {
         <IndianWeddingBorder type="temple" color="both" flip={true} parallax={true} opacity={0.9} />
       </div>
 
-      <div id="premium-slides-wrapper" className="bg-[#8B1E2D]">
+      <div id="premium-slides-wrapper" className="bg-black">
         <PremiumStickySlides slides={data.premiumSlides} />
-      </div>
-
-      {/* Divider between dark sticky slides and captured services */}
-      <div className="w-full bg-[#8B1E2D] relative z-20">
-        <IndianWeddingBorder type="mandala" color="gold" parallax={true} opacity={0.5} />
       </div>
 
       <div id="services-wrapper" className="bg-[#050505]">
         <CapturedServices data={data.capturedServices} />
       </div>
 
-      {/* Divider between captured services and cinematic difference */}
-      <div className="w-full bg-[#050505] relative z-20">
-        <IndianWeddingBorder type="paisley" color="gold" flip={true} parallax={true} opacity={0.5} />
-      </div>
+      {/* Removed border line per request */}
+
 
       <div id="cinematic-difference-wrapper" className="bg-[#FAF8F5]">
         <CinematicDifference data={data.cinematicDifference} />
@@ -157,13 +150,13 @@ export default async function Home() {
         />
       </div>
 
-      <div id="infinite-column-gallery-wrapper" className="bg-black">
+      <div id="infinite-column-gallery-wrapper" className="bg-[#8B1E2D] -mt-1">
         <InfiniteColumnGallery images={data.infiniteGalleryImages} />
       </div>
 
       {/* Autoplay video section removed per request */}
 
-      <div id="cinematic-slideshow-wrapper" className="bg-black">
+      <div id="cinematic-slideshow-wrapper" className="bg-[#8B1E2D] -mt-1">
         <CinematicSlideshow slides={data.cinematicSlideshow} />
       </div>
 

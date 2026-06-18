@@ -148,7 +148,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
     >
       <div
         ref={pinRef}
-        className="mv-premium-slides-full sticky top-0 w-full h-screen overflow-hidden bg-[#8B1E2D]"
+        className="mv-premium-slides-full sticky top-0 w-full h-screen overflow-hidden bg-black"
       >
         <div className="relative w-full h-full">
           {displaySlides.map((slide: any, index: number) => {
@@ -179,7 +179,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
                         priority={index === 0}
                       />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#8B1E2D]/35 via-transparent to-[#8B1E2D]/70 md:from-[#8B1E2D]/60 md:to-[#8B1E2D]/80" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/70 md:from-black/60 md:to-black/80" />
                   </div>
                 </div>
 
