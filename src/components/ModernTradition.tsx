@@ -86,12 +86,12 @@ export default function ModernTradition({ data }: { data?: any }) {
 
           {/* 1. Portrait Image (Left) */}
           <div className="w-full md:col-span-4 relative z-10 order-1">
-            <div className="flex flex-row md:block gap-4">
+            <div className="grid grid-cols-2 md:block gap-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                className="relative aspect-[3/4] w-1/2 md:w-full shadow-lg md:shadow-2xl overflow-hidden rounded-sm group cursor-pointer"
+                className="relative aspect-[3/4] w-full shadow-lg md:shadow-2xl overflow-hidden rounded-sm group cursor-pointer"
               >
                 <Image
                   src={portraitImg}
@@ -103,22 +103,20 @@ export default function ModernTradition({ data }: { data?: any }) {
               </motion.div>
 
               {/* Mobile second image placeholder */}
-              <div className="md:hidden w-1/2">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                  className="relative aspect-[3/4] w-full shadow-lg overflow-hidden grayscale mt-8"
-                >
-                  <Image
-                    src={landscapeImg}
-                    alt="Cinematic Moment"
-                    fill
-                    className="object-cover"
-                    sizes="50vw"
-                  />
-                </motion.div>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                className="md:hidden relative aspect-[3/4] w-full shadow-lg overflow-hidden grayscale rounded-sm"
+              >
+                <Image
+                  src={landscapeImg}
+                  alt="Cinematic Moment"
+                  fill
+                  className="object-cover"
+                  sizes="50vw"
+                />
+              </motion.div>
             </div>
           </div>
 

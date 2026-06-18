@@ -148,7 +148,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
     >
       <div
         ref={pinRef}
-        className="mv-premium-slides-full sticky top-0 w-full h-screen overflow-hidden bg-black"
+        className="mv-premium-slides-full sticky top-0 w-full h-screen overflow-hidden bg-[#8B1E2D]"
       >
         <div className="relative w-full h-full">
           {displaySlides.map((slide: any, index: number) => {
@@ -179,7 +179,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
                         priority={index === 0}
                       />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/70 md:from-black/60 md:to-black/80" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#8B1E2D]/35 via-transparent to-[#8B1E2D]/70 md:from-[#8B1E2D]/60 md:to-[#8B1E2D]/80" />
                   </div>
                 </div>
 
@@ -191,7 +191,7 @@ export default function PremiumStickySlides({ slides = [] }: { slides?: any[] })
                     <span className="font-inter text-[10px] md:text-[12px] tracking-[0.5em] text-white/70 uppercase mb-6 block font-bold drop-shadow-[0_2px_14px_rgba(0,0,0,0.75)]">
                       {slide.subtitle}
                     </span>
-                    <h2 className="font-cormorant text-[3.8rem] md:text-[8rem] lg:text-[10rem] leading-[0.85] text-white font-semibold uppercase mb-8 md:mb-10 drop-shadow-[0_4px_28px_rgba(0,0,0,0.85)]">
+                    <h2 className="font-cormorant text-[2rem] md:text-[4rem] lg:text-[5rem] leading-[0.85] text-white font-semibold uppercase mb-8 md:mb-10 drop-shadow-[0_4px_28px_rgba(0,0,0,0.85)]">
                       <span className="block">{(slide.title || "").split(' ')[0]}</span>
                       <span className="block ml-0 md:ml-32 text-white">
                         {(slide.title || "").split(' ').slice(1).join(' ')}

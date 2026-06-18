@@ -99,12 +99,12 @@ export default async function Home() {
         <IndianWeddingBorder type="temple" color="both" flip={true} parallax={true} opacity={0.9} />
       </div>
 
-      <div id="premium-slides-wrapper" className="bg-black">
+      <div id="premium-slides-wrapper" className="bg-[#8B1E2D]">
         <PremiumStickySlides slides={data.premiumSlides} />
       </div>
 
       {/* Divider between dark sticky slides and captured services */}
-      <div className="w-full bg-black relative z-20">
+      <div className="w-full bg-[#8B1E2D] relative z-20">
         <IndianWeddingBorder type="mandala" color="gold" parallax={true} opacity={0.5} />
       </div>
 
