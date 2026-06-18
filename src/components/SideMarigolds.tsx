@@ -37,8 +37,8 @@ export default function SideMarigolds() {
           transformOrigin: "top center",
         }}
       >
-        {/* Core maroon ceremonial thread — hidden on mobile to prevent red line glitch */}
-        <div className="absolute top-0 bottom-8 w-[1.2px] bg-[#8A5A60] left-1/2 -translate-x-1/2 z-0 hidden md:block" />
+        {/* Core maroon ceremonial thread — strictly hidden on mobile/tablet to prevent red line glitch */}
+        <div className="absolute top-0 bottom-8 w-[1.2px] bg-[#8A5A60] left-1/2 -translate-x-1/2 z-0 hidden lg:block" />
 
         {/* Chain of Layered Authentic South Indian Mango Leaves (Maavilai) */}
         {Array.from({ length }).map((_, i) => (

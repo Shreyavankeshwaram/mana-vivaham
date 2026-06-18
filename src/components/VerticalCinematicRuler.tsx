@@ -35,7 +35,7 @@ export default function VerticalCinematicRuler() {
   const ticks = Array.from({ length: 151 }).map((_, i) => i);
 
   return (
-    <div className="fixed top-0 left-6 h-screen w-16 z-[60] pointer-events-none hidden md:flex items-center justify-center">
+    <div className="fixed top-0 left-6 h-screen w-16 z-[60] pointer-events-none hidden lg:flex items-center justify-center">
 
       {/* Central Focus Marker (The "Lens" Indicator) */}
       <div className="absolute top-1/2 left-0 w-full flex items-center z-20">
